@@ -1,0 +1,35 @@
+Found 86 images belonging to 2 classes.
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d (Conv2D)              (None, 8, 8, 32)          320       
+_________________________________________________________________
+flatten (Flatten)            (None, 2048)              0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 4098      
+=================================================================
+Total params: 4,418
+Trainable params: 4,418
+Non-trainable params: 0
+_________________________________________________________________
+Epoch 1/10
+43/43 - 2s - loss: 5.6200 - accuracy: 0.7093
+Epoch 2/10
+43/43 - 0s - loss: 3.8270 - accuracy: 0.8140
+Epoch 3/10
+43/43 - 0s - loss: 2.3515 - accuracy: 0.8140
+Epoch 4/10
+43/43 - 0s - loss: 1.4760 - accuracy: 0.8488
+Epoch 5/10
+43/43 - 0s - loss: 0.7216 - accuracy: 0.9070
+Epoch 6/10
+43/43 - 0s - loss: 0.8337 - accuracy: 0.8953
+Epoch 7/10
+43/43 - 0s - loss: 0.9339 - accuracy: 0.9186
+Epoch 8/10
+43/43 - 0s - loss: 0.4135 - accuracy: 0.9070
+Epoch 9/10
+43/43 - 0s - loss: 0.2610 - accuracy: 0.9186
+Epoch 10/10
+43/43 - 0s - loss: 0.3564 - accuracy: 0.9302
