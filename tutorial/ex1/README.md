@@ -31,3 +31,5 @@ to launch as well as the right project account. Adjust the wall time if needed t
 You are encouraged to use the highly tuned container images provided by Nvidia. Investigate and submit the `ex1-singularity.sh` script to run the same training application using one of the TensorFlow container images provided under `/apps/hpc-ai-containers`: 
 
 `sbatch ex1-singularity.sh`
+
+**NOTE** that you may have to `pip install --user pillow` beforehand in order for the model to be able to load the images.
