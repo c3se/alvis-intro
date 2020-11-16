@@ -1,0 +1,18 @@
+# Introduction 
+
+This example shows how to use TensorFlow from the module system to run a training application using one GPU both as a batch job and through a jupyter notebook. 
+You will use a small, local dataset to train a CNN for binary classification. Investigate the directory structure under `./data` and feel free to experiment 
+with your own data instead. 
+
+## The batch system
+To run the example as a batch job, submit the job script: `sbatch ex1.sh`. Read the content of the job script and familiarize yourself with the important parameters.
+Note that on ALvis, launching at least one GPU is a must for jobs to be allowed to run on the compute nodes.
+
+## Jupyter Notebook
+To setup your environment for running jupyter notebooks, see <https://www.c3se.chalmers.se/documentation/applications/jupyter/>. Note that you must have logged in 
+to the system with X forwarding. Load the IPython module first: `module load IPython`. Next, fire up a jupyter notebook and brows into the tutorial's notebook
+`cnn_with_own_data.ipynb`
+
+To run the heaveier stuff, opt for a batch job, or use the compute nodes for your notebooks:
+`srun -A YourAccount -p alvis --gpus-per-node=... -t 00:10:00 --pty jupyter notebook`, where you should fill in the type and the number of GPUs that you would like 
+to launch as well as the right project account. Adjust the wall time if needed too.
