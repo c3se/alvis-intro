@@ -6,9 +6,10 @@ with your own images instead.
 
 write and submit a batch job script for Alvis
 Train a CNN with TensorFlow using three methods:
-  1- jupyter notebooks
-  2- the module tree
-  3- optimized container images provided by Nvidia
+
+    1- jupyter notebooks
+    2- the module tree
+    3- optimized container images provided by Nvidia
   
 ## 1- Using the batch system
 To run the example as a batch job, submit the job script: `sbatch ex1.sh`. Read the content of the job script and familiarize yourself with the important parameters.
