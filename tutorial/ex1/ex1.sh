@@ -5,7 +5,8 @@
 
 #SBATCH -A C3SE-STAFF
 #SBATCH -p alvis
-#SBATCH -t 00-00:00:05
+#SBATCH -t 00-00:05:00
+
 #SBATCH -n 1
 #SBATCH --gpus-per-node=V100:1
 
