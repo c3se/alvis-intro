@@ -3,7 +3,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import Sequential
 
-train_batches = ImageDataGenerator().flow_from_directory('../../data', target_size=(10, 10), color_mode='grayscale',
+train_batches = ImageDataGenerator().flow_from_directory('./data', target_size=(10, 10), color_mode='grayscale',
                                                          classes=['refuse', 'features'],
                                                          batch_size=2)
 
