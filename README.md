@@ -1,4 +1,4 @@
-# "Introduction to Alvis"
+# Introduction to Alvis
 
 
 # Aims of this seminar
