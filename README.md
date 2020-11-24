@@ -65,7 +65,8 @@
 * You can also specify the type (recommended):
     * `#SBATCH --gpus-per-node=V100:3`
 * Querying visible devices
-```srun -A C3SE-STAFF -n 1 -t 00:02:00 --gpus-per-node=V100:2 --pty bash
+```
+   srun -A YOUR_ACCOUNT -n 1 -t 00:02:00 --gpus-per-node=V100:2 --pty bash
    srun: job 22441 queued and waiting for resources
    srun: job 22441 has been allocated resources
    $ echo ${CUDA_VISIBLE_DEVICES}
