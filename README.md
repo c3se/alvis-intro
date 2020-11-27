@@ -12,13 +12,12 @@
 * SNIC resource dedicated to AI/ML research
 * consists of SMP nodes accelerated with multiple GPUs
 * Alvis goes in production in three phases:
-    * Phase 1A: equipped with Nvidia Tesla V100 GPUs (in production)
-    * Phase 1B: equipped with Nvidia Tesla T4 GPUs   (in production)
+    * Phase 1A: equipped with 44 Nvidia Tesla V100 GPUs (in production)
+    * Phase 1B: equipped with 164 Nvidia Tesla T4 GPUs, 4 Nvidia Tesla A100 GPUs (in production)
     * Phase 2: will be in production in 2021
 * Node details: <https://www.c3se.chalmers.se/about/Alvis/>
 * Login server: `ssh CID@alvis1.c3se.chalmers.se`
 * The same principles regarding how to login, where to run heavy jobs, how to submit job scripts, etc. apply
-
 
 
 # Modules and containers
@@ -32,6 +31,7 @@
 
 # Software installation
 * We provide `pip`, `singularity`, `conda`, and `virtualenv` so you can install your own Python packages locally.
+* We build a lot of software and containers for general use
 * To build your own singularity containers, see: <https://github.com/c3se/containers/tree/master/Tutorial#further-remarks>
    * and, for running your own Singularity containers, see: <https://www.c3se.chalmers.se/documentation/software/#singularity>
 
@@ -48,7 +48,7 @@
 
 # Running jobs on Alvis
 * Alvis is dedicated to GPU-hungry computations, therefore your job must allocate at least one GPU
-* On Alvis you can allocate individual **cores** (tasks)
+* You only allocate GPUs, cores and RAM is assigned automatically
 * Hyperthreading is **disabled** on Alvis
 * Alvis comes in three phases (I, II, and III), and there is a variety in terms of:
      * number of cores
@@ -60,73 +60,67 @@
      * for instance, phase Ia comes with NVIDIA V100 GPUs, while phase Ib is equipped with T4 GPUs
 
 # Allocating GPUs on Alvis
-* You can specify the number of GPUs and let the scheduler decide the type
-    * `#SBATCH --gpus-per-node=3`
-* You can also specify the type (recommended):
-    * `#SBATCH --gpus-per-node=V100:3`
-* Querying visible devices
+* Specify the type, of GPUs you want and the number of them per node, e.g:
+    * `#SBATCH --gpus-per-node=V100:2`
+    * `#SBATCH --gpus-per-node=T4:3`
+    * `#SBATCH --gpus-per-node=A100:1`
+* Limit to nodes with more RAM:
+    * `#SBATCH --gpus-per-node=V100:2 -C 2xV100`
+    * `#SBATCH --gpus-per-node=T4:1 -C MEM1536`
+* Many more expert options:
+    * `#SBATCH --gpus-per-node=T4:8 -N 2 --cpus-per-task=32`
+    * `#SBATCH -N 2 --gres=ptmpdir:1`
+    * `#SBATCH --gres=gpuexlc:1,mps:1`
+* Mixing GPUs of different types is not possible
+
+# GPU cost on Alvis
+| Type | Memory per GPU | Cores per GPU | Cost |
+|------|----------------|---------------|------|
+| V100 | 96 or 192 GB   | 8             | 8    |
+| T4   | 72 or 192 GB   | 4             | 2    |
+| A100 | 192 GB         | 8             | 16   |
+
+* E.g. using 2xT4 gpus for 10 hours costs 40 "core hours"
+* Cost reflects the price of the hardware
+
+# Querying visible devices
+* Many codes will pick up `$CUDA_VISIBLE_DEVICES` automatically and do the right thing
 ```
-   srun -A YOUR_ACCOUNT -n 1 -t 00:02:00 --gpus-per-node=V100:2 --pty bash
+   srun -A YOUR_ACCOUNT -t 00:02:00 --gpus-per-node=V100:2 --pty bash
    srun: job 22441 queued and waiting for resources
    srun: job 22441 has been allocated resources
    $ echo ${CUDA_VISIBLE_DEVICES}
    0,1
 ```
-* Currently, mixing GPUs of different types is not allowed 
 
-
-
-# Vera script example
-
-Note: You can (currently) only allocate a minimum of 1 core = 2 threads on Vera
-
+# Alvis batch script example
 ```bash
 #!/bin/bash
-#SBATCH -A C3SE2018-1-2
-## Note! Vera has hyperthreading enabled:
-## n * c = 128 threads total = 2 nodes
-## This should launch 32 MPI-processes on each node.
-#SBATCH -n 64
-#SBATCH -c 2
-#SBATCH -t 2-00:00:00
-#SBATCH --gres=ptmpdir:1
-
-module load ABAQUS intel
-cp train_break.inp $TMPDIR
-cd $TMPDIR
-
-abaqus cpus=$SLURM_NTASKS mp_mode=mpi job=train_break
-
-cp train_break.odb $SLURM_SUBMIT_DIR
-```
-
-# Vera script example
-
-```bash
-#!/bin/bash
-#SBATCH -A C3SE2018-1-2 -p hebbe
+#SBATCH -A SNIC2020-Y-X -p alvis
+#SBATCH -t 1-00:00:00
 #SBATCH --gres=gpu:V100:1
 
 unzip many_tiny_files_dataset.zip -d $TMPDIR/
-singularity exec --nv ~/tensorflow-2.1.0.simg trainer.py --training_input=$TMPDIR/
+singularity exec --nv ~/tensorflow-2.1.0.sif trainer.py --training_input=$TMPDIR/
+# or use available containers e.g.
+# /apps/hpc-ai-containers/TensorFlow/TensorFlow_v2.3.1-tf2-py3-GPU-Jupyter.sif
 ```
 
-
-# Hebbe script example
-* Submitted with `sbatch --array=0-99 wind_turbine.sh`
+# Alvis batch script example
 
 ```bash
 #!/bin/bash
-#SBATCH -A SNIC2017-1-2
-#SBATCH -n 1
-#SBATCH -t 15:00:00
+#SBATCH -A SNIC2020-Y-X -p alvis
+#SBATCH --gpus-per-node=T4:1
+#SBATCH -t 5:00:00
+#SBATCH --array=0-99
 #SBATCH --mail-user=zapp.brannigan@chalmers.se --mail-type=end
 
 module load MATLAB
-cp wind_load_$SLURM_ARRAY_TASK_ID.mat $TMPDIR/wind_load.mat
-cp wind_turbine.m $TMPDIR
+cp cat_pictures_$SLURM_ARRAY_TASK_ID.mat $TMPDIR/training_set.mat
+cp analysis.m $TMPDIR
 cd $TMPDIR
-RunMatlab.sh -f wind_turbine.m
+RunMatlab.sh -f analysis.m
 cp out.mat $SLURM_SUBMIT_DIR/out_$SLURM_ARRAY_TASK_ID.mat
 ```
 
@@ -140,96 +134,38 @@ array_id = getenv('SLURM_ARRAY_TASK_ID'); % matlab
 array_id = os.getenv('SLURM_ARRAY_TASK_ID') # python
 ```
 
-# Hebbe script example
-* Submitted with `sbatch --array=0-50:5 diffusion.sh`
+# Alvis batch script example
 
 ```bash
 #!/bin/bash
-#SBATCH -A C3SE2017-1-2
-#SBATCH -n 40 -t 2-00:00:00
-
-module load intel/2017a
-# Set up new folder, copy the input file there
-temperature=$SLURM_ARRAY_TASK_ID
-dir=temp_$temperature
-mkdir $dir; cd $dir
-cp $HOME/base_input.in input.in
-# Set the temperature in the input file:
-sed -i 's/TEMPERATURE_PLACEHOLDER/$temperature' input.in
-
-mpirun $HOME/software/my_md_tool -f input.in
-```
-
-Here, the array index is used directly as input.
-If it turns out that 50 degrees was insufficient, then we could do another run:
-```bash
-sbatch --array=55-80:5 diffusion.sh
-```
-
-# Hebbe script example
-Submitted with: `sbatch -N 3 -J residual_stress run_oofem.sh`
-
-```bash
-#!/bin/bash
-#SBATCH -A C3SE507-15-6 -p mob
-#SBATCH --ntasks-per-node=20
-#SBATCH -t 6-00:00:00
+#SBATCH -A SNIC2020-Y-X -p alvis
+#SBATCH -N 2
+#SBATCH --gpus-per-node=T4:8
+## Parallel If you want to use parallel TMPDIR as well:
 #SBATCH --gres=ptmpdir:1
 
-module load intel/2017a PETSc
-cp $SLURM_JOB_NAME.in $TMPDIR
-cd $TMPDIR
-mkdir $SLURM_SUBMIT_DIR/$SLURM_JOB_NAME
-while sleep 1h; do
-  rsync -a *.vtu $SLURM_SUBMIT_DIR/$SLURM_JOB_NAME
-done &
-LOOPPID=$!
-
-mpirun $HOME/bin/oofem -p -f "$SLURM_JOB_NAME.in"
-kill $LOOPPID
-rsync -a *.vtu $SLURM_SUBMIT_DIR/oofem/$SLURM_JOBNAME/
+module load fosscuda/2020a TensorFlow/2.3.1
+mpirun python training.py
 ```
-
-# Alvis script example
-
-```bash
-#!/bin/bash
-#SBATCH -A C3SE2020-2-3
-#SBATCH -n 4
-#SBATCH -t 2-00:00:00
-#SBATCH --gpu-per-node=T4:2
-
-#If you want to use parallel TMPDIR as well:
-#SBATCH --gres=ptmpdir:1
-
-module load foo
-
-mpirun -n 4 ./bar
-```
-
 
 # Interactive use
 
-* Jupyter Notebooks
-* OOD
-* Thinlinc
-
-# GPU flags
-* exclusive
-* mps
+* Login node allows for light interactive use.
+* SSH or Thinlinc
+    * <https://www.c3se.chalmers.se/documentation/connecting/>
+* Run interactively on compute nodes with `srun`, e.g.
+    * `srun -A SNIC2020-X-Y -p alvis --gpus-per-node=T4:1 bash`
+* Jupyter Notebooks can run on login node or on compute nodes
+    * <https://www.c3se.chalmers.se/documentation/applications/jupyter/>
 
 # Job monitoring
+* `jobinfo` shows you available GPUs
 * dcgmi
-* ganglia integrated in OOD?
-* job_stats.py JOBID
-* ganglia_url.py JOBID
+* `job_stats.py JOBID` (work in progress)
 * `sinfo -Rl` command shows how many nodes are down for repair.
 * The health status page gives an overview of what the node(s) in your job are doing
 * Check e.g. memory usage, user, system, and wait CPU utilization, disk usage, etc
 * See summary of CPU and memory utilization (only available after job completes): `seff JOBID`
-* System status information for each resource is available through the C3SE homepage:
-* Current health status:
-  * <http://url.c3se.chalmers.se/ganglia-web/?c=Hebbe>
 
 
 # Things to keep in mind
