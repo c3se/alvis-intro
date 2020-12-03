@@ -8,7 +8,8 @@
     * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
 
 
-# Our systems: Alvis
+# Alvis
+## Technical specifications
 * SNIC resource dedicated to AI/ML research
 * consists of SMP nodes accelerated with multiple GPUs
 * Alvis goes in production in three phases:
@@ -17,14 +18,14 @@
     * Phase 2: will be in production in 2021
 * Node details: <https://www.c3se.chalmers.se/about/Alvis/>
 * Login server: `ssh CID@alvis1.c3se.chalmers.se`
-* The same principles regarding how to login, where to run heavy jobs, how to submit job scripts, etc. apply
+* The principles regarding how to login, where to run heavy jobs, how to submit job scripts, etc. are the same as for our other clusters
 
 
 # Modules and containers
 * Alvis software stack was designed to make heavy use of optimized container images mostly from, but not restricted to, Nvidia NGC catalogue
-   * Available both from the central storage under `apps/hpc-ai-containers` as well as on Singularity Hub: <https://singularity-hub.org/collections/4791>
-   * Allows you to prototype your work on your local machine and deploy it in a reproducible way on Alvis for large-scale training using the exact same environment  
-   * Instructions on how to use the images and some tutorial can be found on <https://github.com/c3se/containers>
+   * Available both from the central storage under `apps/hpc-ai-containers` as well as on S-Hub: <https://singularity-hub.org/collections/4791>
+      * Availability of the images on S-Hub allows you to prototype your work on your local machine and deploy it in a reproducible way on Alvis for large-scale production runs using the exact same environment  
+   * Instructions on how to use the images and some tutorial can be found on <https://www.c3se.chalmers.se/documentation/applications/containers-advanced/>
 
 * In addition, some pieces of software are also provided in the form of modules, and you can use them in a similar way as you would do on our other systems 
 
@@ -32,8 +33,8 @@
 # Software installation
 * We provide `pip`, `singularity`, `conda`, and `virtualenv` so you can install your own Python packages locally.
 * We build a lot of software and containers for general use
-* To build your own singularity containers, see: <https://github.com/c3se/containers/tree/master/Tutorial#further-remarks>
-   * and, for running your own Singularity containers, see: <https://www.c3se.chalmers.se/documentation/software/#singularity>
+* To build and run your own singularity containers, see: <https://github.com/c3se/containers/tree/master/Tutorial#further-remarks>
+  
 
 
 # Datasets
@@ -42,13 +43,14 @@
 * note that in certain cases, the provider of the dataset requires you to cite some literature if you use the dataset in your research
 * it is the responsibility of the users to make sure their use of the datasets complies with the above-mentioned permissions and requirements
 * In some cases, further information about the dataset can be found in a README file under the pertinent directory
-* A list of the currently available datasets and supplementary information can found on <https://www.c3se.chalmers.se/documentation/applications/datasets/>
+* A list of the currently available datasets and supplementary information can be found on <https://www.c3se.chalmers.se/documentation/applications/datasets/>
 * If you need a particular dataset that is publicly available but is missing in the above list, feel free to contact support. We may be able to provide it centrally to all users. 
 
 
 # Running jobs on Alvis
-* Alvis is dedicated to GPU-hungry computations, therefore your job must allocate at least one GPU
-* You only allocate GPUs, cores and RAM is assigned automatically
+* Alvis is dedicated to AI/ML research which typically involves GPU-hungry computations; therefore, your job must allocate at least one GPU
+* You **only** allocate GPUs
+   * cores and memory is assigned automatically
 * Hyperthreading is **disabled** on Alvis
 * Alvis comes in three phases (I, II, and III), and there is a variety in terms of:
      * number of cores
@@ -57,14 +59,14 @@
      * memory per GPU
      * memory per node
 * Pay close attention to the above-mentioned items in your job submission script to pick the right hardware  
-     * for instance, phase Ia comes with NVIDIA V100 GPUs, while phase Ib is equipped with T4 GPUs
+     * for instance, phase Ia comes with NVIDIA V100 GPUs, while phase Ib is equipped with T4 and A100 
 
 # Allocating GPUs on Alvis
 * Specify the type, of GPUs you want and the number of them per node, e.g:
     * `#SBATCH --gpus-per-node=V100:2`
     * `#SBATCH --gpus-per-node=T4:3`
     * `#SBATCH --gpus-per-node=A100:1`
-* Limit to nodes with more RAM:
+* If you need more memory, use the limit flag `-C` to pick the nodes with more RAM:
     * `#SBATCH --gpus-per-node=V100:2 -C 2xV100`
     * `#SBATCH --gpus-per-node=T4:1 -C MEM1536`
 * Many more expert options:
@@ -80,11 +82,11 @@
 | T4   | 72 or 192 GB   | 4             | 2    |
 | A100 | 192 GB         | 8             | 16   |
 
-* E.g. using 2xT4 gpus for 10 hours costs 40 "core hours"
-* Cost reflects the price of the hardware
+* Example: using 2xT4 gpus for 10 hours costs 40 "core hours"
+* The cost reflects the actual price of the hardware
 
 # Querying visible devices
-* Many codes will pick up `$CUDA_VISIBLE_DEVICES` automatically and do the right thing
+* Using `$CUDA_VISIBLE_DEVICES` you can make sure that your application has correctly picked up the hardware
 ```
    srun -A YOUR_ACCOUNT -t 00:02:00 --gpus-per-node=V100:2 --pty bash
    srun: job 22441 queued and waiting for resources
@@ -94,6 +96,7 @@
 ```
 
 # Alvis batch script example
+## Working with many small files
 ```bash
 #!/bin/bash
 #SBATCH -A SNIC2020-Y-X -p alvis
@@ -107,7 +110,7 @@ singularity exec --nv ~/tensorflow-2.1.0.sif trainer.py --training_input=$TMPDIR
 ```
 
 # Alvis batch script example
-
+## Job arrays
 ```bash
 #!/bin/bash
 #SBATCH -A SNIC2020-Y-X -p alvis
@@ -135,7 +138,7 @@ array_id = os.getenv('SLURM_ARRAY_TASK_ID') # python
 ```
 
 # Alvis batch script example
-
+## Using the module system
 ```bash
 #!/bin/bash
 #SBATCH -A SNIC2020-Y-X -p alvis
@@ -149,6 +152,7 @@ mpirun python training.py
 ```
 
 # Interactive use
+## Jupyter Notebooks
 
 * Login node allows for light interactive use.
 * SSH or Thinlinc
@@ -162,29 +166,32 @@ mpirun python training.py
 * `jobinfo` shows you available GPUs
 * dcgmi
 * `job_stats.py JOBID` (work in progress)
-* `sinfo -Rl` command shows how many nodes are down for repair.
-* The health status page gives an overview of what the node(s) in your job are doing
-* Check e.g. memory usage, user, system, and wait CPU utilization, disk usage, etc
+* `sinfo -Rl` command shows how many nodes are down for repair
+* The health status page gives an overview of how your job is using the resources of the node(s) 
+   * Check e.g. memory usage, user, system, and wait CPU utilization, disk usage, etc
 * See summary of CPU and memory utilization (only available after job completes): `seff JOBID`
 
 
 # Things to keep in mind
-* Never run (big or long) jobs on the login node! If you do, we will kill the processes.
-  If you keep doing it, we'll throw you out and block you from logging in for a while!
-  Prepare your job, do tests and check that everything's OK before submitting the job, but don't run the job there!
-* Keep an eye on what's going on - use normal Linux tools on the login node and on the allocated nodes to check CPU, memory and network usage, etc. Especially for new jobscripts/codes!
-* Think about what you do - if you by mistake copy very large files back and forth you can slow the storage servers or network to a crawl
+* Never run (big or long) jobs on the login node! otherwise, the misbehaving processes will be killed by the administrators
+   * If this is done repeatedly, you will be logged out, and your account will temporarily be **blocked**
+* You can however use the login node for:
+   * Preparing your job and checking if everything's OK before submitting the job
+   * debugging a lightweight job and running tests  
+* You are expected to keep an eye on how your job performs **especially** for new jobscripts/codes!
+   - Linux command line tools availabe on the login node and on the allocated nodes can help you check CPU, memory and network usage
 
 # Getting support
 * We provide support to our users, but not for any and all problems
-* We can help you with software installation issues, and recommend compiler flags etc. for optimal performance
-* We can install software system-wide if there are many users who need it - but not for one user (unless the installation is simple)
-* We don't support your application software or help debugging your code/model or prepare your input files
+   * We can help you with software installation issues, and recommend compiler flags etc. for optimal performance
+   * We can install software system-wide if there are many users who need it - but not for one user (unless the installation is simple)
+   * We don't support your application software or help debugging your code/model or prepare your input files
 
 # Getting support
-* C3SE staff are available in our offices, to help with those things that are hard to put into a support request email (book a time in advance please)
-* Rooms O5105B, O5110 and O5111 Origo building - Fysikgården 1, one floor up, ring the bell to the right
-* We also offer advanced support for things like performance optimization, advanced help with software development tools or debuggers, workflow automation through scripting, etc.
+## Not valid under pandemic circumstances
+* Book a time to meet us under office hours for help with things that are hard to put into a support request email
+   * Rooms O5105B, O5110 and O5111 Origo building - Fysikgården 1, one floor up, ring the bell to the right
+   * We also offer advanced support for things like performance optimization, advanced help with software development tools or debuggers, workflow automation through scripting, etc. For more information, see <https://snic.se/support/dedicated-user-support/>
 
 # Getting support - support requests
 * If you run into trouble, first figure out what seems to go wrong. Use the following as a checklist:
@@ -192,7 +199,7 @@ mpirun python training.py
   * does your simulation diverge?
   * is there a bug in the program? 
   * any error messages? Look in your manuals, and use Google!
-  * check the node health: Did you over-allocate memory until linux killed the program?
+  * check the node health: Did you allocate too much memory causing linux to kill the program?
   * Try to isolate the problem - does it go away if you run a smaller job? does it go away if you use your home directory instead of the local disk on the node?
   * Try to create a test case - the smallest and simplest possible case that reproduces the problem
 
@@ -206,6 +213,6 @@ mpirun python training.py
     * Do you have a minimal example?
     * No need to attach files; just point us to a directory on the system.
     * Where are the files you've used - scripts, logs etc?
-    * Look at our Getting support page
+    * Look at our Getting support page <https://www.c3se.chalmers.se/support/>
 
 * Support cases through <https://supr.snic.se/support>
