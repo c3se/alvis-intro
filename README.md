@@ -1,8 +1,4 @@
 # Introduction to Alvis
-
-
-# Aims of this seminar
-* Aims
 * This presentation is available on C3SE's web page:
     * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
     * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
