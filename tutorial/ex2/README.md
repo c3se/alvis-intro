@@ -1,10 +1,9 @@
 # Introduction
 
-This example shows how to use the YouTube dataset available under 
-`/cephyr/NOBACKUP/Datasets/YouTube-dataset/YouTubeVos_InstanceSegmentation_2019/` to train a CNN  with TensorFlow. We will use 
+This example shows how to use the uni-Freiburg dataset available under 
+`/cephyr/NOBACKUP/Datasets/uni-freiburg-oVision-Scene-Flow-dataset/FlyingThings3D_subset/train/depth_boundaries` to train a CNN  with TensorFlow. We will use 
 Keras' preprocessing utilities specifically the `flow_from_directory` function form the `ImageDataGenerator` class just to 
-illustrate the workflow. Note however that we are using an incorrect model as the directory structure does not match the 
-classification problem. 
+illustrate the workflow. Note that the directory structure of the above path is recognized by this function. It thus implies a binary classification problem with the two classes being left and right. 
 
 ## Environment setup
 
