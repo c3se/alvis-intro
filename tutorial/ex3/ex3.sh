@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -A C3SE-STAFF -p alvis
 #SBATCH -t 0-00:05:00
-#SBATCH -J pytorch_dataset
+#SBATCH -J pytorch_MNIST
 #SBATCH --gpus-per-node=V100:1
 
 
