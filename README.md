@@ -201,7 +201,7 @@ callbacks.append(keras.callbacks.TensorBoard(log_dir=tensorlog, histogram_freq=1
 * Via Thinlinc, run
 
 ```bash
-tensorboard --log-dir=./tensorboard-log-1234
+tensorboard --logdir=./tensorboard-log-1234
 ```
 
 * Or externally (WARNING: Tensorboard offers no security!)
