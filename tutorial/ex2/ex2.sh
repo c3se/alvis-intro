@@ -5,9 +5,8 @@
 
 #SBATCH -A C3SE-STAFF
 #SBATCH -p alvis
-#SBATCH -t 00-00:45:00
-##SBATCH -n 1
-#SBATCH --gpus-per-node=V100:1
+#SBATCH -t 01-00:00:00
+#SBATCH --gpus-per-node=V100:3
 
 
 ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 TensorFlow/2.1.0-Python-3.7.4
