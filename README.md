@@ -43,6 +43,22 @@
 * If you need a particular dataset that is publicly available but is missing in the above list, feel free to contact support. We may be able to provide it centrally to all users. 
 
 
+# Storage
+* See <https://www.c3se.chalmers.se/documentation/filesystem/>
+* Your home directory is quite limited; additional storage areas must be applied for via SUPR.
+* The `C3SE_quota` shows you all your centre storage areas, usage and quotas.
+
+```text
+Path: /cephyr/users/my_user
+  Space used:    17.5GiB       Quota:      30GiB
+  Files used:      20559       Quota:      60000
+
+Path: /cephyr/NOBACKUP/groups/my_storage_project
+  Space used:  2646.5GiB       Quota:    5000GiB
+  Files used:     795546       Quota:    1000000
+```
+
+
 # Running jobs on Alvis
 * Alvis is dedicated to AI/ML research which typically involves GPU-hungry computations; therefore, your job must allocate at least one GPU
 * You **only** allocate GPUs
@@ -156,11 +172,15 @@ mpirun python training.py
 * Run interactively on compute nodes with `srun`, e.g.
     * `srun -A SNIC2020-X-Y -p alvis --gpus-per-node=T4:1 bash`
 * Jupyter Notebooks can run on login node or on compute nodes
-    * <https://www.c3se.chalmers.se/documentation/applications/jupyter/>
+    * Follow steps on <https://www.c3se.chalmers.se/documentation/applications/jupyter/>
+    * `srun -A SNIC2020-X-Y -p alvis -t 8:00:00 --gpus-per-node=T4:1 --pty jupyter lab`
+    * `srun -A SNIC2020-X-Y -p alvis -t 4:00:00 --gpus-per-node=T4:2 --pty `
+      `singularity exec --nv my_container.sif jupyter notebook`
+
 
 # Job monitoring
-* `jobinfo` shows you available GPUs
-* dcgmi
+* `jobinfo` shows you the queue and available GPUs
+* dcgmi reports after jobs finish
 * `job_stats.py JOBID` (work in progress)
 * `sinfo -Rl` command shows how many nodes are down for repair
 * The health status page gives an overview of how your job is using the resources of the node(s) 
@@ -180,7 +200,7 @@ mpirun python training.py
 # Getting support
 * We provide support to our users, but not for any and all problems
    * We can help you with software installation issues, and recommend compiler flags etc. for optimal performance
-   * We can install software system-wide if there are many users who need it - but not for one user (unless the installation is simple)
+   * We can install software system-wide if there are many users who need it - but probably not for one user (unless the installation is simple)
    * We don't support your application software or help debugging your code/model or prepare your input files
 
 # Getting support
@@ -188,16 +208,6 @@ mpirun python training.py
 * Book a time to meet us under office hours for help with things that are hard to put into a support request email
    * Rooms O5105B, O5110 and O5111 Origo building - Fysikgården 1, one floor up, ring the bell to the right
    * We also offer advanced support for things like performance optimization, advanced help with software development tools or debuggers, workflow automation through scripting, etc. For more information, see <https://snic.se/support/dedicated-user-support/>
-
-# Getting support - support requests
-* If you run into trouble, first figure out what seems to go wrong. Use the following as a checklist:
-  * something wrong with your job script or input file?
-  * does your simulation diverge?
-  * is there a bug in the program? 
-  * any error messages? Look in your manuals, and use Google!
-  * check the node health: Did you allocate too much memory causing linux to kill the program?
-  * Try to isolate the problem - does it go away if you run a smaller job? does it go away if you use your home directory instead of the local disk on the node?
-  * Try to create a test case - the smallest and simplest possible case that reproduces the problem
 
 # Getting support - error reports
 * In order to help you, we need as much and as good information as possible:
