@@ -187,6 +187,32 @@ mpirun python training.py
    * Check e.g. memory usage, user, system, and wait CPU utilization, disk usage, etc
 * See summary of CPU and memory utilization (only available after job completes): `seff JOBID`
 
+# Tensorboard
+* Add tensorboard callback, e.g:
+
+```python
+import os
+jobid = os.getenv('SLURM_JOB_ID')
+tensorlog = './tensorboard-log-{}/'.format(jobid)
+os.mkdir(tensorlog)
+callbacks.append(keras.callbacks.TensorBoard(log_dir=tensorlog, histogram_freq=1))
+```
+
+* Via Thinlinc, run
+
+```bash
+tensorboard --log-dir=./tensorboard-log-1234
+```
+
+* Or externally (WARNING: Tensorboard offers no security!)
+
+```bash
+FREE_PORT=`comm -23 <(seq "8888" "8988" | sort) <(ss -Htan | awk '{print $4}' | cut -d':' -f2 | sort -u) | shuf -n 1`
+echo "Tensorboard URL: https://proxy.c3se.chalmers.se:${FREE_PORT}/`hostname`/"
+tensorboard --path_prefix /`hostname`/ --bind_all --port $FREE_PORT --logdir=./tensorboard-log-1234
+```
+
+* Close with Ctrl+C
 
 # Things to keep in mind
 * Never run (big or long) jobs on the login node! otherwise, the misbehaving processes will be killed by the administrators
