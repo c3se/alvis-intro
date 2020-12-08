@@ -5,6 +5,6 @@
 #SBATCH --gpus-per-node=V100:1
 
 
-
+# Don't forget the --nv flag, else your containers won't see the GPUs!
 singularity exec --nv /apps/hpc-ai-containers/PyTorch/PyTorch_v1.7.0-py3.sif python ./ex3_main.py > results_ex3.out
 
