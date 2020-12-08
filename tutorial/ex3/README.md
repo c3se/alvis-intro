@@ -7,6 +7,6 @@ provided on PyTorch GitHub page: <https://github.com/pytorch/examples/blob/maste
 
 ## Environment setup
 
-To run the python code, the following modules nned to be loaded:
+To run the python code, the following modules need to be loaded:
 
 `ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 PyTorch/1.4.0-Python-3.7.4 torchvision/0.7.0-Python-3.7.4-PyTorch-1.6.0 IPython`
