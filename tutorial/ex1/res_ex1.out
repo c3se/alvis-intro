@@ -1,3 +1,4 @@
+[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
 Found 86 images belonging to 2 classes.
 Model: "sequential"
 _________________________________________________________________
@@ -14,22 +15,22 @@ Trainable params: 4,418
 Non-trainable params: 0
 _________________________________________________________________
 Epoch 1/10
-43/43 - 2s - loss: 5.6200 - accuracy: 0.7093
+43/43 - 2s - loss: 6.0524 - accuracy: 0.6395
 Epoch 2/10
-43/43 - 0s - loss: 3.8270 - accuracy: 0.8140
+43/43 - 0s - loss: 3.0009 - accuracy: 0.8140
 Epoch 3/10
-43/43 - 0s - loss: 2.3515 - accuracy: 0.8140
+43/43 - 0s - loss: 1.4760 - accuracy: 0.8837
 Epoch 4/10
-43/43 - 0s - loss: 1.4760 - accuracy: 0.8488
+43/43 - 0s - loss: 0.9174 - accuracy: 0.8837
 Epoch 5/10
-43/43 - 0s - loss: 0.7216 - accuracy: 0.9070
+43/43 - 0s - loss: 1.2093 - accuracy: 0.8605
 Epoch 6/10
-43/43 - 0s - loss: 0.8337 - accuracy: 0.8953
+43/43 - 0s - loss: 0.8364 - accuracy: 0.8837
 Epoch 7/10
-43/43 - 0s - loss: 0.9339 - accuracy: 0.9186
+43/43 - 0s - loss: 0.5820 - accuracy: 0.9070
 Epoch 8/10
-43/43 - 0s - loss: 0.4135 - accuracy: 0.9070
+43/43 - 0s - loss: 0.1557 - accuracy: 0.9419
 Epoch 9/10
-43/43 - 0s - loss: 0.2610 - accuracy: 0.9186
+43/43 - 0s - loss: 0.4008 - accuracy: 0.9419
 Epoch 10/10
-43/43 - 0s - loss: 0.3564 - accuracy: 0.9302
+43/43 - 0s - loss: 0.1492 - accuracy: 0.9535

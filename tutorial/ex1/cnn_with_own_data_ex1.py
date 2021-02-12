@@ -4,7 +4,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import Sequential
 
 # We can verify that we have a GPU before we start running:
-tf.config.list_physical_devices('GPU')
+print(tf.config.list_physical_devices('GPU'))
 
 
 train_batches = ImageDataGenerator().flow_from_directory('./data', target_size=(10, 10), color_mode='grayscale',
