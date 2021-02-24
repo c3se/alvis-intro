@@ -4,5 +4,8 @@
 #SBATCH -J pytorch_dataset
 #SBATCH --gpus-per-node=T4:2
 
-singularity exec --nv /apps/hpc-ai-containers/PyTorch/PyTorch_v1.7.0-py3.sif python ./ex4_main.py > results_ex4.out
+CONTAINER=/apps/hpc-ai-containers/PyTorch/PyTorch_v1.7.0-py3.sif
+
+# Don't forget the --nv flag, else your containers won't see the GPUs!
+singularity exec --nv $CONTAINER python ./ex4_main.py
 
