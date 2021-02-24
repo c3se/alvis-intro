@@ -1,20 +1,6 @@
 #!/usr/bin/env python
 # This example aims to illustrate how to use the TensorBoard profiling callback
 # for later visualizations using TensorBoard.
-# ---
-# Requirements:
-#   1. At least 1 GPU.
-#   2. Local access to the MIST-dataset in the "pickled format" mnist.npz.
-#   3. TensorBoard version 2.2 or later including the tensorboard_plugin_profile
-# ---
-# Preparations:
-#   2) Download the MNIST-dataset by running:
-#      $ wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-#   3) Download the TensorBoard Profile Plugin
-#      $ pip install --upgrade --user tensorboard_plugin_profile==<tensorflow_version>
-#      where <tensorflow_version> is printed during execution (see code below)
-#      Note that if the exact version is missing you can try the major release
-#      e.g. replace tensorboard_plugin_profile==2.3.1 with tensorboard_plugin_profile==2.3.0.
 import os
 import sys
 from datetime import datetime

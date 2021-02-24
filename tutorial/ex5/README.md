@@ -26,14 +26,6 @@ for MIST should only be around 11M compressed.
 wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 ```
 
-### Update the TensorBoard Profiler Plugin
-The current installed versions of TensorFlow provides an older version of
-the TensorBoard Profiler plugin - we need to update it. The `--user` flag
-implies we install a local copy of the package.
-```console
-pip install --upgrade --user tensorboard_plugin_profile==2.3.0
-```
-
 ## Running the code
 We are now ready to train and profile our model. This is a very light model and
 can be trained directly on the login node, which also simplifies how you access
