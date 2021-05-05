@@ -1,5 +1,5 @@
-#!/bin/bash
-#SBATCH -A <your SNIC-project>
+#!/bin/env bash
+#SBATCH -A C3SE-STAFF # find your project with the "projinfo" command
 #SBATCH --job-name="Alvis ex7 with horovod"
 #SBATCH --time=1:10:0
 # For a multi-node job all GPUs on a node must be requested
