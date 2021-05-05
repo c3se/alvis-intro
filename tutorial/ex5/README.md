@@ -13,8 +13,7 @@ You need to complete a few steps before you can run this example. The environmen
 needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow.
 ### The following modules needs to be loaded:
 ```
-ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4
-ml load TensorFlow/2.3.1-Python-3.7.4
+ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 TensorFlow/2.3.1-Python-3.7.4
 ```
 ### The following dataset needs to be available
 We provide equivalent datasets in `/cephyr/NOBACKUP/Datasets/MNIST` but to

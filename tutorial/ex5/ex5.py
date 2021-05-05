@@ -14,9 +14,9 @@ def main():
   if len(gpus) < 1:
     print("This example requires at least 1 GPU.")
 
-  dataset = "mnist.npz"
+  dataset = os.getenv("MNIST_DIR", os.getcwd()) + "/" + "mnist.npz"
   if not os.path.exists(dataset):
-    raise FileNotFoundError("This example requires {} to be in the working directory".format(dataset))
+    raise FileNotFoundError("This example requires {} which could not be found".format(dataset))
 
   # Load, normalize and batch
   (x_train, y_train), (x_test, y_test) = mnist.load_data(path=dataset)
