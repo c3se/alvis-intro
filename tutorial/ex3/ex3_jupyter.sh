@@ -10,7 +10,7 @@ ml GCC/8.3.0			\
    OpenMPI/3.1.4 	\
    PyTorch/1.4.0-Python-3.7.4 \
    torchvision/0.7.0-Python-3.7.4-PyTorch-1.6.0 \
-   IPython
+   IPython/7.9.0-Python-3.7.4
 
 jupyter notebook
 
