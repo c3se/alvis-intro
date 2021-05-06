@@ -15,6 +15,8 @@ ml purge > /dev/null 2>&1
 module load fosscuda/2019b
 module load Horovod/0.20.3-TensorFlow-2.3.1-Python-3.7.4
 
+# Download MNIST in pickled-format 
+wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 export OMPI_MCA_mpi_warn_on_fork=0
 
 srun python ex7.py --epochs=160
