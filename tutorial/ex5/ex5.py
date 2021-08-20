@@ -43,7 +43,7 @@ def main():
                             histogram_freq=1,
                             profile_batch='500,520')
   model.fit(ds_train,
-            epochs=2,
+            epochs=5,
             validation_data=ds_test,
             callbacks = [tb_callback]) # <-- Remember to add the callback
 
