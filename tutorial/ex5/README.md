@@ -20,25 +20,22 @@ We provide equivalent datasets in `/cephyr/NOBACKUP/Datasets/MNIST` but to
 simplify the code in this example we download the dataset in pickled format.
 For production use you should always check first if the dataset is already
 available in `/cephyr/NOBACKUP/Datasets` before you download it. The size
-for MIST should only be around 11M compressed.
+for MNIST should only be around 11M compressed.
 ```
 wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 ```
 
 ## Running the code
-We are now ready to train and profile our model. This is a very light model and
-can be trained directly on the login node, which also simplifies how you access
-the TensorBoard UI. For real models you should not be running on the login nodes.
-
-**Note: Make sure you complete all tasks in the environment setup before this step!**
+We are now ready to train and profile our model. Training we do as usual by submitting our script.
+```
+sbatch ex5.sh
+```
 
 ## Generate the profiling data
 The profiling data will be created inside a directory `logs` in you current
 working directory.
-```
-python ex5.py
-[TensorFlow output - lots of it!]
-```
+
+**Note: Make sure you complete all tasks in the environment setup before the next step!**
 
 ## Start TensorBoard
 Once the profiling data has been genereated we can start TensorBoard.
@@ -59,4 +56,3 @@ to access the UI from your computer.
 
 On the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.
 ![TensorBoard Profile](tb_profile.png)
-
