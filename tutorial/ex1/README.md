@@ -10,7 +10,6 @@ By the end of the tutorial, you should know how to run TensorFlow applications u
 
     1- jupyter notebooks
     2- the module tree
-    3- optimized container images provided by Nvidia
   
 ## 1- Using the batch system
 To run the example as a batch job, submit the job script: `sbatch ex1.sh`. Read
@@ -51,13 +50,3 @@ srun -A YourAccount -p alvis --gpus-per-node=... -t 00:10:00 --pty jupyter noteb
 where you should fill in the type and the number of
 GPUs that you would like to launch as well as the right project account. Adjust
 the wall time if needed too.
-
-## 3- NGC containers
-You are encouraged to use the highly tuned container images provided by Nvidia.
-Investigate and submit the `ex1-singularity.sh` script to run the same training
-application using one of the TensorFlow container images provided under
-`/apps/hpc-ai-containers`: 
-
-`sbatch ex1-singularity.sh`
-
-**NOTE** that you may have to `pip install --user pillow` beforehand in order for the model to be able to load the images.
