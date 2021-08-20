@@ -20,11 +20,9 @@ train_batches = ImageDataGenerator().flow_from_directory(img_path, target_size=(
 # be aware of that too: color_mode='grayscale'
 
 model = Sequential([layers.Conv2D(10, (3, 3), activation='relu', input_shape=(10, 10, 1)), 
-                                 layers.Flatten(),
+                    layers.Flatten(),
                     layers.Dense(347, activation='softmax'),
-                        
-    
-])
+                    ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
