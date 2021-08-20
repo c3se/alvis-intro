@@ -36,13 +36,14 @@ def main():
     tf.keras.layers.Dense(10, activation='softmax')
   ])
 
-	# Save the model
-  model.save("my_seq_fdd_model")
-
   model.compile(loss='sparse_categorical_crossentropy',
                 optimizer=tf.keras.optimizers.Adam(0.001),
                 metrics=['accuracy']
   )
+
+	# Save the model
+  model.save("my_seq_fdd_model")
+
   my_ckpts = "training/cp-{epoch:04d}.ckpt"
   checkpoint_callback = ModelCheckpoint(
     filepath=my_ckpts,
