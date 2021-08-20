@@ -13,7 +13,7 @@ import time,os
 import pandas as pd
 
 
-def train(type='single'):
+def train(type='float'):
     """use fake image for training speed test"""
     target = torch.LongTensor(BATCH_SIZE).random_(1000).cuda()
     criterion = nn.CrossEntropyLoss()
