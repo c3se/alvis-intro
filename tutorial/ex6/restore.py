@@ -3,7 +3,7 @@ import sys
 import tensorflow as tf
 
 def main():
-  model = tf.keras.Model("my_seq_fdd")
+  model = tf.keras.models.load_model("my_seq_fdd_model")
   latest = tf.train.latest_checkpoint("training")
   model.load_weights(latest)
   # Continue evaluating model
