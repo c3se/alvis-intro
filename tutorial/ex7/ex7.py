@@ -29,7 +29,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.callbacks import TensorBoard
 
-parser = argparse.ArgumentParser(description='Alvis Example 5 with Horovod',
+parser = argparse.ArgumentParser(description='Alvis Example 7 with Horovod',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--epochs', type=int, default=80,
                     help='number of epochs to train')
