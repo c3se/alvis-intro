@@ -19,4 +19,5 @@ module load Horovod/0.20.3-TensorFlow-2.3.1-Python-3.7.4
 wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 export OMPI_MCA_mpi_warn_on_fork=0
 
+# Note the use of srun to start an instance of the program for each task
 srun python ex7.py --epochs=160
