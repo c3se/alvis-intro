@@ -20,7 +20,7 @@ distributed job.
 
 ## Environment setup
 As this example is meant to run across several compute nodes you need to submit
-the code using Slurm. We provide the Slurm job file `jobsubmit` as a working example.
+the code using Slurm. We provide the Slurm job file `ex7.sh` as a working example.
 
 ### The following dataset needs to be available
 This example is based on the previous examples of training a model using the
