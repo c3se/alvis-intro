@@ -11,8 +11,6 @@
 #      $ wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 import os
 import sys
-from datetime import datetime
-from packaging import version
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -62,6 +60,7 @@ def main():
             callbacks = [checkpoint_callback]) # <-- Remember to add the callback
 
   print("\n-- Training completed --")
+
 if __name__ == "__main__":
   try:
     sys.exit(main())
