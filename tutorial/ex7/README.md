@@ -28,7 +28,7 @@ MNIST dataset. We provide the dataset in `/cephyr/NOBACKUP/Datasets/MNIST` but
 to simplify the code in this example we download the dataset in pickled format.
 For production use you should always check first if the dataset is already
 available in `/cephyr/NOBACKUP/Datasets` before you download it. The size for
-MIST should only be around 11M compressed.
+MNIST should only be around 11M compressed.
 ```
 wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 ```

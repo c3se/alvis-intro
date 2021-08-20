@@ -4,7 +4,7 @@
 # ---
 # Requirements:
 #   1. At least 1 GPU.
-#   2. Local access to the MIST-dataset in the "pickled format" mnist.npz.
+#   2. Local access to the MNIST-dataset in the "pickled format" mnist.npz.
 #   3. TensorBoard version 2.2 or later including the tensorboard_plugin_profile
 # ---
 # Preparations:
