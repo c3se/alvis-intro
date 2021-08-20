@@ -1,6 +1,6 @@
 # Introduction
 
-In this tutorial, we will show how to use multiple GPUs to speed up an intensive PyTorch training application using a custom datasets. The code is based on a 
+In this tutorial, we will show how to use multiple GPUs to speed up an intensive PyTorch training application using a custom dataset. The code is based on a 
 slightly modified version of the PyTorch GPU benchmark which uses fake image data: <https://github.com/ryujaehun/pytorch-gpu-benchmark>.
 
 We make use of the `torchvision` built-in models specifically the `resnext101_32x8d` model. This is only to show the application. You can experiment with other 
