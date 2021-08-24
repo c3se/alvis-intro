@@ -12,12 +12,8 @@
 #SBATCH -o slurm-%j.out
 
 ml purge > /dev/null 2>&1
-module load fosscuda/2019b
-module load Horovod/0.20.3-TensorFlow-2.3.1-Python-3.7.4
-
-# Download MNIST in pickled-format 
-wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-export OMPI_MCA_mpi_warn_on_fork=0
+ml GCC/10.2.0 CUDA/11.1.1 OpenMPI/4.0.5
+ml Horovod/0.21.3-PyTorch-1.7.1 torchvision/0.8.2-PyTorch-1.7.1
 
 # Note the use of srun to start an instance of the program for each task
-srun python ex7.py --epochs=160
+srun python ex7.py # --epochs=160
