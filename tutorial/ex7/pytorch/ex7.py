@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-# This example aims to illustrate how to use the TensorBoard profiling callback
-# for later visualizations using TensorBoard.
-# ---
-# Requirements:
-#   1. At least 1 GPU.
-#   2. Local access to the MNIST-dataset in the "pickled format" mnist.npz.
-#   3. TensorBoard version 2.2 or later including the tensorboard_plugin_profile
-
 
 import argparse
 import os
+from contextlib import nullcontext
 from filelock import FileLock
+from datetime import datetime
 
 import torch.multiprocessing as mp
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
+from torch.utils.tensorboard import SummaryWriter
 import torch.utils.data.distributed
 import horovod.torch as hvd
 
@@ -34,8 +29,7 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--use-adasum', action='store_true', default=False,
                     help='use adasum algorithm to do reduction')
-parser.add_argument('--data-dir',
-                    default='/cephyr/NOBACKUP/Datasets',
+parser.add_argument('--data-dir', default='/cephyr/NOBACKUP/Datasets',
                     help='location of the training dataset in the local filesystem (will be downloaded if needed)')
 
 
@@ -53,6 +47,7 @@ class Net(nn.Module):
 
 
 def train(epoch):
+    running_loss = 0.0
     model.train()
     # Horovod: set epoch to sampler for shuffling.
     train_sampler.set_epoch(epoch)
@@ -103,10 +98,14 @@ def test():
     if hvd.rank() == 0:
         print('\nTest set: Average loss: {:.4f}, Accuracy: {:.2f}%\n'.format(
             test_loss, 100. * test_accuracy))
+    
+    return test_loss, test_accuracy
 
 
-if __name__ == '__main__':
+def main():
     args = parser.parse_args()
+
+    # Set-up tensorboard
 
     # Horovod: initialize library.
     seed = 42
@@ -157,6 +156,7 @@ if __name__ == '__main__':
 
     model = Net()
     loss_function = nn.CrossEntropyLoss()
+    running_loss = 0.0
 
     # By default, Adasum doesn't need scaling up learning rate.
     lr_scaler = hvd.size() if not args.use_adasum else 1
@@ -183,6 +183,26 @@ if __name__ == '__main__':
                                          compression=compression,
                                          op=hvd.Adasum if args.use_adasum else hvd.Average)
 
-    for epoch in range(1, args.epochs + 1):
-        train(epoch)
-        test()
+    # Profile training
+    logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+    writer = SummaryWriter(log_dir=logs)
+
+    with torch.profiler.profile(
+        schedule=torch.profiler.schedule(wait=1, warmup=1, active=3, repeat=2),
+        on_trace_ready=torch.profiler.tensorboard_trace_handler(logs),
+        record_shapes=True,
+        with_stack=True,
+    ) if hvd.rank()==0 else nullcontext() as prof:
+        for epoch in range(1, args.epochs + 1):
+            train(epoch)
+            test_loss, test_accuracy = test()
+
+            if hvd.rank()==0:
+                writer.add_scalars("Test", {"loss": test_loss, "acc.": test_accuracy})
+                prof.step()
+    
+    writer.close()
+
+
+if __name__ == '__main__':
+    main()
