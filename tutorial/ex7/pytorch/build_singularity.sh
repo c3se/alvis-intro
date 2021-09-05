@@ -17,7 +17,7 @@ else
     sudo docker save $D_ID -o $FILEBASE.tar &&
 
     # Tarball -> Singularity
-    singularity build --sandbox $FILEBASE $FILEBASE.tar
+    singularity build $FILEBASE.sif docker-archive://$FILEBASE.tar
 
 fi
 
