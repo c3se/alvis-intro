@@ -14,4 +14,4 @@
 ml GCC/10.2.0 CUDA/11.1.1 OpenMPI/4.0.5 Horovod/0.21.3-PyTorch-1.7.1 torchvision/0.8.2-PyTorch-1.7.1 TensorFlow/2.5.0
 
 # Note the use of srun to start an instance of the program for each task
-srun python ex7.py # --epochs=160
+srun python ex7-pytorch.py # --epochs=160

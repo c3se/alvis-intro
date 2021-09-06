@@ -183,7 +183,7 @@ def main():
                                          op=hvd.Adasum if args.use_adasum else hvd.Average)
 
     # Profile training
-    logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+    logs = "logs/pytorch-" + datetime.now().strftime("%Y%m%d-%H%M%S")
     writer = SummaryWriter(log_dir=logs)
 
     for epoch in range(1, args.epochs + 1):

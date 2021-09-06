@@ -90,7 +90,7 @@ model.compile(loss='sparse_categorical_crossentropy',
 )
 
 # Create a TensorBoard callback
-logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+logs = "logs/tensorflow-" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
 
 callbacks = [

@@ -22,4 +22,4 @@ fi
 export OMPI_MCA_mpi_warn_on_fork=0
 
 # Note the use of srun to start an instance of the program for each task
-srun python ex7.py --epochs=160
+srun python ex7-tensorflow.py # --epochs=160
