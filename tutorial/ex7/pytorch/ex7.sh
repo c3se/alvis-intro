@@ -7,12 +7,11 @@
 # For Horovod the number of tasks-per-node must match the number of GPUs per node
 #SBATCH --ntasks-per-node=8
 # Request multiple nodes
-#SBATCH --nodes=1
+#SBATCH --nodes=3
 #SBATCH -e slurm-%j.err
 #SBATCH -o slurm-%j.out
 
-CONTAINER=$HOME/horovod-torch-tensorboard.sif
-echo $NP
+ml GCC/10.2.0 CUDA/11.1.1 OpenMPI/4.0.5 Horovod/0.21.3-PyTorch-1.7.1 torchvision/0.8.2-PyTorch-1.7.1 TensorFlow/2.5.0
 
 # Note the use of srun to start an instance of the program for each task
-srun singularity exec --nv $CONTAINER python3 ex7.py # --epochs=160
+srun python ex7.py # --epochs=160

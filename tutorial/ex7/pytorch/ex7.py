@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-print("POTATO 0")
 import argparse
 import os
 from filelock import FileLock
@@ -11,11 +10,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
-from torch.profiler import profile, schedule, tensorboard_trace_handler
 from torch.utils.tensorboard import SummaryWriter
 import torch.utils.data.distributed
 import horovod.torch as hvd
-print("POTATO 1")
 
 # Training settings
 parser = argparse.ArgumentParser(description='Example 7: PyTorch MNIST Example with Horovod')
@@ -33,13 +30,6 @@ parser.add_argument('--use-adasum', action='store_true', default=False,
                     help='use adasum algorithm to do reduction')
 parser.add_argument('--data-dir', default='/cephyr/NOBACKUP/Datasets',
                     help='location of the training dataset in the local filesystem (will be downloaded if needed)')
-print("POTATO 2")
-
-class hvd_profile(profile):
-
-    def step(self):
-        if hvd.rank() == 0:
-            super().step()
 
 
 class Net(nn.Module):
@@ -55,7 +45,7 @@ class Net(nn.Module):
         return self.fc2(x)
 
 
-def train(epoch):
+def train(epoch, model, train_sampler, train_loader, optimizer, loss_function, args):
     running_loss = 0.0
     model.train()
     # Horovod: set epoch to sampler for shuffling.
@@ -70,8 +60,8 @@ def train(epoch):
         if batch_idx % args.log_interval == 0:
             # Horovod: use train_sampler to determine the number of examples in
             # this worker's partition.
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_sampler),
+            print('Worker: {}\tTrain Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                hvd.rank(), epoch, batch_idx * len(data), len(train_sampler),
                 100. * batch_idx / len(train_loader), loss.item()))
 
 
@@ -81,7 +71,7 @@ def metric_average(val, name):
     return avg_tensor.item()
 
 
-def test():
+def test(model, test_loader, test_sampler):
     model.eval()
     test_loss = 0.
     test_accuracy = 0.
@@ -112,7 +102,6 @@ def test():
 
 
 def main():
-    print("POTATO 3")
     args = parser.parse_args()
 
     # Set-up tensorboard
@@ -121,7 +110,6 @@ def main():
     seed = 42
     hvd.init()
     torch.manual_seed(seed)
-    print("POTATO 4")
 
     # Horovod: pin GPU to local rank.
     torch.cuda.set_device(hvd.local_rank())
@@ -147,7 +135,6 @@ def main():
                                transforms.ToTensor(),
                                transforms.Normalize((0.1307,), (0.3081,))
                            ]))
-    print("POTATO 5")
 
     # Horovod: use DistributedSampler to partition the training data.
     train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -165,7 +152,6 @@ def main():
         test_dataset, num_replicas=hvd.size(), rank=hvd.rank())
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=args.test_batch_size,
                                               sampler=test_sampler, **kwargs)
-    print("POTATO 6")
 
     model = Net()
     loss_function = nn.CrossEntropyLoss()
@@ -186,7 +172,6 @@ def main():
     # Horovod: broadcast parameters & optimizer state.
     hvd.broadcast_parameters(model.state_dict(), root_rank=0)
     hvd.broadcast_optimizer_state(optimizer, root_rank=0)
-    print("POTATO 7")
 
     # Horovod: (optional) compression algorithm.
     compression = hvd.Compression.none
@@ -201,20 +186,12 @@ def main():
     logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
     writer = SummaryWriter(log_dir=logs)
 
-    with hvd_profile(
-        schedule=schedule(wait=1, warmup=1, active=3, repeat=2),
-        on_trace_ready=tensorboard_trace_handler(logs),
-        record_shapes=True,
-        with_stack=True,
-    ) as prof:
-        for epoch in range(1, args.epochs + 1):
-            print("POTATO 8 Epoch", epoch)
-            train(epoch)
-            test_loss, test_accuracy = test()
+    for epoch in range(1, args.epochs + 1):
+        train(epoch, model, train_sampler, train_loader, optimizer, loss_function, args)
+        test_loss, test_accuracy = test(model, test_loader, test_sampler)
 
-            if hvd.rank()==0:
-                writer.add_scalars("Test", {"loss": test_loss, "acc.": test_accuracy})
-                prof.step()
+        if hvd.rank()==0:
+            writer.add_scalars("Test", {"loss": test_loss, "acc.": test_accuracy})
     
     writer.close()
 
