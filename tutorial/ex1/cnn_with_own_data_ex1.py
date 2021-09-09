@@ -1,3 +1,6 @@
+import os
+import tarfile
+
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -7,9 +10,20 @@ from tensorflow.keras import Sequential
 print(tf.config.list_physical_devices('GPU'))
 
 
-train_batches = ImageDataGenerator().flow_from_directory('./data', target_size=(10, 10), color_mode='grayscale',
-                                                         classes=['refuse', 'features'],
-                                                         batch_size=2)
+# Unpack archive on $TMPDIR to reduce common file IO load
+tmpdir = os.getenv("TMPDIR")
+with tarfile.open("data.tar.gz", "r:gz") as data_archive:
+    data_archive.extractall(tmpdir)
+datadir = f"{tmpdir}/data"
+
+# Load data
+train_batches = ImageDataGenerator().flow_from_directory(
+    datadir,
+    target_size=(10, 10),
+    color_mode='grayscale',
+    classes=[str(ix) for ix in range(1, 11)],
+    batch_size=128,
+)
 
 #imgs, labels = next(train_batches)
 
@@ -17,15 +31,16 @@ train_batches = ImageDataGenerator().flow_from_directory('./data', target_size=(
 # therefore, the input_shape is (xx, xx, 1), and the ImageDataGenerator should also 
 # be aware of that too: color_mode='grayscale'
 
-model = Sequential([layers.Conv2D(32, (3, 3), activation='relu', input_shape=(10, 10, 1)), 
-                                 layers.Flatten(),
-                    layers.Dense(2, activation='softmax'),
-                        
-    
+model = Sequential([
+    layers.Flatten(input_shape=(10, 10, 1)),
+    layers.Dense(5, activation='relu'),
+    layers.Dense(5, activation='relu'),
+    layers.Dense(5, activation='relu'),
+    layers.Dense(10, activation='softmax'),
 ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model.summary()
 
-model.fit(train_batches, steps_per_epoch=43, epochs=10, verbose=2)
+model.fit(train_batches, epochs=10, verbose=2)
