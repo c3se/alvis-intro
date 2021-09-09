@@ -2,7 +2,7 @@ import os
 import tarfile
 
 import tensorflow as tf
-from tensorflow.keras import layers
+from tensorflow.keras import layers, optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import Sequential
 
@@ -39,7 +39,11 @@ model = Sequential([
     layers.Dense(10, activation='softmax'),
 ])
 
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(
+    loss='categorical_crossentropy',
+    optimizer=optimizers.Adam(learning_rate=0.01),
+    metrics=['accuracy'],
+)
 
 model.summary()
 

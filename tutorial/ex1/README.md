@@ -2,14 +2,16 @@
 
 This example shows how to use TensorFlow to run a training application using
 one GPU both as a batch job and through a jupyter notebook.  You will use a
-small, local dataset to train a CNN for binary classification. Investigate the
-directory structure under `./data` and feel free to experiment with your own
-images instead. 
+small, local dataset to train a MLP for classification. Investigate the
+directory structure under `data.tar.gz` with the command `tar --exclude="*.png" -tvf`
+and feel free to experiment with your own images instead. The dataset is a
+a MNIST-digits but resized to 10x10 pixels and changed into only black or white
+pixel values.
 
 By the end of the tutorial, you should know how to run TensorFlow applications using: 
 
-    1- jupyter notebooks
-    2- the module tree
+    1- the module tree
+    2- jupyter notebooks
   
 ## 1- Using the batch system
 To run the example as a batch job, submit the job script: `sbatch ex1.sh`. Read
