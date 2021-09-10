@@ -16,4 +16,4 @@ The tutorials are written for PyTorch and Tensorflow and the ideas from one shou
 5. Profiling with TensorBoard
 6. Checkpointing your models
 7. Distributed training accross nodes with Horovod
-8. Utilising GPUs as much as possible
+8. Distributed training accross nodes with Horovod and PyTorch
