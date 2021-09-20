@@ -10,5 +10,5 @@
 
 ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 TensorFlow/2.3.1-Python-3.7.4 Pillow/6.2.1
 
-python cnn_with_own_data_ex2.py
+python cnn_with_cephyr_data_ex2.py
 

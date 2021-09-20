@@ -11,7 +11,7 @@ img_path = '/cephyr/NOBACKUP/Datasets/uni-freiburg-oVision-Scene-Flow-dataset/Fl
 
 
 train_batches = ImageDataGenerator().flow_from_directory(img_path, target_size=(10, 10), color_mode='grayscale',                                                         
-                                                         batch_size=7273)
+                                                         batch_size=128)
 
 #imgs, labels = next(train_batches)
 
@@ -21,7 +21,7 @@ train_batches = ImageDataGenerator().flow_from_directory(img_path, target_size=(
 
 model = Sequential([layers.Conv2D(10, (3, 3), activation='relu', input_shape=(10, 10, 1)), 
                     layers.Flatten(),
-                    layers.Dense(347, activation='softmax'),
+                    layers.Dense(2, activation='softmax'),
                     ])
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
