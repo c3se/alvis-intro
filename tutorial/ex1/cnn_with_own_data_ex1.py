@@ -47,4 +47,4 @@ model.compile(
 
 model.summary()
 
-model.fit(train_batches, epochs=10, verbose=2)
+model.fit(train_batches, epochs=3, verbose=2)
