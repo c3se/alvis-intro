@@ -32,10 +32,8 @@ train_batches = ImageDataGenerator().flow_from_directory(
 # be aware of that too: color_mode='grayscale'
 
 model = Sequential([
-    layers.Flatten(input_shape=(10, 10, 1)),
-    layers.Dense(5, activation='relu'),
-    layers.Dense(5, activation='relu'),
-    layers.Dense(5, activation='relu'),
+    layers.Conv2D(10, (3, 3), activation='relu', input_shape=(10, 10, 1)),
+    layers.Flatten(),
     layers.Dense(10, activation='softmax'),
 ])
 
