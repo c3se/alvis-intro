@@ -6,7 +6,7 @@
 
 #SBATCH -A C3SE-STAFF  # find your project with the "projinfo" command
 #SBATCH -p alvis
-#SBATCH -t 00-05:00:00
+#SBATCH -t 01-00:00:00
 #SBATCH --gpus-per-node=T4:1
 #SBATCH -e slurm-%j.err
 
