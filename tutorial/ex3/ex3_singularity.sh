@@ -7,5 +7,5 @@
 CONTAINER=/apps/nvidia-ngc-containers/pytorch/20.11-py3.sif
 
 # Don't forget the --nv flag, else your containers won't see the GPUs!
-singularity exec --nv $CONTAINER python ./ex3_main.py > results_ex3.out
+singularity exec --nv $CONTAINER python ./ex3_main.py > results_ex3_singularity.out
 
