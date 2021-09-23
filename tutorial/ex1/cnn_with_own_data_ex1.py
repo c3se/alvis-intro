@@ -11,6 +11,7 @@ print(tf.config.list_physical_devices('GPU'))
 
 
 # Unpack archive on $TMPDIR to reduce common file IO load
+# Note, that this could just as well have happened in the jobscript
 tmpdir = os.getenv("TMPDIR")
 with tarfile.open("data.tar.gz", "r:gz") as data_archive:
     data_archive.extractall(tmpdir)
@@ -27,9 +28,10 @@ train_batches = ImageDataGenerator().flow_from_directory(
 
 #imgs, labels = next(train_batches)
 
-# In defining the model, the input shape must match the dimension of the input data. We have grayscale images, 
-# therefore, the input_shape is (xx, xx, 1), and the ImageDataGenerator should also 
-# be aware of that too: color_mode='grayscale'
+# In defining the model, the input shape must match the dimension of the input
+# data. We have grayscale images, therefore, the input_shape is (xx, xx, 1),
+# and the ImageDataGenerator should also be aware of that too:
+# color_mode='grayscale'
 
 model = Sequential([
     layers.Conv2D(10, (3, 3), activation='relu', input_shape=(10, 10, 1)),
