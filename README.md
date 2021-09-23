@@ -7,8 +7,9 @@ Accompaning slides are available at:
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
 
 ## Tutorial overview
-The tutorials are written for PyTorch and Tensorflow and the ideas from one should be able to be used in the other.
+The tutorials are written for PyTorch and TensorFlow and the ideas from one should be able to be used in the other.
 
+0. Accessing Alvis
 1. Getting started on Alvis
 2. Using available datasets
 3. Downloading datasets with Torchvision
