@@ -1,10 +1,17 @@
 #!/bin/env bash
-#SBATCH -A C3SE-STAFF -p alvis # find your project with the "projinfo" command
-#SBATCH -t 0-00:05:00
-#SBATCH -J pytorch_MNIST
+
+# This example shows how to use the available datasets to
+# train a CNN  with TensorFlow. Investigate the cnn_with_cephyr_data_ex2.py
+# file to find out how to directly access the available datasets from your code.
+
+#SBATCH -A C3SE-STAFF  # find your project with the "projinfo" command
+#SBATCH -p alvis
+#SBATCH -t 01-00:00:00
 #SBATCH --gpus-per-node=T4:1
+#SBATCH -e slurm-%j.err
 
-ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 PyTorch/1.4.0-Python-3.7.4 torchvision/0.7.0-Python-3.7.4-PyTorch-1.6.0 IPython
+ml GCC/10.2.0  CUDA/11.1.1  OpenMPI/4.0.5 TensorFlow/2.5.0 Pillow/8.0.1
 
-python ./ex3_main.py > results_ex3.out
+# The u is to run python in unbuffered mode to get more feedback on the process
+python -u cnn_with_cephyr_data_ex2.py
 

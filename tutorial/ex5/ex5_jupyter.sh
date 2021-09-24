@@ -7,5 +7,5 @@
 ml purge
 ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 PyTorch/1.4.0-Python-3.7.4 torchvision/0.7.0-Python-3.7.4-PyTorch-1.6.0 IPython
 
-python ./ex4_main.py
+jupyter notebook
 

@@ -1,7 +1,10 @@
 import torch
 import torch.nn as nn
-
+import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
+import torch.optim as optim
+from torch.optim.lr_scheduler import StepLR
+
 import torchvision.models as models
 from torchvision import datasets, transforms
 
@@ -13,142 +16,108 @@ import time,os
 import pandas as pd
 
 
-def train(type='float'):
-    """use fake image for training speed test"""
-    target = torch.LongTensor(BATCH_SIZE).random_(1000).cuda()
-    criterion = nn.CrossEntropyLoss()
-    benchmark = {}
-    for model_type in MODEL_LIST.keys():
-        for model_name in MODEL_LIST[model_type]:
-            model = getattr(model_type, model_name)(pretrained=False)
-            if gpu_count > 1:
-                model = nn.DataParallel(model,device_ids=range(gpu_count))
-            model=getattr(model,type)()
-            model=model.to('cuda')
-            durations = []
-            print('Benchmarking Training {} precision type {} '.format(type,model_name))
-            for step,img in enumerate(trainloader):                
-                img=getattr(img,type)()
-                torch.cuda.synchronize()
-                start = time.time()
-                model.zero_grad()
-                prediction = model(img.to('cuda'))
-                loss = criterion(prediction, target)
-                loss.backward()
-                torch.cuda.synchronize()
-                end = time.time()
-                if step >= WARM_UP:
-                    durations.append((end - start)*1000)
-            print(model_name,' model average train time : ',sum(durations)/len(durations),'ms')
-            del model
-            benchmark[model_name] = durations
-    return benchmark
 
-
-def inference(type='float'):
-    benchmark = {}
-    with torch.no_grad():
-        for model_type in MODEL_LIST.keys():
-            for model_name in MODEL_LIST[model_type]:
-                model = getattr(model_type, model_name)(pretrained=False)
-                if gpu_count > 1:
-                    model = nn.DataParallel(model,device_ids=range(gpu_count))
-                model=getattr(model,type)()
-                model=model.to('cuda')
-                model.eval()
-                durations = []
-                print('Benchmarking Inference {} precision type {} '.format(type,model_name))
-                for step,img in enumerate(trainloader):
-                    img=getattr(img,type)()
-                    torch.cuda.synchronize()
-                    start = time.time()
-                    model(img.to('cuda'))
-                    torch.cuda.synchronize()
-                    end = time.time()
-                    if step >= WARM_UP:
-                        durations.append((end - start)*1000)
-                print(model_name,' model average inference time : ',sum(durations)/len(durations),'ms')
-                del model
-                benchmark[model_name] = durations
-    return benchmark
-
-
-class RandomDataset(Dataset):
-
-    def __init__(self,  length):
-        self.len = length
-        self.data = torch.randn( 3, 224, 224,length)
-
-    def __getitem__(self, index):
-        return self.data[:,:,:,index]
-        
-    def __len__(self):
-        return self.len
-
-
-torch.backends.cudnn.benchmark = True
-
-# Uncomment the following line to get a list of all models within the ResNet family
-# print(models.resnet.__all__)
-
-MODEL_LIST = { models.resnet: ['resnext101_32x8d'] } 
-precisions=["float","half"] # "double" will take a substantial amount of time!
-
-device_name=str(torch.cuda.get_device_name(0))
-BATCH_SIZE=64
-
-gpu_count = torch.cuda.device_count()
-WARM_UP = 5   # Num of warm up runs
-
-
-NUM_TEST = 50   # Num of Test
-trainloader = DataLoader(dataset=RandomDataset( BATCH_SIZE*(WARM_UP + NUM_TEST)),
-                         batch_size=BATCH_SIZE, shuffle=False, pin_memory=True, 
-                         num_workers=2)
-
-
-
-if __name__ == '__main__':
-    folder_name='new_results'
-    path=''
-    device_name="".join((device_name, '_',str(gpu_count),'_gpus_'))
-    system_configs=str(platform.uname())
-    system_configs='\n'.join((system_configs,str(psutil.cpu_freq()),'cpu_count: '+str(psutil.cpu_count()),'memory_available: '+str(psutil.virtual_memory().available)))
-    gpu_configs=[torch.cuda.device_count(),torch.version.cuda,torch.backends.cudnn.version(),torch.cuda.get_device_name(0)]
-    gpu_configs=list(map(str,gpu_configs))
-    temp=['Number of GPUs on current device : ','CUDA Version : ','Cudnn Version : ','Device Name : ']
-
-    os.makedirs(folder_name, exist_ok=True)
-    now = time.localtime()
-    start_time=str("%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec))
-    print('benchmark start : ',start_time)
-
-    for idx,value in enumerate(zip(temp,gpu_configs)):
-        gpu_configs[idx]=''.join(value)
-        print(gpu_configs[idx])
-    print(system_configs)
-
-    with open(os.path.join(folder_name,"system_info.txt"), "w") as f:
-        f.writelines('benchmark start : '+start_time+'\n')
-        f.writelines('system_configs\n\n')
-        f.writelines(system_configs)
-        f.writelines('\ngpu_configs\n\n')
-        f.writelines(s + '\n' for s in gpu_configs )
-
+def train(model, device, train_loader, optimizer, epoch, dry_run=False):
+    model.train()
+    log_interval = 10
     
-    for precision in precisions:
-        train_result=train(precision)
-        train_result_df = pd.DataFrame(train_result)
-        path=''.join((folder_name,'/',device_name,"_",precision,'_model_train_benchmark.csv'))
-        train_result_df.to_csv(path, index=False)
+    for batch_idx, (data, target) in enumerate(train_loader):
+        data, target = data.to(device), target.to(device)
+        optimizer.zero_grad()
+        output = model(data)
+        loss = F.nll_loss(output, target)
+        loss.backward()
+        optimizer.step()
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader.dataset),
+                100. * batch_idx / len(train_loader), loss.item()))
+            if dry_run:
+                break
 
-        inference_result=inference(precision)
-        inference_result_df = pd.DataFrame(inference_result)
-        path=''.join((folder_name,'/',device_name,"_",precision,'_model_inference_benchmark.csv'))
-        inference_result_df.to_csv(path, index=False)
 
-    now = time.localtime()
-    end_time=str("%04d/%02d/%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec))
-    print('benchmark end : ',end_time)
-    with open(os.path.join(folder_name,"system_info.txt"), "a") as f:
-        f.writelines('benchmark end : '+end_time+'\n')
+def test(model, device, test_loader):
+    model.eval()
+    test_loss = 0
+    correct = 0
+    with torch.no_grad():
+        for data, target in test_loader:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            test_loss += F.nll_loss(output, target, reduction='sum').item()  # sum up batch loss
+            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
+            correct += pred.eq(target.view_as(pred)).sum().item()
+
+    test_loss /= len(test_loader.dataset)
+
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+        test_loss, correct, len(test_loader.dataset),
+        100. * correct / len(test_loader.dataset)))
+
+
+
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(9216, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = F.relu(x)
+        x = self.conv2(x)
+        x = F.relu(x)
+        x = F.max_pool2d(x, 2)
+        x = self.dropout1(x)
+        x = torch.flatten(x, 1)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        output = F.log_softmax(x, dim=1)
+        return output
+
+
+
+use_cuda = True
+
+device = torch.device("cuda" if use_cuda else "cpu")
+
+transform=transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+        ])
+
+train_set = datasets.MNIST('local_dataset', download=True, train=True, transform=transform)
+test_set = datasets.MNIST('local_dataset', train=False, transform=transform)
+
+
+pinning = True   # Control pinning of the data to the memory location
+
+train_data = DataLoader(train_set, batch_size=64, num_workers=1, pin_memory=pinning, 
+                        shuffle=True)
+test_data = DataLoader(test_set, batch_size=64, num_workers=1, pin_memory=pinning, 
+                       shuffle=True)
+
+
+
+# Setting up the model
+model = Net().to(device)
+optimizer = optim.Adadelta(model.parameters(), lr=1.0)   # learning rate = 1.0
+scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
+
+
+epochs = 14
+save_model = False
+
+for epoch in range(1, epochs + 1):
+    train(model, device, train_data, optimizer, epoch, dry_run=False)
+    test(model, device, test_data)
+    scheduler.step()
+
+if save_model:
+    torch.save(model.state_dict(), "mnist_cnn.pt")

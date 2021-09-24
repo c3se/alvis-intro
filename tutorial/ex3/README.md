@@ -1,27 +1,18 @@
 # Introduction
 
-This is an introductory example on using PyTorch using the publicly available
-MNIST dataset. You can use PyTorch `datasets` module to access the datasets
-that are not provided by us under `/cephyr/NOBACKUP/Datasets`. It can also be
-used for your custom datasets. In this example, the performance of the T4 and
-V100 GPUs for training a CNN using the `torchvision` models will be compared.
-We will use a slightly modified example provided on PyTorch GitHub page:
-<https://github.com/pytorch/examples/blob/master/mnist/main.py>.
-
-Note that in this case the data _is_ available at `/cephyr/NOBACKUP/Datasets`
-and should instead have been loaded with:
-```python
-train_set = datasets.MNIST(
-    '/cephyr/NOBACKUP/Datasets',
-    download=False,
-    train=True,
-    transform=transform,
-)
-```
-
+This example shows how to use the tiny-imagenet dataset available under 
+`/cephyr/NOBACKUP/Datasets/tiny-imagenet-200/train` to train a CNN  with TensorFlow. We will use 
+Keras' preprocessing utilities specifically the `flow_from_directory` function from the `ImageDataGenerator` class just to 
+illustrate the workflow. Note that the directory structure of the above path is recognized by this function. It thus implies a classification problem with the 200 classes 
 
 ## Environment setup
 
-To run the python code, the following modules need to be loaded:
+The following modules are required for this example:
 
-`ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 PyTorch/1.4.0-Python-3.7.4 torchvision/0.7.0-Python-3.7.4-PyTorch-1.6.0 IPython`
+`ml GCC/10.2.0  CUDA/11.1.1  OpenMPI/4.0.5 TensorFlow/2.5.0 Pillow/8.0.1`
+
+## Cancel the job
+The training will take too long time to wait until it finished, a single epoch takes around
+40 min. Instead the example is used to show how it is done in principle and you are welcome to
+finish running it some other time. To cancel use the command `scancel -u $USER` or 
+`scancel X` where X is the job number id.
