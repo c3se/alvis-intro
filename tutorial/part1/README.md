@@ -210,4 +210,19 @@ See `jobscript_singularity.sh` for how to use a singularity container in a scrip
 [USER@alvis1 part1]$ sbatch jobscript_singularity.sh
 ```
 
-%TODO overlay
+If you'd like to do persistent changes to the environment that is available in a container then there is a possibility to use overlays for persistent storage. We provide ready to go overlays at `/apps/containers/overlay_<size>.img`.
+
+One usage for these is to complement an existing container with a few extra packages. As an example we will look at how to add the python package Seaborn over a PyTorch container. The steps will be as follow:
+```bash
+[USER@alvis1 part1]$ cp /apps/containers/overlay_1G.img seaborn.img
+[USER@alvis1 part1]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
+Singularity> conda install -y seaborn
+...
+Singularity> exit
+```
+
+These steps can be seen as:
+1. Copy an empty overlay to your own storage
+2. Open a singularity session with this overlay
+3. Make the changes you want to do
+4. You can now use this overlay together with the container that was used in step 2
