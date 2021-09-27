@@ -9,6 +9,12 @@ To access Alvis there are a few different alternatives and they can all be found
  - [Remote graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/)
  - [Remote development with Visual Studio Code](https://www.c3se.chalmers.se/documentation/remote-vscode/remote_vscode/)
 
+**Exercises:**
+1. Access Alvis (and open up a terminal)
+
+**Exercises:**
+1. Access Alvis (and open up a terminal)
+
 ## Using Alvis
 In this part we will explore how to get started with using Alvis as a first time user. As a first step you should connect to Alvis (see previous section) and now you should have access to Alvis through a terminal or if you are using Thinlinc or VS Code you can open a terminal.
 
@@ -46,6 +52,10 @@ To read this file you can use your favourite command line text editor, `cat` or 
 [USER@alvis1 part1]$ less README.md
 ```
 to go out from `less` press `q`.
+
+**Exercises:**
+1. On Alvis clone or download the alvis-intro code
+2. Change directory to the one containing this text
 
 ### Submitting a job
 Before you submit a file you want to make sure that there are no obvious errors before you submit it, to do this it is absolutely OK to run small tests directly on the log-in node.
@@ -160,6 +170,15 @@ Now take a look at `jobscript.sh` and see that you understand what is going on. 
 
 Next make sure to look at how it has gone for the script using what you learnt in the previous section.
 
+#### Exercises
+1. Find out the name of your project
+2. Find out what GPU type has highest availability right now
+3. Take a look at `hello.sh` and estimate how long it will take
+4. Use `srun` and what you figured out in the previous steps to run `hello.sh`
+5. Use the link from `job_stats.py` to take a look at the statistics of the previous submission
+6. Update `jobscript.sh` with the details you found out in 1--3
+7. Submit `jobscript.sh` and look at the statistics of this job
+
 ### Setting up the environment
 There are primarily two ways to set-up your environment on Alvis:
 1. Modules
@@ -200,6 +219,10 @@ and
 [USER@alvis1 part1]$ sbatch jobscript_hierarchical_modules.sh
 ```
 
+**Exercises:**
+1. Update and submit `jobsubmit_flat_modules.sh` and `jobsubmit_hierarchical_modules.sh`
+2. Redo 1 but for TensorFlow instead of PyTorch
+
 #### Using containers
 Containers are a way for you to work with with a portable and reproducible environment for any HPC system that supports it. For more details about using containers see the [C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
 
@@ -226,3 +249,9 @@ These steps can be seen as:
 2. Open a singularity session with this overlay
 3. Make the changes you want to do
 4. You can now use this overlay together with the container that was used in step 2
+
+**Exercises:**
+1. Update and submit `jobsubmit_singularity.sh`
+2. Redo 1 but for TensorFlow instead of PyTorch
+3. Copy an overlay image from `/apps/containers/` and use it to install a package of your choice
+4. Create a new jobscript in which you use your newly installed package
