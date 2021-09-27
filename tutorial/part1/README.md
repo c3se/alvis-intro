@@ -1,5 +1,5 @@
 # Getting started
-This part contains
+This part contains information to how to get up and running on the Alvis system, if you have used other
 
 ## Accessing Alvis
 Now that you've [gotten access](https://www.c3se.chalmers.se/documentation/getting_access/), are [getting started](https://www.c3se.chalmers.se/documentation/getting_started/) and have attended the [introduction presentation for Alvis](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/) you are certainly itching to access Alvis and start doing stuff.
@@ -26,24 +26,24 @@ If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually 
 ### Get tutorial files
 Now in this terminal we want to get this tutorial either clone the repository
 ```bash
-[CID@alvis1 ~]$ git clone https://github.com/c3se/alvis-intro.git
+[USER@alvis1 ~]$ git clone https://github.com/c3se/alvis-intro.git
 ```
 or download it as an archive
 ```bash
-[CID@alvis1 ~]$ wget https://github.com/c3se/alvis-intro/archive/refs/heads/main.zip
-[CID@alvis1 ~]$ mv alvis-intro-main alvis-intro
+[USER@alvis1 ~]$ wget https://github.com/c3se/alvis-intro/archive/refs/heads/main.zip
+[USER@alvis1 ~]$ mv alvis-intro-main alvis-intro
 ```
 
 Now lets move to this file
 ```bash
-[CID@alvis1 ~]$ cd alvis-intro/tutorial/part1
-[CID@alvis1 part1]$ ls
+[USER@alvis1 ~]$ cd alvis-intro/tutorial/part1
+[USER@alvis1 part1]$ ls
 hello.sh  README.md
 ```
 
 To read this file you can use your favourite command line text editor, `cat` or `less`
 ```bash
-[CID@alvis1 part1]$ less README.md
+[USER@alvis1 part1]$ less README.md
 ```
 to go out from `less` press `q`.
 
@@ -65,12 +65,12 @@ Now there are three things to determine before we submit our script:
 #### Project name
 To determine the name of your project use `projinfo`, e.g.
 ```bash
-[CID@alvis1 part1]$ projinfo
+[USER@alvis1 part1]$ projinfo
  Project                Used[h]         Allocated[h]      Queue
     User
 ---------------------------------------------------------------
 SNIC2021-X-YY             12.18                  100      alvis
-    CID                    6.25   
+    USER                    6.25   
 ```
 in this case the project is `SNIC2021-X-YY`.
 
@@ -79,7 +79,7 @@ When deciding what GPUs to allocate the main consideration is what demands the a
 
 This script doesn't have any constraints on what GPU to use (in fact it doesn't use a GPU and doesn't technically belong on Alvis, but you can still learn the principles from it). Therefore, we should try to see what GPU type is most available right now to reduce how long we have to wait. This we can do with the command `jobinfo` e.g.
 ```
-[CID@alvis1 part1]$ jobinfo -s
+[USER@alvis1 part1]$ jobinfo -s
 CLUSTER: alvis
 
 Summary: 71 running jobs using 19 nodes, 1 waiting normal jobs wanting <= 1 nodes
@@ -117,22 +117,85 @@ In this case the script is pretty much instantaneous so one minute should be eno
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
 ```bash
-[CID@alvis1 part1]$ srun -A SNIC2021-X-YY --gpus-per-node=T4:1 -t 00:01:00 --pty bash
+[USER@alvis1 part1]$ srun -A SNIC2021-X-YY --gpus-per-node=T4:1 -t 00:01:00 --pty bash
 srun: job 102893 queued and waiting for resources
 srun: job 102893 has been allocated resources
-[CID@alvisX-Y part1]$ bash hello.sh
+[USER@alvisX-Y part1]$ bash hello.sh
 Hello Alvis!
-[CID@alvisX-Y part1]$ exit
+[USER@alvisX-Y part1]$ exit
 ```
 Here an interactive (pseudo)-terminal was started by adding the flag `--pty` and note that `exit` or <kbd>Ctrl</kbd>+<kbd>D</kbd> is used to end the session.
 
-You should also make a habit of taking a look at the run statistics to see how the job has run, this can give hints for if something has gone wrong or is running inefficiently. To see these statistics run
+
+#### Monitoring session
+You should also make a habit of taking a look at the run statistics to see how the job has run, this can give hints for if something has gone wrong or is running inefficiently. To see these statistics run (but with your job ID)
 ```bash
-[CID@alvis1 part1]$ job_stats.py 102893
+[USER@alvis1 part1]$ job_stats.py 102893
 https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
+```
+
+To see the current status of your job and find out your job ID you can also run
+```bash
+[USER@alvis1 part1]$ squeue -u $USER
+```
+if nothing shows up, the most likely reason is that your job has already finished. To also see accounting information from finished submissions use
+```bash
+[USER@alvis1 part1]$ sacct
 ```
 
 #### Submitting a jobscript
 Submitting jobscripts is done with `sbatch` and an example jobscript can be found in `jobscript.sh`
 
-%TODO continue from here
+There are three parts to a successful jobscripts
+1. A shebang at the very start of the script, usually `#!/bin/env bash`.
+2. Specifying flags to sbatch. Either directly when calling sbatch or in the jobscript as `#SBATCH --flat-name value`.
+3. The body of the script, this is where stuff happens.
+    1. Setting up the environment e.g. loading modules.
+    2. Calling what you want to run.
+
+Now take a look at `jobscript.sh` and see that you understand what is going on. Then, when you feel comfortable you can submit the jobscript with
+```bash
+[USER@alvis1 part1]$ sbatch jobscript.sh
+```
+
+Next make sure to look at how it has gone for the script using what you learnt in the previous section.
+
+### Setting up the environment
+There are primarily two ways to set-up your environment on Alvis:
+1. Modules
+2. Containers
+
+#### Loading modules
+In this section we will go through the essentials for using modules to set up your preferred software for more details see the [C3SE documentation](https://www.c3se.chalmers.se/documentation/modules/).
+
+The first command we will consider is
+```bash
+module purge
+```
+this commands will unload all modules you've loaded previously. Thus, we can get a clean slate before loading what we want.
+
+Then to search for a module we will use `module spider`, e.g.
+```bash
+module spider pytorch
+```
+and finally following the instructions loading the wanted modules with `module load`.
+
+There is one more thing that might be of interest and that is the existence of both flat and hierarchical module trees to switch between them use:
+```bash
+flat_modules
+```
+and
+```bash
+hierarchical_modules
+```
+
+There are two jobscripts `jobsubmit_flat_modules.sh` and `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use the two different module structures to load your software.
+```bash
+[USER@alvis1 part1]$ flat_modules
+[USER@alvis1 part1]$ sbatch jobscript_flat_modules.sh
+```
+and
+```bash
+[USER@alvis1 part1]$ hierarchical_modules
+[USER@alvis1 part1]$ sbatch jobscript_hierarchical_modules.sh
+```
