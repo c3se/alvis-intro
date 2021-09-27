@@ -199,3 +199,15 @@ and
 [USER@alvis1 part1]$ hierarchical_modules
 [USER@alvis1 part1]$ sbatch jobscript_hierarchical_modules.sh
 ```
+
+#### Using containers
+Containers are a way for you to work with with a portable and reproducible environment for any HPC system that supports it. For more details about using containers see the [C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
+
+In `/apps/containers/` we provide containers for your use, but if you want to build your own see the [build instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
+
+See `jobscript_singularity.sh` for how to use a singularity container in a script and to submit use
+```bash
+[USER@alvis1 part1]$ sbatch jobscript_singularity.sh
+```
+
+%TODO overlay
