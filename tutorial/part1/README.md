@@ -1,5 +1,5 @@
 # Getting started
-This part contains information to how to get up and running on the Alvis system, if you have used other
+This part contains information to how to get up and running on the Alvis system, if you have used other HPC systems much of it will be familiar.
 
 ## Accessing Alvis
 Now that you've [gotten access](https://www.c3se.chalmers.se/documentation/getting_access/), are [getting started](https://www.c3se.chalmers.se/documentation/getting_started/) and have attended the [introduction presentation for Alvis](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/) you are certainly itching to access Alvis and start doing stuff.
