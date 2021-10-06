@@ -1,13 +1,22 @@
 # Getting started
-This part contains information to how to get up and running on the Alvis system, if you have used other HPC systems much of it will be familiar.
+This part contains information to how to get up and running on the Alvis system,
+if you have used other HPC systems much of it will be familiar.
 
 ## Accessing Alvis
-Now that you've [gotten access](https://www.c3se.chalmers.se/documentation/getting_access/), are [getting started](https://www.c3se.chalmers.se/documentation/getting_started/) and have attended the [introduction presentation for Alvis](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/) you are certainly itching to access Alvis and start doing stuff.
+Now that you've [gotten
+access](https://www.c3se.chalmers.se/documentation/getting_access/), are
+[getting started](https://www.c3se.chalmers.se/documentation/getting_started/)
+and have attended the [introduction presentation for
+Alvis](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/) you are
+certainly itching to access Alvis and start doing stuff.
 
-To access Alvis there are a few different alternatives and they can all be found at [c3se.chalmers.se](c3se.chalmers.se):
- - [Connecting through terminal](https://www.c3se.chalmers.se/documentation/connecting/)
- - [Remote graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/)
- - [Remote development with Visual Studio Code](https://www.c3se.chalmers.se/documentation/remote-vscode/remote_vscode/)
+To access Alvis there are a few different alternatives and they can all be found
+at [c3se.chalmers.se](c3se.chalmers.se):
+ - [Connecting through
+ terminal](https://www.c3se.chalmers.se/documentation/connecting/) - [Remote
+ graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/) -
+ [Remote development with Visual Studio
+ Code](https://www.c3se.chalmers.se/documentation/remote-vscode/remote_vscode/)
 
 **Exercises:**
 1. Access Alvis (and open up a terminal)
@@ -16,9 +25,13 @@ To access Alvis there are a few different alternatives and they can all be found
 1. Access Alvis (and open up a terminal)
 
 ## Using Alvis
-In this part we will explore how to get started with using Alvis as a first time user. As a first step you should connect to Alvis (see previous section) and now you should have access to Alvis through a terminal or if you are using Thinlinc or VS Code you can open a terminal.
+In this part we will explore how to get started with using Alvis as a first time
+user. As a first step you should connect to Alvis (see previous section) and now
+you should have access to Alvis through a terminal or if you are using Thinlinc
+or VS Code you can open a terminal.
 
-If there is any command that you are unsure of what it does you can use the command `man` e.g to find out about ls
+If there is any command that you are unsure of what it does you can use the
+command `man` e.g to find out about ls
 ```bash
 man ls
 ```
@@ -27,7 +40,8 @@ or
 ls --help
 ```
 
-If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually the way to go (to copy use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>).
+If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually
+the way to go (to copy use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>).
 
 ### Get tutorial files
 Now in this terminal we want to get this tutorial either clone the repository
@@ -47,7 +61,8 @@ Now lets move to this file
 hello.sh  README.md
 ```
 
-To read this file you can use your favourite command line text editor, `cat` or `less`
+To read this file you can use your favourite command line text editor, `cat` or
+`less`
 ```bash
 [USER@alvis1 part1]$ less README.md
 ```
@@ -58,14 +73,18 @@ to go out from `less` press `q`.
 2. Change directory to the one containing this text
 
 ### Submitting a job
-Before you submit a file you want to make sure that there are no obvious errors before you submit it, to do this it is absolutely OK to run small tests directly on the log-in node.
+You want to make sure that there are no obvious errors before you submit it, to
+do this it is absolutely OK to run small tests directly on the log-in node.
 
-Take a look at the contents of `hello.sh` and if you think that it looks ok you can try running it on the log-in node.
+Take a look at the contents of `hello.sh` and if you think that it looks ok you
+can try running it on the log-in node.
 ```bash
 bash hello.sh
 ```
 
-Usually you wouldn't run everything that you are going to submit on the log-in node, what you could usually do is reduce the number of epochs and/or the size of the dataset etc. to see that it appears to run as you'd like.
+Usually you wouldn't run everything that you are going to submit on the log-in
+node, what you could usually do is reduce the number of epochs and/or the size
+of the dataset etc. to see that it appears to run as you'd like.
 
 Now there are three things to determine before we submit our script:
 - The name of your project
@@ -80,19 +99,26 @@ To determine the name of your project use `projinfo`, e.g.
     User
 ---------------------------------------------------------------
 SNIC2021-X-YY             12.18                  100      alvis
-    USER                    6.25   
+    USER                   6.25   
 ```
 in this case the project is `SNIC2021-X-YY`.
 
 #### Deciding GPU type
-When deciding what GPUs to allocate the main consideration is what demands the application has, the secondary is what GPUs are available right now and the price for GPUs should usually only be considered last if at all.
+When deciding what GPUs to allocate the main consideration is what demands the
+application has, the secondary is what GPUs are available right now and the
+price for GPUs should usually only be considered last if at all.
 
-This script doesn't have any constraints on what GPU to use (in fact it doesn't use a GPU and doesn't technically belong on Alvis, but you can still learn the principles from it). Therefore, we should try to see what GPU type is most available right now to reduce how long we have to wait. This we can do with the command `jobinfo` e.g.
+This script doesn't have any constraints on what GPU to use (in fact it doesn't
+use a GPU and doesn't technically belong on Alvis, but you can still learn the
+principles from it). Therefore, we should try to see what GPU type is most
+available right now to reduce how long we have to wait. This we can do with the
+command `jobinfo` e.g.
 ```
 [USER@alvis1 part1]$ jobinfo -s
 CLUSTER: alvis
 
-Summary: 71 running jobs using 19 nodes, 1 waiting normal jobs wanting <= 1 nodes
+Summary: 71 running jobs using 19 nodes, 1 waiting normal jobs wanting <= 1
+nodes
 
 Total node usage:
 PARTITION        ALLOCATED       IDLE    OFFLINE      TOTAL
@@ -117,12 +143,17 @@ alvis            2  V100:1
 alvis            5  V100:2 
 alvis            4  V100:4
 ```
-from this we can see that we have 108 idle T4s and 28 idle V100s, thus we could probably choose either one.
+from this we can see that we have 108 idle T4s and 28 idle V100s, thus we could
+probably choose either one.
 
 #### The time it takes
-When choosing how long to allocate one should estimate an upper bound for how long the job will take. If the job does not finish within the allocated time everything will be lost (unless you are using checkpointing). On the other hand you might have to wait longer if you are allocating an unneccessarily time.
+When choosing how long to allocate one should estimate an upper bound for how
+long the job will take. If the job does not finish within the allocated time
+everything will be lost (unless you are using checkpointing). On the other hand
+you might have to wait longer if you are allocating an unneccessarily time.
 
-In this case the script is pretty much instantaneous so one minute should be enough. The maximum time you can allocate is seven days.
+In this case the script is pretty much instantaneous so one minute should be
+enough. The maximum time you can allocate is seven days.
 
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
@@ -134,11 +165,14 @@ srun: job 102893 has been allocated resources
 Hello Alvis!
 [USER@alvisX-Y part1]$ exit
 ```
-Here an interactive (pseudo)-terminal was started by adding the flag `--pty` and note that `exit` or <kbd>Ctrl</kbd>+<kbd>D</kbd> is used to end the session.
+Here an interactive (pseudo)-terminal was started by adding the flag `--pty` and
+note that `exit` or <kbd>Ctrl</kbd>+<kbd>D</kbd> is used to end the session.
 
 
 #### Monitoring session
-You should also make a habit of taking a look at the run statistics to see how the job has run, this can give hints for if something has gone wrong or is running inefficiently. To see these statistics run (but with your job ID)
+You should also make a habit of taking a look at the run statistics to see how
+the job has run, this can give hints for if something has gone wrong or is
+running inefficiently. To see these statistics run (but with your job ID)
 ```bash
 [USER@alvis1 part1]$ job_stats.py 102893
 https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
@@ -148,34 +182,40 @@ To see the current status of your job and find out your job ID you can also run
 ```bash
 [USER@alvis1 part1]$ squeue -u $USER
 ```
-if nothing shows up, the most likely reason is that your job has already finished. To also see accounting information from finished submissions use
+if nothing shows up, the most likely reason is that your job has already
+finished. To also see accounting information from finished submissions use
 ```bash
 [USER@alvis1 part1]$ sacct
 ```
 
 #### Submitting a jobscript
-Submitting jobscripts is done with `sbatch` and an example jobscript can be found in `jobscript.sh`
+Submitting jobscripts is done with `sbatch` and an example jobscript can be
+found in `jobscript.sh`
 
 There are three parts to a successful jobscripts
 1. A shebang at the very start of the script, usually `#!/bin/env bash`.
-2. Specifying flags to sbatch. Either directly when calling sbatch or in the jobscript as `#SBATCH --flat-name value`.
+2. Specifying flags to sbatch. Either directly when calling sbatch or in the
+jobscript as `#SBATCH --flat-name value`.
 3. The body of the script, this is where stuff happens.
     1. Setting up the environment e.g. loading modules.
     2. Calling what you want to run.
 
-Now take a look at `jobscript.sh` and see that you understand what is going on. Then, when you feel comfortable you can submit the jobscript with
+Now take a look at `jobscript.sh` and see that you understand what is going on.
+Then, when you feel comfortable you can submit the jobscript with
 ```bash
 [USER@alvis1 part1]$ sbatch jobscript.sh
 ```
 
-Next make sure to look at how it has gone for the script using what you learnt in the previous section.
+Next make sure to look at how it has gone for the script using what you learnt
+in the previous section.
 
 #### Exercises
 1. Find out the name of your project
 2. Find out what GPU type has highest availability right now
 3. Take a look at `hello.sh` and estimate how long it will take
 4. Use `srun` and what you figured out in the previous steps to run `hello.sh`
-5. Use the link from `job_stats.py` to take a look at the statistics of the previous submission
+5. Use the link from `job_stats.py` to take a look at the statistics of the
+previous submission
 6. Update `jobscript.sh` with the details you found out in 1--3
 7. Submit `jobscript.sh` and look at the statistics of this job
 
@@ -185,21 +225,26 @@ There are primarily two ways to set-up your environment on Alvis:
 2. Containers
 
 #### Loading modules
-In this section we will go through the essentials for using modules to set up your preferred software for more details see the [C3SE documentation](https://www.c3se.chalmers.se/documentation/modules/).
+In this section we will go through the essentials for using modules to set up
+your preferred software for more details see the [C3SE
+documentation](https://www.c3se.chalmers.se/documentation/modules/).
 
 The first command we will consider is
 ```bash
 module purge
 ```
-this commands will unload all modules you've loaded previously. Thus, we can get a clean slate before loading what we want.
+this commands will unload all modules you've loaded previously. Thus, we can get
+a clean slate before loading what we want.
 
 Then to search for a module we will use `module spider`, e.g.
 ```bash
 module spider pytorch
 ```
-and finally following the instructions loading the wanted modules with `module load`.
+and finally following the instructions loading the wanted modules with `module
+load`.
 
-There is one more thing that might be of interest and that is the existence of both flat and hierarchical module trees to switch between them use:
+There is one more thing that might be of interest and that is the existence of
+both flat and hierarchical module trees to switch between them use:
 ```bash
 flat_modules
 ```
@@ -208,7 +253,9 @@ and
 hierarchical_modules
 ```
 
-There are two jobscripts `jobsubmit_flat_modules.sh` and `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use the two different module structures to load your software.
+There are two jobscripts `jobsubmit_flat_modules.sh` and
+`jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
+the two different module structures to load your software.
 ```bash
 [USER@alvis1 part1]$ flat_modules
 [USER@alvis1 part1]$ sbatch jobscript_flat_modules.sh
@@ -220,22 +267,33 @@ and
 ```
 
 **Exercises:**
-1. Update and submit `jobsubmit_flat_modules.sh` and `jobsubmit_hierarchical_modules.sh`
+1. Update and submit `jobsubmit_flat_modules.sh` and
+`jobsubmit_hierarchical_modules.sh`
 2. Redo 1 but for TensorFlow instead of PyTorch
 
 #### Using containers
-Containers are a way for you to work with with a portable and reproducible environment for any HPC system that supports it. For more details about using containers see the [C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
+Containers are a way for you to work with with a portable and reproducible
+environment for any HPC system that supports it. For more details about using
+containers see the [C3SE
+documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
 
-In `/apps/containers/` we provide containers for your use, but if you want to build your own see the [build instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
+In `/apps/containers/` we provide containers for your use, but if you want to
+build your own see the [build
+instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
 
-See `jobscript_singularity.sh` for how to use a singularity container in a script and to submit use
+See `jobscript_singularity.sh` for how to use a singularity container in a
+script and to submit use
 ```bash
 [USER@alvis1 part1]$ sbatch jobscript_singularity.sh
 ```
 
-If you'd like to do persistent changes to the environment that is available in a container then there is a possibility to use overlays for persistent storage. We provide ready to go overlays at `/apps/containers/overlay_<size>.img`.
+If you'd like to do persistent changes to the environment that is available in a
+container then there is a possibility to use overlays for persistent storage. We
+provide ready to go overlays at `/apps/containers/overlay_<size>.img`.
 
-One usage for these is to complement an existing container with a few extra packages. As an example we will look at how to add the python package Seaborn over a PyTorch container. The steps will be as follow:
+One usage for these is to complement an existing container with a few extra
+packages. As an example we will look at how to add the python package Seaborn
+over a PyTorch container. The steps will be as follow:
 ```bash
 [USER@alvis1 part1]$ cp /apps/containers/overlay_1G.img seaborn.img
 [USER@alvis1 part1]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
@@ -248,10 +306,12 @@ These steps can be seen as:
 1. Copy an empty overlay to your own storage
 2. Open a singularity session with this overlay
 3. Make the changes you want to do
-4. You can now use this overlay together with the container that was used in step 2
+4. You can now use this overlay together with the container that was used in
+step 2
 
 **Exercises:**
 1. Update and submit `jobsubmit_singularity.sh`
 2. Redo 1 but for TensorFlow instead of PyTorch
-3. Copy an overlay image from `/apps/containers/` and use it to install a package of your choice
+3. Copy an overlay image from `/apps/containers/` and use it to install a
+package of your choice
 4. Create a new jobscript in which you use your newly installed package

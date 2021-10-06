@@ -10,7 +10,7 @@
 #SBATCH -A C3SE-STAFF         # find your project with the "projinfo" command
 #SBATCH -p alvis              # what partition to use (usually not necessary)
 #SBATCH -t 0-00:01:00         # how long time it will take to run
-#SBATCH --gpus-per-node=T4:1  # choosing no GPUs and their type
+#SBATCH --gpus-per-node=T4:1  # choosing no. GPUs and their type
 #SBATCH -J my_first_job       # the jobname (not necessary)
 
 # The rest of this jobscript is handled as a usual bash script that will run
