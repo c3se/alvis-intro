@@ -12,16 +12,12 @@ certainly itching to access Alvis and start doing stuff.
 
 To access Alvis there are a few different alternatives and they can all be found
 at [c3se.chalmers.se](c3se.chalmers.se):
- - [Connecting through
- terminal](https://www.c3se.chalmers.se/documentation/connecting/) - [Remote
- graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/) -
- [Remote development with Visual Studio
- Code](https://www.c3se.chalmers.se/documentation/remote-vscode/remote_vscode/)
+ - [Connecting through terminal](https://www.c3se.chalmers.se/documentation/connecting/)
+ - [Alvis OnDemand](https://www.c3se.chalmers.se/documentation/alvis-ondemand/)
+ - [Remote graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/)
+ - [Remote development with Visual Studio Code](https://www.c3se.chalmers.se/documentation/remote-vscode/remote_vscode/)
 
-**Exercises:**
-1. Access Alvis (and open up a terminal)
-
-**Exercises:**
+### Exercises
 1. Access Alvis (and open up a terminal)
 
 ## Using Alvis
@@ -68,7 +64,7 @@ To read this file you can use your favourite command line text editor, `cat` or
 ```
 to go out from `less` press `q`.
 
-**Exercises:**
+#### Exercises
 1. On Alvis clone or download the alvis-intro code
 2. Change directory to the one containing this text
 
