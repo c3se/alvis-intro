@@ -1,18 +1,12 @@
 # Introduction
+In this part we will investigate different ways to get and use data. However, it is worth noting that there are numerous different ways of doing all of these and what you will learn here are simply three different examples when using:
+ 1. Your own data on the cluster
+ 2. Data available at `/cephyr/NOBACKUP/Datasets/`
+ 3. Data through some API
 
-This example shows how to use the tiny-imagenet dataset available under 
-`/cephyr/NOBACKUP/Datasets/tiny-imagenet-200/train` to train a CNN  with TensorFlow. We will use 
-Keras' preprocessing utilities specifically the `flow_from_directory` function from the `ImageDataGenerator` class just to 
-illustrate the workflow. Note that the directory structure of the above path is recognized by this function. It thus implies a classification problem with the 200 classes 
-
-## Environment setup
-
-The following modules are required for this example:
-
-`ml GCC/10.2.0  CUDA/11.1.1  OpenMPI/4.0.5 TensorFlow/2.5.0 Pillow/8.0.1`
-
-## Cancel the job
-The training will take too long time to wait until it finished, a single epoch takes around
-40 min. Instead the example is used to show how it is done in principle and you are welcome to
-finish running it some other time. To cancel use the command `scancel -u $USER` or 
-`scancel X` where X is the job number id.
+## PyTorch
+For the following excercises you will need to load the following modules:
+```bash
+flat_modules
+ml PyTorch/1.9.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+```
