@@ -1,9 +1,8 @@
 # Introduction
 
-In this tutorial we will demonstrate how to checkpoint your TensorFlow model
-using TensorFlow 2.x and Keras. The general idea of checkpointing is to save (or
-*checkpoint*) the state of a running job or application at regular time
-intervals to provide:
+In this tutorial we will demonstrate how to checkpoint model. The general idea
+of checkpointing is to save (or *checkpoint*) the state of a running job or
+application at regular time intervals to provide:
 * fault-tolerance - in case something should go wrong and your
   training job gets prematurely terminated. If for example training
   takes several hours, or days, you can use checkpointing to save an
@@ -29,7 +28,10 @@ look into it when it is available for us! Technically a checkpoint is one, or
 more commonly, multiple files written to disk, usually in a binary or
 compressed format.
 
-## Checkpointing in TensorFlow 2
+## PyTorch
+
+
+## TensorFlow 2
 Checkpointing in TensorFlow 2.x is supported in the API-classes
 `tf.train.Checkpoint`, `tf.train.CheckpointManager`, and, as this example
 builds on, as a callback from `tf.keras.callbacks.ModelCheckpoint`. The
@@ -112,23 +114,23 @@ we run with verbosity (`verbose=1`) in the calls to `model.fit()` and
 `ModelCheckpoint`, for long-running production training this might not be
 ideal.
 
-## Environment setup
+### Environment setup
 You need to complete a few steps before you can run this example. The environment only
 needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow.
-### The following modules needs to be loaded:
+#### The following modules needs to be loaded:
 ```
 ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4
 ml load TensorFlow/2.3.1-Python-3.7.4
 ```
 
-### The following dataset needs to be available
+#### The following dataset needs to be available
 We provide equivalent datasets in `/cephyr/NOBACKUP/Datasets/MNIST` but to
 simplify the code we download the dataset in pickled format. The size should
 only be around 11M compressed.
 ```
 wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
 ```
-## Running the code
+### Running the code
 We are now ready to train and profile our model. This is a very light model and
 can be trained directly on the login node. For real models you should not be
 running on the login nodes.
@@ -181,7 +183,7 @@ cp-0001.ckpt.data-00000-of-00001  cp-0002.ckpt.index		    cp-0004.ckpt.data-0000
 cp-0001.ckpt.index		  cp-0003.ckpt.data-00000-of-00001  cp-0004.ckpt.index		      cp-0006.ckpt.data-00000-of-00001	cp-0007.ckpt.index
 ```
 
-## Restoring from checkpoints
+#### Restoring from checkpoints
 Restoring from checkpoint is as easy as loading the model and then loading the weights.
 ```
 model = tf.keras.Model("my_seq_fdd_model")
