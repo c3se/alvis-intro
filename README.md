@@ -6,7 +6,7 @@ quickly with something that they can adapt into their own jobs.
 The examples are written in Python with the frameworks TensorFlow and PyTorch. More
 frameworks can be added if interest exists.
 
-Accompaning slides are available at:
+Accompanying slides are available at:
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
 
