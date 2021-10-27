@@ -13,8 +13,8 @@ class Model(nn.Module):
         self.verbose = verbose
 
     def forward(self, input):
-        if not self.verbose:
-            print("Hello from replica with input size", input.size())
+        if self.verbose:
+            print("Hello from", input.device, "with input size", input.size())
 
         x = input
         for layer in self.layers:
