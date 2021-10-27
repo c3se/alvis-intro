@@ -13,5 +13,14 @@ ml PyTorch/1.8.1-fosscuda-2020b
 # Run DataParallel
 #python dp_pytorch.py
 
+# Set up for multiprocessing
+export MASTER_ADDR="$HOSTNAME"
+export MASTER_PORT="75324"
+
 # Run DistributedDataParallel with torch.multiprocessing
-python ddp_pytorch_mp.py
+#python ddp_pytorch_mp.py
+
+# Run DistributedDataParallel with torch.distributed.launch
+world_size=$(python -c "import torch; print(torch.cuda.device_count())")
+python -m torch.distributed.launch --nproc_per_node=$world_size\
+    ddp_pytorch_launch.py --world_size=$world_size

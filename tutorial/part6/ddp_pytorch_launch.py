@@ -1,5 +1,5 @@
 import os
-import socket
+import argparse
 
 import torch
 import torch.nn as nn
@@ -12,6 +12,11 @@ from torch.nn.parallel import DistributedDataParallel
 from model_pytorch import Model
 from dataset_pytorch import RandomDataset
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--local_rank", type=int)
+parser.add_argument("--world_size", type=int)
+args = parser.parse_args()
 
 
 def setup(rank, world_size, verbose=False):
@@ -61,7 +66,7 @@ def run_process(rank, world_size):
     opt = optim.SGD(model.parameters(), lr=0.01)
 
     # Parallelize
-    model = DistributedDataParallel(model, device_ids=[rank])
+    model = DistributedDataParallel(model, device_ids=[rank], output_device=rank)
 
     # Actual training
     n_epochs = 10
@@ -88,13 +93,9 @@ def run_process(rank, world_size):
 
 def main():
     # Spawn processes
+    rank = args.local_rank
     world_size = torch.cuda.device_count()
-    mp.spawn(
-        run_process,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    run_process(rank, world_size)
 
 
 if __name__=="__main__":
