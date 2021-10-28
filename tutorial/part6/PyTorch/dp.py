@@ -3,8 +3,8 @@ from torch import nn, optim
 from torch.nn import DataParallel
 from torch.utils.data import DataLoader
 
-from model_pytorch import Model
-from dataset_pytorch import RandomDataset
+from model import Model
+from dataset import RandomDataset
 
 
 def run_process():
@@ -39,7 +39,6 @@ def run_process():
         # This is were the magic happens. This line is the only difference
         # between running on a single GPU or multiple GPUs.
         model = DataParallel(model)
-    
 
     # Actual training
     n_epochs = 10
