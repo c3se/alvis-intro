@@ -30,7 +30,7 @@ Master port: {os.environ["MASTER_PORT"]}
 =============================================
         ''')
     
-        dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
 
 def cleanup():
@@ -83,7 +83,8 @@ def run_process(rank, world_size):
             loss.backward()
             opt.step()
         
-        print(epoch)
+        if rank==0:
+            print(epoch)
 
     # Cleanup process
     cleanup()

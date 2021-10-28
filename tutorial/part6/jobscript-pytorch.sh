@@ -1,5 +1,4 @@
 #!/bin/env bash
-
 #SBATCH -A SNIC2021-7-119  # find your project with the "projinfo" command
 #SBATCH -p alvis
 #SBATCH -t 00:10:00
@@ -16,11 +15,14 @@ ml PyTorch/1.8.1-fosscuda-2020b
 # Set up for multiprocessing
 export MASTER_ADDR="$HOSTNAME"
 export MASTER_PORT="75324"
+ngpus=$(python -c "import torch; print(torch.cuda.device_count())")
 
 # Run DistributedDataParallel with torch.multiprocessing
 #python ddp_pytorch_mp.py
 
 # Run DistributedDataParallel with torch.distributed.launch
-world_size=$(python -c "import torch; print(torch.cuda.device_count())")
-python -m torch.distributed.launch --nproc_per_node=$world_size\
-    ddp_pytorch_launch.py --world_size=$world_size
+#python -m torch.distributed.launch --nproc_per_node=$ngpus\
+#    ddp_pytorch_launch.py --world_size=$ngpus
+
+# Run DistributedDataParallel with srun (MPI)
+srun --ntasks=$ngpus python ddp_pytorch_mpi.py
