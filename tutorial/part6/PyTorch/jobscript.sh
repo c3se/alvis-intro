@@ -1,5 +1,5 @@
 #!/bin/env bash
-#SBATCH -A SNIC2021-7-119  # find your project with the "projinfo" command
+#SBATCH -A SNIC2021-7-120  # find your project with the "projinfo" command
 #SBATCH -p alvis
 #SBATCH -t 00:10:00
 #SBATCH --gpus-per-node=T4:2
@@ -14,7 +14,7 @@ python dp.py
 
 # Set up for the different multiprocessing alternatives
 export MASTER_ADDR="$HOSTNAME"
-export MASTER_PORT="75324"
+export MASTER_PORT="12345"
 ngpus=$(python -c "import torch; print(torch.cuda.device_count())")
 
 # Run DistributedDataParallel with torch.multiprocessing

@@ -53,3 +53,7 @@ DDP works differently from DP by running on several different processes. Therefo
 2. Launching processes with `torch.distributed.launch`
 3. Launching processes with `srun` or `mpirun`
 
+For each of these options there are two variables we need to define:
+`MASTER_ADDR` and `MASTER_PORT`. `MASTER_ADDR` is the hostname or IP address of
+the node that the will host the 0th task. Master port simply needs to be free
+port on the node, usually set to 5 digits starting with 1, e.g. 12345.
