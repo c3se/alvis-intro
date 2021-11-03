@@ -29,7 +29,55 @@ more commonly, multiple files written to disk, usually in a binary or
 compressed format.
 
 ## PyTorch
+In PyTorch the main way to perform checkpointing is to save the state
+dictionaries of the objects that are relevant to continue training. PyTorch have
+written a good introduction to checkpointing which you can find
+[here](https://pytorch.org/tutorials/beginner/saving_loading_models.html).
 
+In short, in PyTorch you can use `torch.save` to save objects. This isn't
+limited to models but what is special with models is that you usually want to
+save the state dictionary of the model `my_model.state_dict()`. The reverse
+would be to use `torch.load` and `my_model.load_state_dict()`.
+
+Putting this together would look something like:
+```python
+# Saving a model
+my_model = MyModel()
+torch.save(my_model.state_dict(), "my_model.pt")
+
+# Loading a model
+my_model = MyModel()
+my_model.load_state_dict(torch.load("my_model.pt"))
+```
+
+There are two further caveats, when used as checkpointing you will need to save
+all that is needed to continue the training. The perhaps easiest thing to do is
+perform the save after you've taken a step with the optimizer but before the
+next forward pass, then you do not need to keep track of the gradients. Besides
+the model state dictionary you might also want to save the optimizer state
+dictionary and some other variables like the epoch to know were to continue
+from. 
+
+The second caveat is that beside the checkpoint file you will also need to have
+access to the class definition of your model to be able to load it properly.
+Usually this means saving the state dictionary and then initialising the model
+before loading the checkpointed state dictionary.
+
+If you want save the entire model without relying on having access to the
+original code, then for some use cases an alternative is to export it to
+[ONNX](https://pytorch.org/docs/stable/onnx.html) or similar. 
+
+### Set-up and excercise
+To set up you'll need to load
+```
+flat_modules
+ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
+```
+and you'll probably want to run it on a compute node as well, because you'll want to access the TMPDIR for faster file I/O.
+
+To do this you can use the prepared jobscript `jobscript-pytorch.sh` or use the
+Alvis OnDemand portal. If you're submitting with `sbatch`, just make sure to
+open the proxy link that appears in the output file.
 
 ## TensorFlow 2
 Checkpointing in TensorFlow 2.x is supported in the API-classes
