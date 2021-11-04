@@ -79,7 +79,7 @@ To do this you can use the prepared jobscript `jobscript-pytorch.sh` or use the
 Alvis OnDemand portal. If you're submitting with `sbatch`, just make sure to
 open the proxy link that appears in the output file.
 
-## TensorFlow 2
+## TensorFlow 2 TODO
 Checkpointing in TensorFlow 2.x is supported in the API-classes
 `tf.train.Checkpoint`, `tf.train.CheckpointManager`, and, as this example
 builds on, as a callback from `tf.keras.callbacks.ModelCheckpoint`. The
