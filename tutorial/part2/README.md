@@ -23,7 +23,7 @@ Now you should open up `regression-pytorch.ipynb` and follow the instructions th
 For the following excercises you will need to load the following modules:
 ```bash
 flat_modules
-ml PyTorch/1.9.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
 ```
 
 Now you should open up `regression-tensorflow.ipynb` and follow the instructions there.
