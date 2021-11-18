@@ -71,7 +71,7 @@ original code, then for some use cases an alternative is to export it to
 To set up you'll need to load
 ```
 flat_modules
-ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
+ml TensorFlow/2.5.0-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 ```
 and you'll probably want to run it on a compute node as well, because you'll want to access the TMPDIR for faster file I/O.
 
@@ -79,7 +79,7 @@ To do this you can use the prepared jobscript `jobscript-pytorch.sh` or use the
 Alvis OnDemand portal. If you're submitting with `sbatch`, just make sure to
 open the proxy link that appears in the output file.
 
-## TensorFlow 2 TODO
+## TensorFlow 2
 Checkpointing in TensorFlow 2.x is supported in the API-classes
 `tf.train.Checkpoint`, `tf.train.CheckpointManager`, and, as this example
 builds on, as a callback from `tf.keras.callbacks.ModelCheckpoint`. The
@@ -102,7 +102,7 @@ have basic understanding how TensorFlow saves models.
 | --------- | ----------- |----------------|
 | SaveModel | The default model format in TensorFlow 2. The SaveModel format has the most general support for saving models. The model is split into several files and directories. | N/A (both files and directories) |
 | HDF5      | *Hierarchical Data Format version 5* is the default model format for standalone Keras models and was the default model format for TensorFlow 1. A model becomes a single file. In TensorFlow 2 you need to explicity use the HDF5 file extension to save your model as HDF5. | .h5 or .keras |
-| TensorFlow checkpoint | A TensorBoard checkpoint file stores the model weights. | .ckpt, .ckpt.data,.ckpt.index | 
+| TensorFlow checkpoint | A TensorFlow checkpoint file stores the model weights. | .ckpt, .ckpt.data,.ckpt.index | 
 
 We can examine a the contents of a `my_seq_fdd_model` saved in the SaveModel format:
 ```
@@ -163,26 +163,19 @@ we run with verbosity (`verbose=1`) in the calls to `model.fit()` and
 ideal.
 
 ### Environment setup
-You need to complete a few steps before you can run this example. The environment only
-needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow.
-#### The following modules needs to be loaded:
+You need to complete a few steps before you can run this example.
 ```
-ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4
-ml load TensorFlow/2.3.1-Python-3.7.4
+flat_modules
+ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
 ```
 
-#### The following dataset needs to be available
-We provide equivalent datasets in `/cephyr/NOBACKUP/Datasets/MNIST` but to
-simplify the code we download the dataset in pickled format. The size should
-only be around 11M compressed.
-```
-wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
-```
 ### Running the code
-We are now ready to train and profile our model. This is a very light model and
-can be trained directly on the login node. For real models you should not be
-running on the login nodes.
+To do this you can use the prepared jobscript `jobscript-pytorch.sh` or use the
+Alvis OnDemand portal. If you're submitting with `sbatch`, just make sure to
+open the proxy link that appears in the output file.
 
+
+**TODO BELOW**
 **Note: Make sure you complete all tasks in the environment setup before this step!**
 
 ```
