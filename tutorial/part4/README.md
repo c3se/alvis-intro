@@ -104,10 +104,10 @@ have basic understanding how TensorFlow saves models.
 | HDF5      | *Hierarchical Data Format version 5* is the default model format for standalone Keras models and was the default model format for TensorFlow 1. A model becomes a single file. In TensorFlow 2 you need to explicity use the HDF5 file extension to save your model as HDF5. | .h5 or .keras |
 | TensorFlow checkpoint | A TensorFlow checkpoint file stores the model weights. | .ckpt, .ckpt.data,.ckpt.index | 
 
-We can examine a the contents of a `my_seq_fdd_model` saved in the SaveModel format:
+We can examine a the contents of a `my_tf_model` saved in the SaveModel format:
 ```
-$ tree my_seq_fdd_model/
-my_seq_fdd_model/
+$ tree my_tf_model/
+my_tf_model/
 ├── assets
 ├── saved_model.pb
 └── variables
@@ -156,7 +156,7 @@ We have defined a `tf.keras.callbacks.ModelCheckpoint` callback which
 continously produces a checkpoint at the end of every epoch (`save_freq` can
 also take an integer to save at the end of <int> many batches). The
 `save_weights_only=True` only saves the model weights and not the entire model
-(SaveModel-format). We must remenber to add the callback to the `callbacks`
+(SaveModel-format). We must remember to add the callback to the `callbacks`
 parameter in `model.fit()`. As this is an example to illustrate checkpointing
 we run with verbosity (`verbose=1`) in the calls to `model.fit()` and
 `ModelCheckpoint`, for long-running production training this might not be
@@ -170,59 +170,11 @@ ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.
 ```
 
 ### Running the code
-To do this you can use the prepared jobscript `jobscript-pytorch.sh` or use the
+To do this you can use the prepared jobscript `jobscript-tensorflow.sh` or use the
 Alvis OnDemand portal. If you're submitting with `sbatch`, just make sure to
 open the proxy link that appears in the output file.
 
-
-**TODO BELOW**
 **Note: Make sure you complete all tasks in the environment setup before this step!**
-
-```
-$ python ex6.py
-[Initialization logs - excluded for this example]
-460/469 [============================>.] - ETA: 0s - loss: 0.3762 - accuracy: 0.8967
-Epoch 00001: saving model to training/cp-0001.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.3721 - accuracy: 0.8979 - val_loss: 0.2052 - val_accuracy: 0.9411
-Epoch 2/8
-445/469 [===========================>..] - ETA: 0s - loss: 0.1773 - accuracy: 0.9485
-Epoch 00002: saving model to training/cp-0002.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.1734 - accuracy: 0.9498 - val_loss: 0.1465 - val_accuracy: 0.9560
-Epoch 3/8
-450/469 [===========================>..] - ETA: 0s - loss: 0.1270 - accuracy: 0.9633
-Epoch 00003: saving model to training/cp-0003.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.1251 - accuracy: 0.9640 - val_loss: 0.1197 - val_accuracy: 0.9633
-Epoch 4/8
-436/469 [==========================>...] - ETA: 0s - loss: 0.0990 - accuracy: 0.9720
-Epoch 00004: saving model to training/cp-0004.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.0968 - accuracy: 0.9727 - val_loss: 0.1042 - val_accuracy: 0.9672
-Epoch 5/8
-445/469 [===========================>..] - ETA: 0s - loss: 0.0796 - accuracy: 0.9775
-Epoch 00005: saving model to training/cp-0005.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.0781 - accuracy: 0.9780 - val_loss: 0.0960 - val_accuracy: 0.9700
-Epoch 6/8
-456/469 [============================>.] - ETA: 0s - loss: 0.0653 - accuracy: 0.9816
-Epoch 00006: saving model to training/cp-0006.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.0647 - accuracy: 0.9818 - val_loss: 0.0916 - val_accuracy: 0.9717
-Epoch 7/8
-460/469 [============================>.] - ETA: 0s - loss: 0.0548 - accuracy: 0.9845
-Epoch 00007: saving model to training/cp-0007.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.0545 - accuracy: 0.9846 - val_loss: 0.0892 - val_accuracy: 0.9722
-Epoch 8/8
-460/469 [============================>.] - ETA: 0s - loss: 0.0465 - accuracy: 0.9869
-Epoch 00008: saving model to training/cp-0008.ckpt
-469/469 [==============================] - 1s 2ms/step - loss: 0.0462 - accuracy: 0.9870 - val_loss: 0.0874 - val_accuracy: 0.9721
-```
-
-Notice from the above run (using 8 epochs) that we get the expect single checkpoint per epoch.
-
-If we inspect the checkpointing directory we will see that we in addition to the `.ckpt`-files got associated metadata.
-```console
-$ ls training/
-checkpoint			  cp-0002.ckpt.data-00000-of-00001  cp-0003.ckpt.index		      cp-0005.ckpt.data-00000-of-00001	cp-0006.ckpt.index		  cp-0008.ckpt.data-00000-of-00001
-cp-0001.ckpt.data-00000-of-00001  cp-0002.ckpt.index		    cp-0004.ckpt.data-00000-of-00001  cp-0005.ckpt.index		cp-0007.ckpt.data-00000-of-00001  cp-0008.ckpt.index
-cp-0001.ckpt.index		  cp-0003.ckpt.data-00000-of-00001  cp-0004.ckpt.index		      cp-0006.ckpt.data-00000-of-00001	cp-0007.ckpt.index
-```
 
 #### Restoring from checkpoints
 Restoring from checkpoint is as easy as loading the model and then loading the weights.

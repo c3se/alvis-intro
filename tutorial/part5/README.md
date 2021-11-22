@@ -79,7 +79,7 @@ and connect to the Alvis login node, or (recommended) setup a
 [SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
 to access the UI from your computer.
 
-## Tensorflow 2 TODO
+## Tensorflow 2
 In this tutorial we will show how to profile a TensorFlow model using the
 built-in TensorBoard profiler.  We make use of the `tensorboard` command-line
 utility for visualization and the `tensorflow.keras.callbacks.TensorBoard`
@@ -91,31 +91,22 @@ as well. Lastly, TensorBoard supports other ML-libraries as well, such as PyTorc
 ### Environment setup
 You need to complete a few steps before you can run this example. The environment only
 needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow.
-#### The following modules needs to be loaded:
+
 ```
-ml GCC/8.3.0 CUDA/10.1.243 OpenMPI/3.1.4 TensorFlow/2.3.1-Python-3.7.4
-```
-#### The following dataset needs to be available
-We provide equivalent datasets in `/cephyr/NOBACKUP/Datasets/MNIST` but to
-simplify the code in this example we download the dataset in pickled format.
-For production use you should always check first if the dataset is already
-available in `/cephyr/NOBACKUP/Datasets` before you download it. The size
-for MNIST should only be around 11M compressed.
-```
-wget https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
+flat_modules
+ml TensorFlow/2.5.0-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 ```
 
 ### Running the code
-We are now ready to train and profile our model. Training we do as usual by submitting our script.
-```
-sbatch ex5.sh
-```
+You'll probably want to run the code on a compute node to get access to the
+TMPDIR for faster file I/O. To do this you can use
+`sbatch jobscript-pytorch.sh`.
+
+Open up the jupyter server and follow the instructions in `profiling-tensorflow.ipynb`
 
 ### Generate the profiling data
 The profiling data will be created inside a directory `logs` in you current
 working directory.
-
-**Note: Make sure you complete all tasks in the environment setup before the next step!**
 
 ### Start TensorBoard
 Once the profiling data has been genereated we can start TensorBoard.
