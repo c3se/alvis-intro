@@ -26,3 +26,15 @@ srun python my_distributed_ml.py
 ```
 
 ### Data Parallelism with Horovod
+
+## TensorFlow
+TensorFlow has their own [guide to distributed training](https://www.tensorflow.org/guide/distributed_training)
+which is a good reference to know of. Here we will cover some of that material.
+
+### Environment setup
+To run these examples load pytorch:
+```bash
+flat_modules
+ml load TensorFlow/2.5.0-fosscuda-2020b
+```
+

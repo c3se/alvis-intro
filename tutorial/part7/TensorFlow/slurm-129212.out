@@ -1,0 +1,111 @@
+This job can be monitored from: https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=129212&from=1637682510000
+2021-11-23 16:48:32.932463: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcudart.so.11.0
+2021-11-23 16:48:34.529816: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcuda.so.1
+2021-11-23 16:48:34.603807: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties: 
+pciBusID: 0000:06:00.0 name: Tesla T4 computeCapability: 7.5
+coreClock: 1.59GHz coreCount: 40 deviceMemorySize: 14.75GiB deviceMemoryBandwidth: 298.08GiB/s
+2021-11-23 16:48:34.604450: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 1 with properties: 
+pciBusID: 0000:30:00.0 name: Tesla T4 computeCapability: 7.5
+coreClock: 1.59GHz coreCount: 40 deviceMemorySize: 14.75GiB deviceMemoryBandwidth: 298.08GiB/s
+2021-11-23 16:48:34.604474: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcudart.so.11.0
+2021-11-23 16:48:34.608290: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcublas.so.11
+2021-11-23 16:48:34.608354: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcublasLt.so.11
+2021-11-23 16:48:34.609640: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcufft.so.10
+2021-11-23 16:48:34.610217: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcurand.so.10
+2021-11-23 16:48:34.612897: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcusolver.so.11
+2021-11-23 16:48:34.613897: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcusparse.so.11
+2021-11-23 16:48:34.614207: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcudnn.so.8
+2021-11-23 16:48:34.616573: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0, 1
+2021-11-23 16:48:34.859887: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 0 with properties: 
+pciBusID: 0000:06:00.0 name: Tesla T4 computeCapability: 7.5
+coreClock: 1.59GHz coreCount: 40 deviceMemorySize: 14.75GiB deviceMemoryBandwidth: 298.08GiB/s
+2021-11-23 16:48:34.860939: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1733] Found device 1 with properties: 
+pciBusID: 0000:30:00.0 name: Tesla T4 computeCapability: 7.5
+coreClock: 1.59GHz coreCount: 40 deviceMemorySize: 14.75GiB deviceMemoryBandwidth: 298.08GiB/s
+2021-11-23 16:48:34.864184: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1871] Adding visible gpu devices: 0, 1
+2021-11-23 16:48:34.864228: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcudart.so.11.0
+2021-11-23 16:48:35.558558: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1258] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-11-23 16:48:35.558602: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1264]      0 1 
+2021-11-23 16:48:35.558609: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1277] 0:   N Y 
+2021-11-23 16:48:35.558613: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1277] 1:   Y N 
+2021-11-23 16:48:35.561602: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1418] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 13839 MB memory) -> physical GPU (device: 0, name: Tesla T4, pci bus id: 0000:06:00.0, compute capability: 7.5)
+2021-11-23 16:48:35.562582: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1418] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 13839 MB memory) -> physical GPU (device: 1, name: Tesla T4, pci bus id: 0000:30:00.0, compute capability: 7.5)
+WARNING:tensorflow:Collective ops is not configured at program startup. Some performance features may not be enabled.
+WARNING:tensorflow:Please add `keras.layers.InputLayer` instead of `keras.Input` to Sequential model. `keras.Input` is intended to be used by Functional model.
+2021-11-23 16:48:35.858708: I tensorflow/core/profiler/lib/profiler_session.cc:126] Profiler session initializing.
+2021-11-23 16:48:35.858750: I tensorflow/core/profiler/lib/profiler_session.cc:141] Profiler session started.
+2021-11-23 16:48:35.858783: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1611] Profiler found 2 GPUs
+2021-11-23 16:48:35.860217: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcupti.so.11.1
+2021-11-23 16:48:36.295921: I tensorflow/core/profiler/lib/profiler_session.cc:159] Profiler session tear down.
+2021-11-23 16:48:36.296135: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1743] CUPTI activity buffer flushed
+2021-11-23 16:48:36.654026: W tensorflow/core/grappler/optimizers/data/auto_shard.cc:695] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Found an unshardable source dataset: name: "TensorSliceDataset/_2"
+op: "TensorSliceDataset"
+input: "Placeholder/_0"
+input: "Placeholder/_1"
+attr {
+  key: "Toutput_types"
+  value {
+    list {
+      type: DT_FLOAT
+      type: DT_FLOAT
+    }
+  }
+}
+attr {
+  key: "output_shapes"
+  value {
+    list {
+      shape {
+        dim {
+          size: 5
+        }
+      }
+      shape {
+        dim {
+          size: 1
+        }
+      }
+    }
+  }
+}
+
+2021-11-23 16:48:36.716363: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:176] None of the MLIR Optimization Passes are enabled (registered 2)
+2021-11-23 16:48:36.716752: I tensorflow/core/platform/profile_utils/cpu_utils.cc:114] CPU Frequency: 2900000000 Hz
+2021-11-23 16:48:39.713952: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcublas.so.11
+2021-11-23 16:48:40.314129: I tensorflow/stream_executor/platform/default/dso_loader.cc:53] Successfully opened dynamic library libcublasLt.so.11
+Epoch 1/10
+1/4 [======>.......................] - ETA: 12s - loss: 2.53202/4 [==============>...............] - ETA: 0s - loss: 2.1370 4/4 [==============================] - 4s 112ms/step - loss: 1.7412
+Epoch 2/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.95704/4 [==============================] - 0s 5ms/step - loss: 0.7402
+Epoch 3/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.58634/4 [==============================] - 0s 4ms/step - loss: 0.4631
+Epoch 4/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.41352021-11-23 16:48:41.489836: I tensorflow/core/profiler/lib/profiler_session.cc:126] Profiler session initializing.
+2021-11-23 16:48:41.494017: I tensorflow/core/profiler/lib/profiler_session.cc:141] Profiler session started.
+3/4 [=====================>........] - ETA: 0s - loss: 0.34424/4 [==============================] - ETA: 0s - loss: 0.33104/4 [==============================] - 1s 248ms/step - loss: 0.3310
+Epoch 5/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.31104/4 [==============================] - 0s 6ms/step - loss: 0.2536
+Epoch 6/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.24352/4 [==============>...............] - ETA: 0s - loss: 0.22124/4 [==============================] - 0s 34ms/step - loss: 0.2035
+Epoch 7/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.19632021-11-23 16:48:42.736506: I tensorflow/core/profiler/lib/profiler_session.cc:66] Profiler session collecting data.
+2021-11-23 16:48:42.741324: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1743] CUPTI activity buffer flushed
+2021-11-23 16:48:42.818489: I tensorflow/core/profiler/internal/gpu/cupti_collector.cc:673]  GpuTracer has collected 1737 callback api events and 1693 activity events. 
+2021-11-23 16:48:42.858318: I tensorflow/core/profiler/lib/profiler_session.cc:159] Profiler session tear down.
+2021-11-23 16:48:43.106816: I tensorflow/core/profiler/rpc/client/save_profile.cc:137] Creating directory: logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42
+2021-11-23 16:48:43.167022: I tensorflow/core/profiler/rpc/client/save_profile.cc:143] Dumped gzipped tool data for trace.json.gz to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.trace.json.gz
+2021-11-23 16:48:43.286676: I tensorflow/core/profiler/rpc/client/save_profile.cc:137] Creating directory: logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42
+2021-11-23 16:48:43.299398: I tensorflow/core/profiler/rpc/client/save_profile.cc:143] Dumped gzipped tool data for memory_profile.json.gz to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.memory_profile.json.gz
+2021-11-23 16:48:43.305350: I tensorflow/core/profiler/rpc/client/capture_profile.cc:251] Creating directory: logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42Dumped tool data for xplane.pb to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.xplane.pb
+Dumped tool data for overview_page.pb to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.overview_page.pb
+Dumped tool data for input_pipeline.pb to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.input_pipeline.pb
+Dumped tool data for tensorflow_stats.pb to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.tensorflow_stats.pb
+Dumped tool data for kernel_stats.pb to logs/2021-11-23_16:48:35/train/plugins/profile/2021_11_23_16_48_42/alvis2-06.kernel_stats.pb
+
+2/4 [==============>...............] - ETA: 1s - loss: 0.17954/4 [==============================] - 1s 227ms/step - loss: 0.1688
+Epoch 8/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.16194/4 [==============================] - 0s 5ms/step - loss: 0.1436
+Epoch 9/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.13602/4 [==============>...............] - ETA: 0s - loss: 0.12603/4 [=====================>........] - ETA: 0s - loss: 0.13154/4 [==============================] - 0s 89ms/step - loss: 0.1247
+Epoch 10/10
+1/4 [======>.......................] - ETA: 0s - loss: 0.11624/4 [==============================] - 0s 5ms/step - loss: 0.1101
