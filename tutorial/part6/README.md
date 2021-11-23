@@ -19,6 +19,7 @@ this limit. Remember that you can see your resource usage for a job with the
 command `job_stats.py`. 
 
 ## Pytorch
+
 ### Environment setup
 To run these examples load pytorch:
 ```bash
@@ -57,3 +58,32 @@ For each of these options there are two variables we need to define:
 `MASTER_ADDR` and `MASTER_PORT`. `MASTER_ADDR` is the hostname or IP address of
 the node that the will host the 0th task. Master port simply needs to be free
 port on the node, usually set to 5 digits starting with 1, e.g. 12345.
+
+## TensorFlow
+TensorFlow has their own [guide to distributed training](https://www.tensorflow.org/guide/distributed_training)
+which is a good reference to know of. Here we will cover some of that material.
+
+### Environment setup
+To run these examples load pytorch:
+```bash
+flat_modules
+ml load TensorFlow/2.5.0-fosscuda-2020b
+```
+
+### Data Parallelism with MirroredStrategy
+In TensorFlow distributed training is handled by strategies. A strategy is
+defined such as `MirroredStrategy` and then any variables created in this
+strategies scope will be handled in a distributed fashion. For example:
+```python
+strategy = tf.distributed.MirroredStrategy()
+
+with strategy.scope():
+    my_model = MyModel()
+
+# ... use model as usual
+```
+
+**Note:** There is a known
+[bug](https://github.com/tensorflow/tensorflow/issues/50487) when using
+MirroredStrategy from within a function in TensorFlow 2.5.0 and Python 3.8 and
+3.9.
