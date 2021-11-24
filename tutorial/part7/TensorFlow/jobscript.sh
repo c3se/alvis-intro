@@ -3,11 +3,25 @@
 #SBATCH -p alvis
 #SBATCH -t 00:10:00
 #SBATCH --gpus-per-node=T4:2
-#SBATCH -J "SNMG PyTorch"  # Single node, multiple GPUs
+#SBATCH --ntasks-per-node=2
+#SBATCH -J "MNMG TensorFlow"  # Single node, multiple GPUs
 
-# Set-up environment
+#=============================================================================
+#                              TensorFlow
+#=============================================================================
 flat_modules
-ml TensorFlow/2.5.0-fosscuda-2020b
+ml TensorFlow/2.6.0-foss-2021a-CUDA-11.3.1
 
-# Run DataParallel
-python mirrored_strategy.py
+# Run with MultiWorkerMirroredStrategy
+#srun python mwms.py --communicator=NCCL
+srun python mwms.py --communicator=RING
+
+
+#=============================================================================
+#                       TensorFlow with Horovod
+#=============================================================================
+#flat_modules
+#ml Horovod/0.21.1-fosscuda-2020b-TensorFlow-2.4.1
+
+# Run with Horovod
+#srun python hvd.py
