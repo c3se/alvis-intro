@@ -9,8 +9,8 @@ import torch.multiprocessing as mp
 from torch.utils.data import DataLoader
 from torch.nn.parallel import DistributedDataParallel
 
-from model import Model
-from dataset import RandomDataset
+from model import GPT
+from dataset import RandomCorpus
 
 
 
@@ -41,19 +41,19 @@ def run_process(rank, world_size):
     setup(rank, world_size, verbose=True)
     
     # Initialize data_loader
-    input_size = 5
-    output_size = 1
-    batch_size = 30
-    data_size = 100
+    context_size = 1024
+    context_size
+    batch_size = 64
+    corpus_length = 1024
 
     data_loader = DataLoader(
-        dataset=RandomDataset(input_size, data_size),
+        dataset=RandomCorpus(input_size, data_size),
         batch_size=batch_size,
         shuffle=True,
     )
 
     # Initialize model and attach to optimizer
-    model = Model(input_size, output_size, verbose=False)
+    model = GPT(input_size, output_size, verbose=False)
 
     device = torch.device(f"cuda:{rank}")
     model.to(device)
