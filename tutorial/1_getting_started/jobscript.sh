@@ -7,7 +7,7 @@
 # The necessary flags to send to sbatch can either be included when calling
 # sbatch or more conveniently it can be specified in the jobscript as follows
 
-#SBATCH -A C3SE-STAFF         # find your project with the "projinfo" command
+#SBATCH -A SNIC2021-7-120         # find your project with the "projinfo" command
 #SBATCH -p alvis              # what partition to use (usually not necessary)
 #SBATCH -t 0-00:01:00         # how long time it will take to run
 #SBATCH --gpus-per-node=T4:1  # choosing no. GPUs and their type

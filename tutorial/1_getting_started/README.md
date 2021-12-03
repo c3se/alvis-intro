@@ -57,12 +57,12 @@ Now lets move to this file
 hello.sh  README.md
 ```
 
-To read this file you can use your favourite command line text editor, `cat` or
-`less`
+To read this file you can use your favourite command line text editor (`nano`,
+`vim`, ...) or favourite file reader (`cat`, `less`, ...)
 ```bash
 [USER@alvis1 part1]$ less README.md
 ```
-to go out from `less` press `q`.
+to exit `less` press `q`.
 
 #### Exercises
 1. On Alvis clone or download the alvis-intro code
@@ -94,15 +94,23 @@ To determine the name of your project use `projinfo`, e.g.
  Project                Used[h]         Allocated[h]      Queue
     User
 ---------------------------------------------------------------
-SNIC2021-X-YY             12.18                  100      alvis
-    USER                   6.25   
+SNIC2021-X-YY             12.18                 3500      alvis
+    USER                   6.25
 ```
-in this case the project is `SNIC2021-X-YY`.
+in this case the project is `SNIC2021-X-YY`. If you're part of the Introduction
+to Alvis workshop project then the project is `SNIC2021-7-120`.
 
 #### Deciding GPU type
 When deciding what GPUs to allocate the main consideration is what demands the
 application has, the secondary is what GPUs are available right now and the
 price for GPUs should usually only be considered last if at all.
+
+The possible demands of a particular application that can influence what GPUs
+you should choose is primarilly based on memeory requirements. If your machine
+learning model can fit on the GPU at the same time as a batch from your dataset,
+then this GPU will probably work well for your applications. Any performance
+differences between GPU types will probably be less than the waiting time for a
+contested GPU type.
 
 This script doesn't have any constraints on what GPU to use (in fact it doesn't
 use a GPU and doesn't technically belong on Alvis, but you can still learn the
