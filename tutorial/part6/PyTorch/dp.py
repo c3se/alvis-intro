@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 
 from model import GPT
 from dataset import RandomCorpus
-
+from logger import BenchmarkWriter
 
 def run_process():
     '''Run process
@@ -15,9 +15,9 @@ def run_process():
     '''
     
     # Initialize data_loader
-    context_size = 1024
+    context_size = 512
     batch_size = 32
-    corpus_length = 128
+    corpus_length = 1024
     vocab_size = 2**8
 
     data_loader = DataLoader(
@@ -27,7 +27,7 @@ def run_process():
     )
 
     # Initialize model and attach to optimizer
-    model = GPT(vocab_size, context_size, verbose=True)
+    model = GPT(vocab_size, context_size, verbose=False)
 
     device = torch.device("cuda:0")
     model.to(device)
@@ -42,29 +42,38 @@ def run_process():
         # between running on a single GPU or multiple GPUs.
         model = DataParallel(model)
 
+    # Initialize logger instance to see performance
+    writer = BenchmarkWriter()
+
     # Actual training
+    global_step = 0
     n_epochs = 10
     for epoch in range(n_epochs):
         model.train()
         for sequence in data_loader:
             opt.zero_grad()
 
-            sequence = sequence.to(device)
-            logits = model(sequence)
-
             # Shift so that prediction is next token for each token
-            logits = logits[..., :-1, :].contiguous()
+            sequence = sequence.to(device)
+            logits = model(sequence[..., :-1].contiguous())
             target = sequence[..., 1:].contiguous()
 
-            # Flatten the tokens
+            # Flatten the tokens when calculating loss
             loss = loss_func(
                 logits.flatten(end_dim=-2),
                 target.flatten(),
             )
             loss.backward()
             opt.step()
+            
+            # This will also log the wall time
+            global_step += batch_size
+            writer.add_scalar("Loss", loss.item(), global_step=global_step)
         
-        print(epoch)
+        print("Epoch:", epoch)
+
+    writer.benchmark_results(burn_in=12, step_unit="seq")
+    writer.close()
 
     return model
 

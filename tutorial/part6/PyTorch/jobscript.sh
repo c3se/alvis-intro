@@ -7,10 +7,10 @@
 
 # Set-up environment
 flat_modules
-ml PyTorch/1.8.1-fosscuda-2020b
+ml PyTorch/1.8.1-fosscuda-2020b TensorFlow/2.5.0-fosscuda-2020b
 
 # Run DataParallel
-python dp.py
+#python dp.py
 
 # Set up for the different multiprocessing alternatives
 export MASTER_ADDR="$HOSTNAME"
@@ -25,4 +25,4 @@ ngpus=$(python -c "import torch; print(torch.cuda.device_count())")
 #    ddp_launch.py --world_size=$ngpus
 
 # Run DistributedDataParallel with srun (MPI)
-#srun --ntasks=$ngpus python ddp_mpi.py
+srun --ntasks=$ngpus python ddp_mpi.py
