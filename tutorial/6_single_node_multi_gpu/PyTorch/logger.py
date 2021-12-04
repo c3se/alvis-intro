@@ -64,9 +64,10 @@ class BenchmarkWriter(SummaryWriter):
             walltime=None,
         )
     
-    def benchmark_results(self, burn_in=0, step_unit="step"):
+    def benchmark_results(self, burn_in_steps=0, step_unit="step"):
         steps = self.scalars[self.main_tag]["global_step"][burn_in:]
         times = self.scalars[self.main_tag]["walltime"][burn_in:]
+        steps, times = sorted((s, t) for s, t in zip(steps, times) if s >= burn_in_steps)
         n_steps = steps[-1] - steps[0]
         tot_time = times[-1] - times[0]
         print(f"{self.main_tag}: {tot_time / n_steps} s/{step_unit}")

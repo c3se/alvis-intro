@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 
 import torch
@@ -25,6 +26,7 @@ def setup(backend, verbose=False):
   Master port:   {os.environ["MASTER_PORT"]}
 =============================================
         ''')
+        sys.stdout.flush()
 
     dist.init_process_group(backend)
 
@@ -58,7 +60,7 @@ def run_process():
     )
 
     # Initialize model
-    model = GPT(vocab_size, context_size, verbose=False)
+    model = GPT(vocab_size, context_size, verbose=True)
 
     device = torch.device(f"cuda:{local_rank}")
     model.to(device)
@@ -108,6 +110,8 @@ def run_process():
         
         if rank==0:
             print("Epoch:", epoch)
+        # Flush stdout to see progress in out file
+        sys.stdout.flush()
 
     if rank==0:
         writer.benchmark_results(burn_in_steps=2*corpus_length, step_unit="seq")
@@ -118,7 +122,7 @@ def run_process():
 
 def main(args):
     # Run processes
-    setup(args.backend)
+    setup(args.backend, verbose=True)
     run_process()
     cleanup()
     
@@ -126,7 +130,7 @@ def mp_launch(local_rank, args):
     '''Help function to process rank from spawn and then launch main'''
     os.environ["LOCAL_RANK"] = str(local_rank)
     os.environ["RANK"] = str(local_rank)
-    return main(args)
+    main(args)
 
 
 if __name__=="__main__":

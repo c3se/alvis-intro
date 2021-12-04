@@ -1,4 +1,20 @@
 # Adapted from https://www.tensorflow.org/text/tutorials/transformer
+# no assuarance is made that GPT is correctly implemented and any use of this
+# model in a scientific paper should probably cite
+#  Improving Language Understanding by Generative Pre-Training 
+#  by Alec Radford, Karthik Narasimhan, Tim Salimans, Ilya Sutskever
+# ,
+#  Language Models are Unsupervised Multitask Learners
+#  by Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever
+# and
+#  Language Models are Few-Shot Learners
+#  by Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan,
+#  Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda
+#  Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan,
+#  Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter,
+#  Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray,
+#  Benjamin Chess, Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford,
+#  Ilya Sutskever, Dario Amodei
 import torch
 from torch import nn
 
