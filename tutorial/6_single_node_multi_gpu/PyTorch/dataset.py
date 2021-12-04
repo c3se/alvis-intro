@@ -1,18 +1,11 @@
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, TensorDataset
 
 
-class RandomCorpus(Dataset):
+class RandomCorpus(TensorDataset):
 
-    def __init__(self, n_sentences, context_length, vocab_size):
-        self.len = n_sentences
-        self.corpus = torch.randint(size=(n_sentences, context_length), high=vocab_size)
-
-    def __getitem__(self, index):
-        return self.corpus[index]
-
-    def __len__(self):
-        return self.len
+    def __init__(self, n_sentences, context_size, vocab_size):
+        super().__init__(torch.randint(size=(n_sentences, context_size), high=vocab_size))
 
 
 class RandomDataset(Dataset):

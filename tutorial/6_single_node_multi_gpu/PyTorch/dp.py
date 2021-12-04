@@ -50,7 +50,7 @@ def run_process():
     n_epochs = 10
     for epoch in range(n_epochs):
         model.train()
-        for sequence in data_loader:
+        for sequence, in data_loader:
             opt.zero_grad()
 
             # Shift so that prediction is next token for each token
