@@ -1,5 +1,4 @@
 import os
-import sys
 import argparse
 
 import torch
@@ -26,7 +25,6 @@ def setup(backend, verbose=False):
   Master port:   {os.environ["MASTER_PORT"]}
 =============================================
         ''')
-        sys.stdout.flush()
 
     dist.init_process_group(backend)
 
@@ -110,8 +108,6 @@ def run_process():
         
         if rank==0:
             print("Epoch:", epoch)
-        # Flush stdout to see progress in out file
-        sys.stdout.flush()
 
     if rank==0:
         writer.benchmark_results(burn_in_steps=2*corpus_length, step_unit="seq")
@@ -125,12 +121,6 @@ def main(args):
     setup(args.backend, verbose=True)
     run_process()
     cleanup()
-    
-def mp_launch(local_rank, args):
-    '''Help function to process rank from spawn and then launch main'''
-    os.environ["LOCAL_RANK"] = str(local_rank)
-    os.environ["RANK"] = str(local_rank)
-    main(args)
 
 
 if __name__=="__main__":
@@ -143,22 +133,6 @@ if __name__=="__main__":
         default="nccl",
         help="Choice of backend to torch.distributed.init_process_group",
     )
-    parser.add_argument(
-        "--spawn",
-        action="store_true",
-        default=False,
-    )
     args = parser.parse_args()
 
-    # Spawn process if necessary (i.e. not launched with srun, torchrun, etc.)
-    if args.spawn:
-
-        mp.spawn(
-            mp_launch,
-            args=(args,),
-            nprocs=int(os.environ["WORLD_SIZE"]),
-            join=True,
-        )
-
-    else:
-        main(args)
+    main(args)

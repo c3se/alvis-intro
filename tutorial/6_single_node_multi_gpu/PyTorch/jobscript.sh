@@ -19,13 +19,9 @@ export MASTER_PORT=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)
 ngpus=$(nvidia-smi -L | wc -l)
 export WORLD_SIZE=$ngpus
 
-# Run DistributedDataParallel with torch.multiprocessing
-OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -u ddp.py --spawn
-
 # Run DistributedDataParallel with run
 # (elastic version of predecessor "python -m torch.distributed.launch --use-env" and
 # equivalent to "torchrun" in newer versions)
-#TORCHELASTIC_MAX_RESTARTS=1
 #python -m torch.distributed.run \
 #    --standalone \
 #    --nnodes=1 \
@@ -33,4 +29,4 @@ OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python -u ddp.py --spawn
 #    ddp.py
 
 # Run DistributedDataParallel with srun (MPI)
-#srun --ntasks=$ngpus python ddp.py --backend=mpi
+srun --ntasks=$ngpus python ddp.py --backend=mpi
