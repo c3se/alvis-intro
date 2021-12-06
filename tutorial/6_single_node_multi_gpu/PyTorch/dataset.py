@@ -1,16 +1,14 @@
+from typing import Iterable
+
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import TensorDataset
 
 
-class RandomDataset(Dataset):
+class RandomDataset(TensorDataset):
 
-    def __init__(self, size, length):
-        self.len = length
-        self.data = torch.randn(length, size)
-        self.target = self.data.max(1, keepdim=True)[0].sin()
-
-    def __getitem__(self, index):
-        return self.data[index], self.target[index]
-
-    def __len__(self):
-        return self.len
+    def __init__(self, data_size, length, n_classes=10):
+        if isinstance(data_size, int):
+            data_size = (data_size,)
+        data = torch.randn(length, *data_size)
+        target = torch.randint(high=n_classes, size=(length,1))
+        super().__init__(data, target)
