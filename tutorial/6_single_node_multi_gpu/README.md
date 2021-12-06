@@ -50,9 +50,9 @@ According to the
 DDP is currently the go to method for data parallelism even on a single node.
 
 DDP works differently from DP by running on several different processes. Therefore, we have some options to choose between:
-1. Launching processes with `torch.multiprocessing`
-2. Launching processes with `torch.distributed.launch`
-3. Launching processes with `srun` or `mpirun`
+1. Launching processes with `torch.distributed.launch`
+2. Launching processes with `srun` or `mpirun`
+3. Launching processes with `torch.multiprocessing` (not shown)
 
 For each of these options there are two variables we need to define:
 `MASTER_ADDR` and `MASTER_PORT`. `MASTER_ADDR` is the hostname or IP address of
