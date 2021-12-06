@@ -18,11 +18,11 @@ export MASTER_PORT="12345"
 ngpus=$(python -c "import torch; print(torch.cuda.device_count())")
 
 # Run DistributedDataParallel with torch.multiprocessing
-#python ddp_mp.py
+python ddp_mp.py
 
 # Run DistributedDataParallel with torch.distributed.launch
-#python -m torch.distributed.launch --nproc_per_node=$ngpus\
-#    ddp_launch.py --world_size=$ngpus
+python -m torch.distributed.launch --nproc_per_node=$ngpus\
+    ddp_launch.py --world_size=$ngpus
 
 # Run DistributedDataParallel with srun (MPI)
-#srun --ntasks=$ngpus python ddp_mpi.py
+srun --ntasks=$ngpus python ddp_mpi.py

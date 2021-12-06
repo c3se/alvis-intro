@@ -1,3 +1,5 @@
+import sys
+
 import os
 
 import torch
@@ -12,7 +14,7 @@ from model import Model
 from dataset import RandomDataset
 
 
-def setup(verbose=False):
+def setup(verbose=True):
     dist.init_process_group("mpi")
     rank = dist.get_rank()
 
@@ -42,7 +44,7 @@ def run_process():
     rank = setup(verbose=True)
     
     # Initialize data_loader
-    input_size = 5
+    input_size = 500
     output_size = 1
     batch_size = 30
     data_size = 100
@@ -54,7 +56,7 @@ def run_process():
     )
 
     # Initialize model and attach to optimizer
-    model = Model(input_size, output_size, verbose=False)
+    model = Model(input_size, output_size, verbose=True)
 
     device = torch.device(f"cuda:{rank}")
     model.to(device)
@@ -65,7 +67,7 @@ def run_process():
     model = DistributedDataParallel(model, device_ids=[rank], output_device=rank)
 
     # Actual training
-    n_epochs = 10
+    n_epochs = 3
     for epoch in range(n_epochs):
         model.train()
         for data, target in data_loader:
@@ -80,7 +82,8 @@ def run_process():
             opt.step()
         
         if rank==0:
-            print(epoch)
+            print(f"Epoch {epoch}")
+            sys.stdout.flush()  # to compare between processes
 
     # Cleanup process
     cleanup()

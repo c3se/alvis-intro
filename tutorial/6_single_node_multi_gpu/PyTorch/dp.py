@@ -1,3 +1,5 @@
+import sys
+
 import torch
 from torch import nn, optim
 from torch.nn import DataParallel
@@ -15,7 +17,7 @@ def run_process():
     '''
     
     # Initialize data_loader
-    input_size = 5
+    input_size = 500
     output_size = 1
     batch_size = 30
     data_size = 100
@@ -27,7 +29,7 @@ def run_process():
     )
 
     # Initialize model and attach to optimizer
-    model = Model(input_size, output_size, verbose=False)
+    model = Model(input_size, output_size, verbose=True)
 
     device = torch.device("cuda:0")
     model.to(device)
@@ -41,7 +43,7 @@ def run_process():
         model = DataParallel(model)
 
     # Actual training
-    n_epochs = 10
+    n_epochs = 3
     for epoch in range(n_epochs):
         model.train()
         for data, target in data_loader:
@@ -55,7 +57,8 @@ def run_process():
             loss.backward()
             opt.step()
         
-        print(epoch)
+        print(f"Epoch {epoch}")
+        sys.stdout.flush()  # to compare between processes
 
     return model
 

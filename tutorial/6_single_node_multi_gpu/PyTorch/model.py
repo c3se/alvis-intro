@@ -5,10 +5,11 @@ class Model(nn.Module):
 
     def __init__(self, input_size, output_size, verbose=False):
         super(Model, self).__init__()
+        hidden_dim = 5
         self.layers = nn.ModuleList([
-            nn.Linear(input_size, 5),
-            nn.Linear(5, 5),
-            nn.Linear(5, output_size),
+            nn.Linear(input_size, hidden_dim),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.Linear(hidden_dim, output_size),
         ])
         self.verbose = verbose
 

@@ -1,3 +1,5 @@
+import sys
+
 import os
 import socket
 
@@ -14,7 +16,7 @@ from dataset import RandomDataset
 
 
 
-def setup(rank, world_size, verbose=False):
+def setup(rank, world_size, verbose=True):
     if verbose:
         print(f'''
 =============================================
@@ -41,7 +43,7 @@ def run_process(rank, world_size):
     setup(rank, world_size, verbose=True)
     
     # Initialize data_loader
-    input_size = 5
+    input_size = 500
     output_size = 1
     batch_size = 30
     data_size = 100
@@ -53,7 +55,7 @@ def run_process(rank, world_size):
     )
 
     # Initialize model and attach to optimizer
-    model = Model(input_size, output_size, verbose=False)
+    model = Model(input_size, output_size, verbose=True)
 
     device = torch.device(f"cuda:{rank}")
     model.to(device)
@@ -64,7 +66,7 @@ def run_process(rank, world_size):
     model = DistributedDataParallel(model, device_ids=[rank])
 
     # Actual training
-    n_epochs = 10
+    n_epochs = 3
     for epoch in range(n_epochs):
         model.train()
         for data, target in data_loader:
@@ -79,7 +81,8 @@ def run_process(rank, world_size):
             opt.step()
         
         if rank==0:
-            print(epoch)
+            print(f"Epoch {epoch}")
+            sys.stdout.flush()  # to compare between processes
 
     # Cleanup process
     cleanup()
