@@ -41,7 +41,7 @@ def run_process(verbose=False):
     This is what is actually run on each process.
     '''
     # Setup this process
-    local_rank, rank, world_size= setup(verbose=verbose)
+    local_rank, rank, world_size= setup(verbose=False)
     
     # Initialize data_loader
     input_size = 5

@@ -7,8 +7,7 @@
 #SBATCH -J "MNMG PyTorch"  # multi node, multi GPU
 
 # Set-up environment
-#flat_modules
-module purge
+flat_modules
 ml Horovod/0.21.1-fosscuda-2019b-PyTorch-1.7.1-Python-3.7.4
 
 ngpus=$(nvidia-smi -L | wc -l)
