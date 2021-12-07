@@ -9,7 +9,7 @@ from dataset import get_random_dataset
 
 if __name__=="__main__":
     # Initialize dataset
-    input_shape = 5
+    input_shape = 500
     output_shape = 1
     data_size = 100
 

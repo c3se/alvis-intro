@@ -1,10 +1,7 @@
-import os
-
 import torch
 import torch.optim as optim
-import torch.distributed as dist
 from torch.utils.data import DataLoader
-from torch.nn.parallel import DistributedDataParallel
+import horvod.torch as hvd
 
 from model import Model
 from dataset import RandomDataset
@@ -12,36 +9,32 @@ from dataset import RandomDataset
 
 def setup(verbose=False):
 
-    local_rank = int(os.environ["LOCAL_RANK"])
-    rank = int(os.environ["RANK"])
-    world_size = int(os.environ["WORLD_SIZE"])
+    hvd.init()
 
     if verbose:
         print(f'''
 =============================================
-Rank: {rank}
-Local rank: {local_rank}
-World size: {world_size}
-Master addres: {os.environ["MASTER_ADDR"]}
-Master port: {os.environ["MASTER_PORT"]}
+Rank: {hvd.rank()}
+Local rank: {hvd.local_rank()}
+World size: {hvd.size()}
 =============================================
         ''')
 
-    dist.init_process_group("nccl", rank=rank, world_size=world_size)
+    # Limit # of CPU threads to be used per worker.
+    torch.set_num_threads(1)
     
-    return local_rank, rank, world_size
 
 def cleanup():
-    dist.destroy_process_group()
+    pass
 
 
-def run_process(verbose=False):
+def run_process():
     '''Run process
 
     This is what is actually run on each process.
     '''
     # Setup this process
-    local_rank, rank, world_size= setup(verbose=verbose)
+    setup(verbose=True)
     
     # Initialize data_loader
     input_size = 5
@@ -58,13 +51,21 @@ def run_process(verbose=False):
     # Initialize model and attach to optimizer
     model = Model(input_size, output_size, verbose=False)
 
-    device = torch.device(f"cuda:{local_rank}")
+    device = torch.device(f"cuda:{hvd.local_rank()}")
     model.to(device)
 
     opt = optim.SGD(model.parameters(), lr=0.01)
 
     # Parallelize
-    model = DistributedDataParallel(model, device_ids=[device], output_device=device)
+    # Broadcast parameters & optimizer state.
+    hvd.broadcast_parameters(model.state_dict(), root_rank=0)
+    hvd.broadcast_optimizer_state(opt, root_rank=0)
+
+    # Wrap optimizer with DistributedOptimizer.
+    opt= hvd.DistributedOptimizer(
+        opt,
+        named_parameters=model.named_parameters(),
+    )
 
     # Actual training
     n_epochs = 10
@@ -81,7 +82,7 @@ def run_process(verbose=False):
             loss.backward()
             opt.step()
         
-        if rank==0:
+        if hvd.rank()==0:
             print(epoch)
 
     # Cleanup process
@@ -91,7 +92,8 @@ def run_process(verbose=False):
 
 
 def main():
-    run_process(verbose=True)
+    # Spawn processes
+    run_process()
 
 
 if __name__=="__main__":

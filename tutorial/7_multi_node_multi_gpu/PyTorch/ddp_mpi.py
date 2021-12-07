@@ -1,25 +1,26 @@
 import os
 
 import torch
-import torch.nn as nn
 import torch.optim as optim
 import torch.distributed as dist
-import torch.multiprocessing as mp
 from torch.utils.data import DataLoader
 from torch.nn.parallel import DistributedDataParallel
 
-import utils
 from model import Model
 from dataset import RandomDataset
 
 
 def setup(verbose=False):
+    local_rank = int(os.environ["SLURM_LOCALID"])
+    rank = int(os.environ["SLURM_PROCID"])
+    world_size = int(os.environ["SLURM_NTASKS"])
+
     if verbose:
         print(f'''
 =============================================
-Rank: {utils.rank}
-Local rank: {utils.local_rank}
-World size: {utils.world_size}
+Rank: {rank}
+Local rank: {local_rank}
+World size: {world_size}
 Master addres: {os.environ["MASTER_ADDR"]}
 Master port: {os.environ["MASTER_PORT"]}
 =============================================
@@ -27,6 +28,7 @@ Master port: {os.environ["MASTER_PORT"]}
 
     dist.init_process_group("mpi")
     
+    return local_rank, rank, world_size
 
 def cleanup():
     dist.destroy_process_group()
@@ -38,7 +40,7 @@ def run_process():
     This is what is actually run on each process.
     '''
     # Setup this process
-    setup(verbose=True)
+    local_rank, rank, world_size = setup(verbose=verbose)
     
     # Initialize data_loader
     input_size = 5
@@ -55,7 +57,7 @@ def run_process():
     # Initialize model and attach to optimizer
     model = Model(input_size, output_size, verbose=False)
 
-    device = torch.device(f"cuda:{utils.local_rank}")
+    device = torch.device(f"cuda:{local_rank}")
     model.to(device)
 
     opt = optim.SGD(model.parameters(), lr=0.01)
@@ -63,8 +65,8 @@ def run_process():
     # Parallelize
     model = DistributedDataParallel(
         model,
-        device_ids=[utils.local_rank],
-        output_device=utils.local_rank,
+        device_ids=[local_rank],
+        output_device=local_rank,
     )
 
     # Actual training
@@ -82,7 +84,7 @@ def run_process():
             loss.backward()
             opt.step()
         
-        if utils.rank==0:
+        if rank==0:
             print(epoch)
 
     # Cleanup process

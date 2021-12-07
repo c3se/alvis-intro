@@ -1,10 +1,8 @@
 import os
 
 import torch
-import torch.nn as nn
 import torch.optim as optim
 import torch.distributed as dist
-import torch.multiprocessing as mp
 from torch.utils.data import DataLoader
 from torch.nn.parallel import DistributedDataParallel
 
@@ -15,7 +13,6 @@ from dataset import RandomDataset
 def setup(verbose=False):
 
     local_rank = int(os.environ["SLURM_LOCALID"])
-    local_size = int(os.environ["SLURM_GPUS_PER_NODE"].split(":")[-1])
     rank = int(os.environ["SLURM_PROCID"])
     world_size = int(os.environ["SLURM_NTASKS"])
 
