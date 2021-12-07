@@ -14,4 +14,4 @@ ml TensorFlow/2.5.0-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.
 jupyter lab
 
 # Non-interactive
-#ipython -c "%run regression-pytorch.ipynb"
+#ipython -c "%run checkpointing-tensorflow.ipynb"

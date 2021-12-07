@@ -13,7 +13,7 @@ ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 J
 # Unpack data to TMPDIR
 cd $TMPDIR
 tar -xzf "$SLURM_SUBMIT_DIR/data.tar.gz"
-cp data-pytorch.ipynb .
+cp "$SLURM_SUBMIT_DIR/data-pytorch.ipynb" .
 
 # Interactive
 #jupyter lab
@@ -22,8 +22,8 @@ cp data-pytorch.ipynb .
 #jupyter notebook
 
 # Non-interactive
-ipython -c "%run regression-pytorch.ipynb"
+ipython -c "%run data-pytorch.ipynb"
 
 # or you can instead use
-#jupyter nbconvert --to python regression-pytorch.ipynb &&
-#python regression-pytorch.py
+#jupyter nbconvert --to python data-pytorch.ipynb &&
+#python data-pytorch.py

@@ -13,7 +13,7 @@ ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.
 # Unpack data to TMPDIR
 cd $TMPDIR
 tar -xzf "$SLURM_SUBMIT_DIR/data.tar.gz"
-cp data-tensorflow.ipynb .
+cp "$SLURM_SUBMIT_DIR/data-tensorflow.ipynb" .
 
 # Interactive
 #jupyter lab
@@ -22,8 +22,8 @@ cp data-tensorflow.ipynb .
 #jupyter notebook
 
 # Non-interactive
-ipython -c "%run regression-pytorch.ipynb"
+ipython -c "%run data-tensorflow.ipynb"
 
 # or you can instead use
-#jupyter nbconvert --to python regression-pytorch.ipynb &&
-#python regression-pytorch.py
+#jupyter nbconvert --to python data-tensorflow.ipynb &&
+#python data-tensorflow.py

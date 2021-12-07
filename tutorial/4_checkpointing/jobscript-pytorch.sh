@@ -14,4 +14,4 @@ ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 J
 jupyter lab
 
 # Non-interactive
-#ipython -c "%run regression-pytorch.ipynb"
+#ipython -c "%run checkpointing-pytorch.ipynb"
