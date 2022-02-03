@@ -16,10 +16,11 @@ from logger import BenchmarkWriter
 
 
 def setup(backend, verbose=False):
+    rank = os.environ["RANK"] if "RANK" in os.environ else os.environ["SLURM_PROCID"]
     if verbose:
         print(f'''
 =============================================
-  Rank:          {os.environ["RANK"]}
+  Rank:          {rank}
   World size:    {os.environ["WORLD_SIZE"]}
   Master addres: {os.environ["MASTER_ADDR"]}
   Master port:   {os.environ["MASTER_PORT"]}
