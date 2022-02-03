@@ -65,7 +65,7 @@ with torch.profiler.profile(
 ### Connecting to TensorBoard
 Then you launch a TensorBoard server by using the following command in a terminal
 ```bash
-[cid@alvis1 part5]$ tensorboard --logdir="path_to_logdir"
+[cid@alvis1 5_profiling]$ tensorboard --logdir="path_to_logdir"
 Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
 TensorBoard 2.7.0 at http://localhost:6006/ (Press CTRL+C to quit)
 ```

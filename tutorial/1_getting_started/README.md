@@ -57,15 +57,15 @@ or download it as an archive
 
 Now lets move to this file
 ```bash
-[USER@alvis1 ~]$ cd alvis-intro/tutorial/part1
-[USER@alvis1 part1]$ ls
+[USER@alvis1 ~]$ cd alvis-intro/tutorial/1_getting_started
+[USER@alvis1 1_getting_started]$ ls
 hello.sh  README.md
 ```
 
 To read this file you can use your favourite command line text editor (`nano`,
 `vim`, ...) or favourite file reader (`cat`, `less`, ...)
 ```bash
-[USER@alvis1 part1]$ less README.md
+[USER@alvis1 1_getting_started]$ less README.md
 ```
 to exit `less` press <kbd>q</kbd>.
 
@@ -95,7 +95,7 @@ Now there are three things to determine before we submit our script:
 #### Project name
 To determine the name of your project use `projinfo`, e.g.
 ```bash
-[USER@alvis1 part1]$ projinfo
+[USER@alvis1 1_getting_started]$ projinfo
  Project                Used[h]         Allocated[h]      Queue
     User
 ---------------------------------------------------------------
@@ -126,7 +126,7 @@ principles from it). Therefore, we should try to see what GPU type is most
 available right now to reduce how long we have to wait. This we can do with the
 command `jobinfo` e.g.
 ```
-[USER@alvis1 part1]$ jobinfo -s
+[USER@alvis1 1_getting_started]$ jobinfo -s
 CLUSTER: alvis
 
 Summary: 25 running jobs using 13 nodes, 1 waiting normal jobs wanting <= 1 nodes, 2 blocked jobs
@@ -176,12 +176,12 @@ should be enough. The maximum time you can allocate is seven days.
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
 ```bash
-[USER@alvis1 part1]$ srun -A SNIC2021-X-YY --gpus-per-node=T4:1 -t 00:01:00 --pty bash
+[USER@alvis1 1_getting_started]$ srun -A SNIC2021-X-YY --gpus-per-node=T4:1 -t 00:01:00 --pty bash
 srun: job 102893 queued and waiting for resources
 srun: job 102893 has been allocated resources
-[USER@alvisX-Y part1]$ bash hello.sh
+[USER@alvisX-Y 1_getting_started]$ bash hello.sh
 Hello Alvis!
-[USER@alvisX-Y part1]$ exit
+[USER@alvisX-Y 1_getting_started]$ exit
 ```
 Here an interactive (pseudo)-terminal was started by adding the flag `--pty` and
 note that `exit` or <kbd>Ctrl</kbd>+<kbd>D</kbd> is used to end the session.
@@ -192,18 +192,18 @@ You should also make a habit of taking a look at the run statistics to see how
 the job has run, this can give hints for if something has gone wrong or is
 running inefficiently. To see these statistics run (but with your job ID)
 ```bash
-[USER@alvis1 part1]$ job_stats.py 102893
+[USER@alvis1 1_getting_started]$ job_stats.py 102893
 https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
 ```
 
 To see the current status of your job and find out your job ID you can also run
 ```bash
-[USER@alvis1 part1]$ squeue -u $USER
+[USER@alvis1 1_getting_started]$ squeue -u $USER
 ```
 if nothing shows up, the most likely reason is that your job has already
 finished. To also see accounting information from finished submissions use
 ```bash
-[USER@alvis1 part1]$ sacct
+[USER@alvis1 1_getting_started]$ sacct
 ```
 
 #### Submitting a jobscript
@@ -221,7 +221,7 @@ jobscript as `#SBATCH --flat-name value`.
 Now take a look at `jobscript.sh` and see that you understand what is going on.
 Then, when you feel comfortable you can submit the jobscript with
 ```bash
-[USER@alvis1 part1]$ sbatch jobscript.sh
+[USER@alvis1 1_getting_started]$ sbatch jobscript.sh
 ```
 
 Next make sure to look at how it has gone for the script using what you learnt
@@ -278,13 +278,13 @@ There are two jobscripts `jobsubmit_flat_modules.sh` and
 `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
 the two different module structures to load your software.
 ```bash
-[USER@alvis1 part1]$ flat_modules
-[USER@alvis1 part1]$ sbatch jobscript_flat_modules.sh
+[USER@alvis1 1_getting_started]$ flat_modules
+[USER@alvis1 1_getting_started]$ sbatch jobscript_flat_modules.sh
 ```
 and
 ```bash
-[USER@alvis1 part1]$ hierarchical_modules
-[USER@alvis1 part1]$ sbatch jobscript_hierarchical_modules.sh
+[USER@alvis1 1_getting_started]$ hierarchical_modules
+[USER@alvis1 1_getting_started]$ sbatch jobscript_hierarchical_modules.sh
 ```
 
 **Exercises:**
@@ -310,7 +310,7 @@ build your own see the
 See `jobscript_singularity.sh` for how to use a singularity container in a
 script and to submit use
 ```bash
-[USER@alvis1 part1]$ sbatch jobscript_singularity.sh
+[USER@alvis1 1_getting_started]$ sbatch jobscript_singularity.sh
 ```
 
 If you'd like to do persistent changes to the environment that is available in a
@@ -321,8 +321,8 @@ One usage for these is to complement an existing container with a few extra
 packages. As an example we will look at how to add the python package Seaborn
 over a PyTorch container. The steps will be as follow:
 ```bash
-[USER@alvis1 part1]$ cp /apps/containers/overlay_1G.img seaborn.img
-[USER@alvis1 part1]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
+[USER@alvis1 1_getting_started]$ cp /apps/containers/overlay_1G.img seaborn.img
+[USER@alvis1 1_getting_started]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
 Singularity> conda install -y seaborn
 ...
 Singularity> exit
