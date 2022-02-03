@@ -24,7 +24,10 @@ at [c3se.chalmers.se](c3se.chalmers.se):
 In this part we will explore how to get started with using Alvis as a first time
 user. As a first step you should connect to Alvis (see previous section) and now
 you should have access to Alvis through a terminal or if you are using Thinlinc
-or VS Code you can open a terminal.
+or VS Code you can open a terminal. Note that you could use either alvis1 log-in
+node or the new alvis2 log-in node. This tutorial is still mainly written towards
+alvis1, but don't hesitate to try out alvis2. You can see the changes on this
+[page](https://www.c3se.chalmers.se/news/alvis-phase-2/).
 
 If there is any command that you are unsure of what it does you can use the
 command `man` e.g to find out about ls
@@ -38,15 +41,17 @@ ls --help
 
 If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually
 the way to go (to copy use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>).
+Though to quit from `man` or `less` you use <kbd>q</kbd>.
 
 ### Get tutorial files
-Now in this terminal we want to get this tutorial either clone the repository
+Now in this terminal we want to get this tutorial, either clone the repository
 ```bash
 [USER@alvis1 ~]$ git clone https://github.com/c3se/alvis-intro.git
 ```
 or download it as an archive
 ```bash
 [USER@alvis1 ~]$ wget https://github.com/c3se/alvis-intro/archive/refs/heads/main.zip
+[USER@alvis1 ~]$ unzip main.zip
 [USER@alvis1 ~]$ mv alvis-intro-main alvis-intro
 ```
 
@@ -62,7 +67,7 @@ To read this file you can use your favourite command line text editor (`nano`,
 ```bash
 [USER@alvis1 part1]$ less README.md
 ```
-to exit `less` press `q`.
+to exit `less` press <kbd>q</kbd>.
 
 #### Exercises
 1. On Alvis clone or download the alvis-intro code
@@ -70,7 +75,7 @@ to exit `less` press `q`.
 
 ### Submitting a job
 You want to make sure that there are no obvious errors before you submit it, to
-do this it is absolutely OK to run small tests directly on the log-in node.
+do this it is absolutely OK to run small tests directly on the log-in nodes.
 
 Take a look at the contents of `hello.sh` and if you think that it looks ok you
 can try running it on the log-in node.
@@ -103,14 +108,17 @@ to Alvis workshop project then the project is `SNIC2021-7-120`.
 #### Deciding GPU type
 When deciding what GPUs to allocate the main consideration is what demands the
 application has, the secondary is what GPUs are available right now and the
-price for GPUs should usually only be considered last if at all.
+price for GPUs should usually only be considered last if at all. A note is that
+the T4 GPUs are technically meant for inference only and doesn't perform as well
+in training, but given their low cost it can still be cost-effective to do so.
 
 The possible demands of a particular application that can influence what GPUs
 you should choose is primarilly based on memeory requirements. If your machine
 learning model can fit on the GPU at the same time as a batch from your dataset,
 then this GPU will probably work well for your applications. Any performance
 differences between GPU types will probably be less than the waiting time for a
-contested GPU type.
+contested GPU type. Though, what is contested will probably change as phase 2
+is going into production.
 
 This script doesn't have any constraints on what GPU to use (in fact it doesn't
 use a GPU and doesn't technically belong on Alvis, but you can still learn the
@@ -121,43 +129,49 @@ command `jobinfo` e.g.
 [USER@alvis1 part1]$ jobinfo -s
 CLUSTER: alvis
 
-Summary: 71 running jobs using 19 nodes, 1 waiting normal jobs wanting <= 1
-nodes
+Summary: 25 running jobs using 13 nodes, 1 waiting normal jobs wanting <= 1 nodes, 2 blocked jobs
 
 Total node usage:
 PARTITION        ALLOCATED       IDLE    OFFLINE      TOTAL
-alvis                   19         19          0         38
+alvis                   13        111         85        209
+chair                    0          6          2          8
 
 Total GPU usage:
-TYPE   ALLOCATED IDLE OFFLINE TOTAL
-T4            52  108       0   160
-A100           4    0       0     4
-V100          16   28       0    44
+TYPE    ALLOCATED IDLE OFFLINE TOTAL
+A100fat         0   16      12    32
+T4             10  150       0   160
+A100            4  152     152   308
+A40             0    0       4   348
+V100           11   33       0    44
 
 Free nodes per number of GPU:s:
 PARTITION  # NODES  GPU:s
-alvis            2  T4:1   
+alvis           36  A100:4 
+alvis            5  A100fat:4
+alvis           84  A40:4  
 alvis            1  T4:2   
-alvis            1  T4:3   
-alvis            1  T4:4   
-alvis            2  T4:5   
-alvis            1  T4:7   
-alvis           10  T4:8   
-alvis            2  V100:1 
+alvis            1  T4:6   
+alvis            2  T4:7   
+alvis           16  T4:8   
+alvis            3  V100:1 
 alvis            5  V100:2 
-alvis            4  V100:4
+alvis            5  V100:4 
+chair            2  A100:4 
+chair            2  A40:4  
 ```
-from this we can see that we have 108 idle T4s and 28 idle V100s, thus we could
-probably choose either one.
+from this we can see that we have 150 idle T4s and 33 idle V100s, thus we could
+probably choose either one. Note that when using A100s or A40s you should do so
+from alvis2.
 
 #### The time it takes
 When choosing how long to allocate one should estimate an upper bound for how
 long the job will take. If the job does not finish within the allocated time
 everything will be lost (unless you are using checkpointing). On the other hand
-you might have to wait longer if you are allocating an unneccessarily time.
+you might have to wait longer in the queue if you are allocating an unneccessarily
+long time.
 
-In this case the script is pretty much instantaneous so one minute should be
-enough. The maximum time you can allocate is seven days.
+In this case the script is pretty much instantaneous so one minute upper bound
+should be enough. The maximum time you can allocate is seven days.
 
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
@@ -257,6 +271,9 @@ and
 hierarchical_modules
 ```
 
+Note that on the phase 2 nodes `flat_modules` is the default and the only
+option. In the future this will become the case for Alvis as a whole as well.
+
 There are two jobscripts `jobsubmit_flat_modules.sh` and
 `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
 the two different module structures to load your software.
@@ -278,12 +295,17 @@ and
 #### Using containers
 Containers are a way for you to work with with a portable and reproducible
 environment for any HPC system that supports it. For more details about using
-containers see the [C3SE
-documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
+containers see the
+[C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
+It might be worth noting that containers self contained and are not influenced
+by what operating system you have outside the container. As such containers
+that work on phase 1 should work just as well on the phase 2 nodes, as long
+as the software work with the hardware that is. For example, old versions
+of PyTorch does not recognize the A40 GPUs.
 
 In `/apps/containers/` we provide containers for your use, but if you want to
-build your own see the [build
-instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
+build your own see the
+[build instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
 
 See `jobscript_singularity.sh` for how to use a singularity container in a
 script and to submit use

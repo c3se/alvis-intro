@@ -1,7 +1,11 @@
-from typing import Iterable
-
 import torch
-from torch.utils.data import TensorDataset
+from torch.utils.data import Dataset, TensorDataset
+
+
+class RandomCorpus(TensorDataset):
+
+    def __init__(self, n_sentences, context_size, vocab_size):
+        super().__init__(torch.randint(size=(n_sentences, context_size), high=vocab_size))
 
 
 class RandomDataset(TensorDataset):
@@ -12,3 +16,4 @@ class RandomDataset(TensorDataset):
         data = torch.randn(length, *data_size)
         target = torch.randn(length, target_dim)
         super().__init__(data, target)
+
