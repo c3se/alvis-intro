@@ -10,8 +10,8 @@ Accompanying introduction slides are available at:
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
 
-The accompanying slides for these workshop problems can be found 
-***TODO***
+The accompanying demo slides for the introduction can be found at: 
+ * <https://github.com/c3se/alvis-intro/blob/main/tutorial/demo.ipynb>
 
 ## Tutorial overview
 Doing the excercises are voluntary, but make sure to read the associated READMEs
