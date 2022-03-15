@@ -7,7 +7,7 @@
 #SBATCH -J flat_modules       # the jobname (not necessary)
 
 # Load PyTorch using the flat module tree
-# Note: you need to have switched by calling flat_modules
+flat_modules
 module purge
 module load PyTorch/1.7.1-fosscuda-2020a-Python-3.8.2
 

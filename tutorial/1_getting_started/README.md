@@ -309,11 +309,11 @@ Containers are a way for you to work with with a portable and reproducible
 environment for any HPC system that supports it. For more details about using
 containers see the
 [C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
-It might be worth noting that containers self contained and are not influenced
-by what operating system you have outside the container. As such containers
-that work on phase 1 should work just as well on the phase 2 nodes, as long
-as the software work with the hardware that is. For example, old versions
-of PyTorch does not recognize the A40 GPUs.
+It might be worth noting that containers are self contained and are not
+influenced by what operating system you have outside the container. As such
+containers that work on phase 1 should work just as well on the phase 2 nodes.
+That is, as long as the software work with the hardware. For example, old
+versions of PyTorch does not recognize the A40 GPUs.
 
 In `/apps/containers/` we provide containers for your use, but if you want to
 build your own see the
