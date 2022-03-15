@@ -13,6 +13,9 @@ testing. If you are planning on downloading datasets to Alvis in the near future
 don't hesitate to reach out through support and we can help you and make sure
 that we will cover similar use cases in the future.
 
+Note, that with phase 2 and the Mimer storage resource data access should be
+quite fast and the need to store data locally is reduced.
+
 ## PyTorch
 For the following excercises you will need to load the following modules:
 ```bash
