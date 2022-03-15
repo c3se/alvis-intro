@@ -286,7 +286,8 @@ hierarchical_modules
 ```
 
 Note that on the phase 2 nodes `flat_modules` is the default and the only
-option. In the future this will become the case for Alvis as a whole as well.
+option. In the future this will become the case for Alvis as a whole as well. In
+some of the following exercises the flat_module system is assumed.
 
 There are two jobscripts `jobsubmit_flat_modules.sh` and
 `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
