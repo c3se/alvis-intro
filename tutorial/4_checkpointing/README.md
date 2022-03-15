@@ -70,7 +70,7 @@ original code, then for some use cases an alternative is to export it to
 ### Set-up and excercise
 To set up you'll need to load
 ```
-flat_modules
+ml purge
 ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 ```
 and you'll probably want to run it on a compute node as well, because you'll want to access the TMPDIR for faster file I/O.
@@ -165,7 +165,7 @@ ideal.
 ### Environment setup
 You need to complete a few steps before you can run this example.
 ```
-flat_modules
+ml purge
 ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
 ```
 
