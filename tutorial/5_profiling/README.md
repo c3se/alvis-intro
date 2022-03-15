@@ -34,6 +34,7 @@ To create the virtualenv you do
 ```bash
 cd place_with_lots_of_space
 flat_modules
+ml purge
 ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 
 virtualenv --system-site-packages torch_tb
@@ -94,6 +95,7 @@ needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow
 
 ```
 flat_modules
+ml purge
 ml TensorFlow/2.5.0-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 ```
 
