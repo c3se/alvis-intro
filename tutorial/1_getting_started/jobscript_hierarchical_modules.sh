@@ -7,7 +7,7 @@
 #SBATCH -J hierarchical_modules  # the jobname (not necessary)
 
 # Load using the hierarchical module tree
-# Note: make sure that this is enabled by calling hierarchical_modules
+hierarchical_modules
 module purge
 module load GCC/9.3.0  CUDA/11.0.2  OpenMPI/4.0.3
 mudule load PyTorch/1.7.1-Python-3.8.2

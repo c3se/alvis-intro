@@ -11,7 +11,7 @@ Alvis](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/) you are
 certainly itching to access Alvis and start doing stuff.
 
 To access Alvis there are a few different alternatives and they can all be found
-at [c3se.chalmers.se](c3se.chalmers.se):
+at [c3se.chalmers.se](https://www.c3se.chalmers.se):
  - [Connecting through terminal](https://www.c3se.chalmers.se/documentation/connecting/)
  - [Alvis OnDemand](https://www.c3se.chalmers.se/documentation/alvis-ondemand/)
  - [Remote graphics](https://www.c3se.chalmers.se/documentation/remote_graphics/)
@@ -46,26 +46,27 @@ Though to quit from `man` or `less` you use <kbd>q</kbd>.
 ### Get tutorial files
 Now in this terminal we want to get this tutorial, either clone the repository
 ```bash
-[USER@alvis1 ~]$ git clone https://github.com/c3se/alvis-intro.git
+[USER@alvis2 ~]$ git clone https://github.com/c3se/alvis-intro.git
 ```
 or download it as an archive
 ```bash
-[USER@alvis1 ~]$ wget https://github.com/c3se/alvis-intro/archive/refs/heads/main.zip
-[USER@alvis1 ~]$ unzip main.zip
-[USER@alvis1 ~]$ mv alvis-intro-main alvis-intro
+[USER@alvis2 ~]$ wget https://github.com/c3se/alvis-intro/archive/refs/heads/main.zip
+[USER@alvis2 ~]$ unzip main.zip
+[USER@alvis2 ~]$ mv alvis-intro-main alvis-intro
 ```
 
-Now lets move to this file
+Now lets move to this file (README.md)
 ```bash
-[USER@alvis1 ~]$ cd alvis-intro/tutorial/1_getting_started
-[USER@alvis1 1_getting_started]$ ls
-hello.sh  README.md
+[USER@alvis2 ~]$ cd alvis-intro/tutorial/1_getting_started
+[USER@alvis2 1_getting_started]$ ls
+README.md  jobscript.sh               jobscript_hierarchical_modules.sh
+hello.sh   jobscript_flat_modules.sh  jobscript_singularity.sh
 ```
 
 To read this file you can use your favourite command line text editor (`nano`,
 `vim`, ...) or favourite file reader (`cat`, `less`, ...)
 ```bash
-[USER@alvis1 1_getting_started]$ less README.md
+[USER@alvis2 1_getting_started]$ less README.md
 ```
 to exit `less` press <kbd>q</kbd>.
 
@@ -85,7 +86,8 @@ bash hello.sh
 
 Usually you wouldn't run everything that you are going to submit on the log-in
 node, what you could usually do is reduce the number of epochs and/or the size
-of the dataset etc. to see that it appears to run as you'd like.
+of the dataset etc. to see that it appears to run as you'd like before submitting
+the entire job.
 
 Now there are three things to determine before we submit our script:
 - The name of your project
@@ -95,7 +97,7 @@ Now there are three things to determine before we submit our script:
 #### Project name
 To determine the name of your project use `projinfo`, e.g.
 ```bash
-[USER@alvis1 1_getting_started]$ projinfo
+[USER@alvis2 1_getting_started]$ projinfo
  Project                Used[h]         Allocated[h]      Queue
     User
 ---------------------------------------------------------------
@@ -111,55 +113,63 @@ application has, the secondary is what GPUs are available right now and the
 price for GPUs should usually only be considered last if at all. A note is that
 the T4 GPUs are technically meant for inference only and doesn't perform as well
 in training, but given their low cost it can still be cost-effective to do so.
+Depending on the precision you use, different GPUs can be more or less suited for
+the task, see [GPU Hardware Details](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/#gpu-hardware-details).
 
-The possible demands of a particular application that can influence what GPUs
+The hard limit from a particular application that can influence what GPUs
 you should choose is primarilly based on memeory requirements. If your machine
 learning model can fit on the GPU at the same time as a batch from your dataset,
-then this GPU will probably work well for your applications. Any performance
-differences between GPU types will probably be less than the waiting time for a
-contested GPU type. Though, what is contested will probably change as phase 2
-is going into production.
+then this GPU will probably work for your application.
 
-This script doesn't have any constraints on what GPU to use (in fact it doesn't
-use a GPU and doesn't technically belong on Alvis, but you can still learn the
-principles from it). Therefore, we should try to see what GPU type is most
-available right now to reduce how long we have to wait. This we can do with the
-command `jobinfo` e.g.
+Now after phase 2 has gone into production there is one further thing to note
+and that is that the A40s and A100s are on nodes with a different operating
+system and software trees than the V100s and T4s. As a rule of thumb, use the
+Alvis2 log-in node when using A40s and A100s and Alvis1 otherwise. In due time
+V100s, T4s and Alvis1 will also move to the newer operating system. 
+
+The script `hello.sh` doesn't have any constraints on what GPU to use (in fact
+it doesn't use a GPU and doesn't technically belong on Alvis, but you can still
+learn the principles from it). Therefore, we should try to see what GPU type is
+most available right now to reduce how long we have to wait. This we can do with
+the command `jobinfo` e.g.
 ```
-[USER@alvis1 1_getting_started]$ jobinfo -s
+[USER@alvis2 1_getting_started]$ jobinfo -s
 CLUSTER: alvis
 
-Summary: 25 running jobs using 13 nodes, 1 waiting normal jobs wanting <= 1 nodes, 2 blocked jobs
+Summary: 93 running jobs using 26 nodes, 1 waiting normal jobs wanting <= 1 nodes
 
 Total node usage:
 PARTITION        ALLOCATED       IDLE    OFFLINE      TOTAL
-alvis                   13        111         85        209
-chair                    0          6          2          8
+alvis                   26        152         31        209
+chair                    0          8          0          8
 
 Total GPU usage:
-TYPE    ALLOCATED IDLE OFFLINE TOTAL
-A100fat         0   16      12    32
-T4             10  150       0   160
-A100            4  152     152   308
-A40             0    0       4   348
-V100           11   33       0    44
+TYPE   ALLOCATED IDLE OFFLINE TOTAL
+T4            96   56       0   160
+A40            0  260      60   348
+V100          14   28       2    44
+A100           4  260      44   308
+A100fat         1   31       0    32
 
 Free nodes per number of GPU:s:
 PARTITION  # NODES  GPU:s
-alvis           36  A100:4 
-alvis            5  A100fat:4
-alvis           84  A40:4  
-alvis            1  T4:2   
-alvis            1  T4:6   
-alvis            2  T4:7   
-alvis           16  T4:8   
-alvis            3  V100:1 
+alvis            1  A100:1 
+alvis            1  A100:3 
+alvis           73  A100:4 
+alvis            1  A100fat:3
+alvis            7  A100fat:4
+alvis           85  A40:4  
+alvis            2  T4:1   
+alvis            4  T4:2   
+alvis            2  T4:3   
+alvis            6  T4:8   
+alvis            4  V100:1 
 alvis            5  V100:2 
-alvis            5  V100:4 
+alvis            4  V100:4 
 chair            2  A100:4 
-chair            2  A40:4  
+chair            2  A40:4
 ```
-from this we can see that we have 150 idle T4s and 33 idle V100s, thus we could
+from this we can see that we have a lot of idle A40s and A100s, thus we could
 probably choose either one. Note that when using A100s or A40s you should do so
 from alvis2.
 
@@ -176,7 +186,7 @@ should be enough. The maximum time you can allocate is seven days.
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
 ```bash
-[USER@alvis1 1_getting_started]$ srun -A SNIC2021-X-YY --gpus-per-node=T4:1 -t 00:01:00 --pty bash
+[USER@alvis2 1_getting_started]$ srun -A SNIC2021-X-YY --gpus-per-node=A40:1 -t 00:01:00 --pty bash
 srun: job 102893 queued and waiting for resources
 srun: job 102893 has been allocated resources
 [USER@alvisX-Y 1_getting_started]$ bash hello.sh
@@ -192,18 +202,22 @@ You should also make a habit of taking a look at the run statistics to see how
 the job has run, this can give hints for if something has gone wrong or is
 running inefficiently. To see these statistics run (but with your job ID)
 ```bash
-[USER@alvis1 1_getting_started]$ job_stats.py 102893
+[USER@alvis2 1_getting_started]$ job_stats.py 102893
 https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
 ```
+in this case the program was too fast to get any data points, but what you would
+have would be that there was little to no load on GPU, CPU and memory. Which for
+most applications is a sign that something is wrong. Though, in our case it is a
+sign that we probably didn't need a supercomputer to run it.
 
 To see the current status of your job and find out your job ID you can also run
 ```bash
-[USER@alvis1 1_getting_started]$ squeue -u $USER
+[USER@alvis2 1_getting_started]$ squeue -u $USER
 ```
 if nothing shows up, the most likely reason is that your job has already
 finished. To also see accounting information from finished submissions use
 ```bash
-[USER@alvis1 1_getting_started]$ sacct
+[USER@alvis2 1_getting_started]$ sacct
 ```
 
 #### Submitting a jobscript
@@ -213,7 +227,7 @@ found in `jobscript.sh`
 There are three parts to a successful jobscripts
 1. A shebang at the very start of the script, usually `#!/bin/env bash`.
 2. Specifying flags to sbatch. Either directly when calling sbatch or in the
-jobscript as `#SBATCH --flat-name value`.
+jobscript as `#SBATCH --flag-name value`.
 3. The body of the script, this is where stuff happens.
     1. Setting up the environment e.g. loading modules.
     2. Calling what you want to run.
@@ -221,7 +235,7 @@ jobscript as `#SBATCH --flat-name value`.
 Now take a look at `jobscript.sh` and see that you understand what is going on.
 Then, when you feel comfortable you can submit the jobscript with
 ```bash
-[USER@alvis1 1_getting_started]$ sbatch jobscript.sh
+[USER@alvis2 1_getting_started]$ sbatch jobscript.sh
 ```
 
 Next make sure to look at how it has gone for the script using what you learnt
@@ -261,7 +275,7 @@ module spider pytorch
 and finally following the instructions loading the wanted modules with `module
 load`.
 
-There is one more thing that might be of interest and that is the existence of
+On alvis1 and associated nodes there is one more thing that might be of interest and that is the existence of
 both flat and hierarchical module trees to switch between them use:
 ```bash
 flat_modules
@@ -278,12 +292,10 @@ There are two jobscripts `jobsubmit_flat_modules.sh` and
 `jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
 the two different module structures to load your software.
 ```bash
-[USER@alvis1 1_getting_started]$ flat_modules
 [USER@alvis1 1_getting_started]$ sbatch jobscript_flat_modules.sh
 ```
 and
 ```bash
-[USER@alvis1 1_getting_started]$ hierarchical_modules
 [USER@alvis1 1_getting_started]$ sbatch jobscript_hierarchical_modules.sh
 ```
 
@@ -310,7 +322,7 @@ build your own see the
 See `jobscript_singularity.sh` for how to use a singularity container in a
 script and to submit use
 ```bash
-[USER@alvis1 1_getting_started]$ sbatch jobscript_singularity.sh
+[USER@alvis2 1_getting_started]$ sbatch jobscript_singularity.sh
 ```
 
 If you'd like to do persistent changes to the environment that is available in a
@@ -321,8 +333,8 @@ One usage for these is to complement an existing container with a few extra
 packages. As an example we will look at how to add the python package Seaborn
 over a PyTorch container. The steps will be as follow:
 ```bash
-[USER@alvis1 1_getting_started]$ cp /apps/containers/overlay_1G.img seaborn.img
-[USER@alvis1 1_getting_started]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
+[USER@alvis2 1_getting_started]$ cp /apps/containers/overlay_1G.img seaborn.img
+[USER@alvis2 1_getting_started]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
 Singularity> conda install -y seaborn
 ...
 Singularity> exit
