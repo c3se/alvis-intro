@@ -25,12 +25,16 @@ In this part we will explore how to get started with using Alvis as a first time
 user. As a first step you should connect to Alvis (see previous section) and now
 you should have access to Alvis through a terminal or if you are using Thinlinc
 or VS Code you can open a terminal. Note that you could use either alvis1 log-in
-node or the new alvis2 log-in node. This tutorial is still mainly written towards
-alvis1, but don't hesitate to try out alvis2. You can see the changes on this
+node or the new alvis2 log-in node. If you've previously used Alvis but want to
+get an update about all the changes since the implementation of part 2 see this
 [page](https://www.c3se.chalmers.se/news/alvis-phase-2/).
 
-If there is any command that you are unsure of what it does you can use the
-command `man` e.g to find out about ls
+A note on the two log-in nodes is that alvis1 has 4 T4 GPUs that can be used for
+light testing while alvis2 is the dedicated data transfer for when you want to
+transfer datasets or similar to the system.
+
+If there are any command that you are unsure of what it does you can use the
+command `man`, e.g to find out about `ls` do
 ```bash
 man ls
 ```
@@ -59,8 +63,8 @@ Now lets move to this file (README.md)
 ```bash
 [USER@alvis2 ~]$ cd alvis-intro/tutorial/1_getting_started
 [USER@alvis2 1_getting_started]$ ls
-README.md  jobscript.sh               jobscript_hierarchical_modules.sh
-hello.sh   jobscript_flat_modules.sh  jobscript_singularity.sh
+README.md  jobscript.sh		jobscript_singularity.sh
+hello.sh   jobscript_module.sh	runmatlab.sh
 ```
 
 To read this file you can use your favourite command line text editor (`nano`,
@@ -117,15 +121,9 @@ Depending on the precision you use, different GPUs can be more or less suited fo
 the task, see [GPU Hardware Details](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/#gpu-hardware-details).
 
 The hard limit from a particular application that can influence what GPUs
-you should choose is primarilly based on memeory requirements. If your machine
+you should choose is primarilly based on memory requirements. If your machine
 learning model can fit on the GPU at the same time as a batch from your dataset,
 then this GPU will probably work for your application.
-
-Now after phase 2 has gone into production there is one further thing to note
-and that is that the A40s and A100s are on nodes with a different operating
-system and software trees than the V100s and T4s. As a rule of thumb, use the
-Alvis2 log-in node when using A40s and A100s and Alvis1 otherwise. In due time
-V100s, T4s and Alvis1 will also move to the newer operating system. 
 
 The script `hello.sh` doesn't have any constraints on what GPU to use (in fact
 it doesn't use a GPU and doesn't technically belong on Alvis, but you can still
@@ -170,15 +168,14 @@ chair            2  A100:4
 chair            2  A40:4
 ```
 from this we can see that we have a lot of idle A40s and A100s, thus we could
-probably choose either one. Note that when using A100s or A40s you should do so
-from alvis2.
+probably choose either one.
 
 #### The time it takes
-When choosing how long to allocate one should estimate an upper bound for how
-long the job will take. If the job does not finish within the allocated time
-everything will be lost (unless you are using checkpointing). On the other hand
-you might have to wait longer in the queue if you are allocating an unneccessarily
-long time.
+When choosing how long timespan to allocate, one should estimate an upper bound
+for how long the job will take. If the job does not finish within the allocated
+time everything will be lost (unless you are using checkpointing). On the other
+hand you might have to wait longer in the queue if you are allocating an
+unneccessarily long time.
 
 In this case the script is pretty much instantaneous so one minute upper bound
 should be enough. The maximum time you can allocate is seven days.
@@ -275,34 +272,10 @@ module spider pytorch
 and finally following the instructions loading the wanted modules with `module
 load`.
 
-On alvis1 and associated nodes there is one more thing that might be of interest and that is the existence of
-both flat and hierarchical module trees to switch between them use:
-```bash
-flat_modules
-```
-and
-```bash
-hierarchical_modules
-```
-
-Note that on the phase 2 nodes `flat_modules` is the default and the only
-option. In the future this will become the case for Alvis as a whole as well. In
-some of the following exercises the flat_module system is assumed.
-
-There are two jobscripts `jobsubmit_flat_modules.sh` and
-`jobsubmit_hierarchical_modules.sh` take a look at them and see how you will use
-the two different module structures to load your software.
-```bash
-[USER@alvis1 1_getting_started]$ sbatch jobscript_flat_modules.sh
-```
-and
-```bash
-[USER@alvis1 1_getting_started]$ sbatch jobscript_hierarchical_modules.sh
-```
+In `jobsubmit_module.sh` you can find how to use the module tree to load PyTorch.
 
 **Exercises:**
-1. Update and submit `jobsubmit_flat_modules.sh` and
-`jobsubmit_hierarchical_modules.sh`
+1. Update and submit `jobsubmit_module.sh` with `sbatch`.
 2. Redo 1 but for TensorFlow instead of PyTorch
 
 #### Using containers
@@ -339,6 +312,11 @@ over a PyTorch container. The steps will be as follow:
 Singularity> conda install -y seaborn
 ...
 Singularity> exit
+```
+then whenever you want to use your container with the new changes you can do
+something like
+```bash
+[USER@alvis2 1_getting_started]$ singularity exec --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif python my_script.py
 ```
 
 These steps can be seen as:

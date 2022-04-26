@@ -4,14 +4,12 @@
 #SBATCH -p alvis               # what partition to use (usually not necessary)
 #SBATCH -t 0-00:01:00          # how long time it will take to run
 #SBATCH --gpus-per-node=A40:1  # choosing no. GPUs and their type
-#SBATCH -J singularity         # the jobname (not necessary)
+#SBATCH -J flat_modules        # the jobname (not necessary)
 
-# Make sure to remove any already loaded modules
+# Load PyTorch using the module tree
 module purge
-
-# Specify the path to the container
-CONTAINER=/apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
+module load PyTorch/1.7.1-fosscuda-2020a-Python-3.8.2
 
 # Print the PyTorch version then exit
-singularity exec $CONTAINER python -c "import torch; print(torch.__version__)"
+python -c "import torch; print(torch.__version__)"
 
