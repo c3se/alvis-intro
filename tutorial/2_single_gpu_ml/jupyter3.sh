@@ -1,7 +1,7 @@
 # This script is used for the Open Ondemand portal.
 # You can use it as a reference for creating a custom ~/jupyter1.sh file
 
-flat_modules
+module purge
 
 ml purge
 ml PyTorch/1.8.1-fosscuda-2020b TensorFlow/2.5.0-fosscuda-2020b

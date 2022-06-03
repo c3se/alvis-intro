@@ -7,7 +7,7 @@
 #SBATCH -J "Profile TensorFlow"
 
 # Set-up environment
-flat_modules
+module purge
 ml purge
 ml TensorFlow/2.5.0-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
 

@@ -6,7 +6,7 @@
 #SBATCH -J "SNMG TensorFlow"  # Single node, multiple GPUs
 
 # Set-up environment
-flat_modules
+module purge
 ml TensorFlow/2.5.0-fosscuda-2020b
 
 # Run DataParallel
