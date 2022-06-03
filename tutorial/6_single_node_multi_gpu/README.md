@@ -54,10 +54,11 @@ DDP works differently from DP by running on several different processes. Therefo
 2. Launching processes with `srun` or `mpirun`
 3. Launching processes with `torch.multiprocessing` (not shown)
 
-For each of these options there are two variables we need to define:
+For each of these options there are two variables we usually would need to define:
 `MASTER_ADDR` and `MASTER_PORT`. `MASTER_ADDR` is the hostname or IP address of
 the node that the will host the 0th task. Master port simply needs to be free
-port on the node, usually set to 5 digits starting with 1, e.g. 12345.
+port on the node. However, when using sbatch on Alvis these variables are
+pre-set and usually don't need to be changed.
 
 ### Excercises
 1. Checkout the different scripts and try to get an idea of what they are doing and what their differences are.
