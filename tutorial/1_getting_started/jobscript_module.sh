@@ -8,7 +8,7 @@
 
 # Load PyTorch using the module tree
 module purge
-module load PyTorch/1.7.1-fosscuda-2020a-Python-3.8.2
+module load PyTorch/1.7.1-fosscuda-2020a
 
 # Print the PyTorch version then exit
 python -c "import torch; print(torch.__version__)"
