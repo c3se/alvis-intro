@@ -1,6 +1,6 @@
 # Getting started
-This part contains information to how to get up and running on the Alvis system,
-if you have used other HPC systems much of it will be familiar.
+This part contains information about how to get up and running on the Alvis
+system, if you have used other HPC systems much of it will be familiar.
 
 ## Accessing Alvis
 Now that you've [gotten
@@ -46,6 +46,11 @@ ls --help
 If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually
 the way to go (to copy use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>).
 Though to quit from `man` or `less` you use <kbd>q</kbd>.
+
+Note: If you want a more thorough introduction to the command line and computer
+clusters we can recommend the self-paced course
+[Practical Intro to Computer CLusters](https://chalmers.instructure.com/courses/21205/).
+You access the course with the same username and password as you have on Alvis.
 
 ### Get tutorial files
 Now in this terminal we want to get this tutorial, either clone the repository
