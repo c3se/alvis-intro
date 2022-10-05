@@ -68,7 +68,7 @@ Now lets move to this file (README.md)
 ```bash
 [USER@alvis2 ~]$ cd alvis-intro/tutorial/1_getting_started
 [USER@alvis2 1_getting_started]$ ls
-README.md  jobscript.sh		jobscript_singularity.sh
+README.md  jobscript.sh		jobscript_container.sh
 hello.sh   jobscript_module.sh	runmatlab.sh
 ```
 
@@ -298,10 +298,10 @@ In `/apps/containers/` we provide containers for your use, but if you want to
 build your own see the
 [build instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
 
-See `jobscript_singularity.sh` for how to use a singularity container in a
+See `jobscript_container.sh` for how to use a singularity container in a
 script and to submit use
 ```bash
-[USER@alvis2 1_getting_started]$ sbatch jobscript_singularity.sh
+[USER@alvis2 1_getting_started]$ sbatch jobscript_container.sh
 ```
 
 If you'd like to do persistent changes to the environment that is available in a
@@ -330,13 +330,13 @@ something like
 
 These steps can be seen as:
 1. Copy an empty overlay to your own storage
-2. Open a singularity session with this overlay
+2. Open a container session with this overlay
 3. Make the changes you want to do
 4. You can now use this overlay together with the container that was used in
 step 2
 
 **Exercises:**
-1. Update and submit `jobsubmit_singularity.sh`
+1. Update and submit `jobsubmit_container.sh`
 2. Redo 1 but for TensorFlow instead of PyTorch
 3. Copy an overlay image from `/apps/containers/` and use it to install a
 package of your choice
