@@ -4,7 +4,8 @@ SNIC Alvis AI/ML HPC system. The aim is to let users get their feet wet
 quickly with something that they can adapt into their own jobs.
 
 The examples are written in Python with the frameworks TensorFlow and PyTorch. More
-frameworks can be added if interest exists.
+frameworks can be added if interest exists. You can express interest by creating an
+issue for this repository or by contacting support.
 
 Accompanying introduction slides are available at:
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
