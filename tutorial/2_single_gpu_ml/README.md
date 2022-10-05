@@ -18,12 +18,14 @@ You can find some details on how to do this in the [C3SE
 documentation](https://www.c3se.chalmers.se/documentation/applications/jupyter/).
 
 If you are using the Alvis OnDemand portal running jupyter notebooks is as easy as
-1. Go to https://portal.c3se.chalmers.se and log-in through supr
+1. Go to https://portal.c3se.chalmers.se and authenticate through supr
 2. Select "Interactive Apps"
 3. Click on "Jupyter"
 4. Fill in details about the run as when writing a job script
 
-To load user specified modules and/or containers see `/apps/jupyter` for how to create a `jupyter1.sh` in your home directory. Note that the jupyter app in the portal is always using compute nodes.
+To load user specified modules and/or containers see `/apps/jupyter` for how to
+create a `jupyter1.sh` in your home directory. Note that the jupyter app in the
+portal is always using compute nodes.
 
 ## PyTorch
 For the following excercises you will need to load the following modules:
@@ -91,4 +93,3 @@ will build on that to see what we can do.
     2. SSH to that node e.g. `ssh alvis7-02`.
     3. Load nvtop: `ml nvtop`.
     4. Run `nvtop` too see current GPU usage.
-
