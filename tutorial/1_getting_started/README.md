@@ -308,8 +308,9 @@ If you'd like to do persistent changes to the environment that is available in a
 container then there is a possibility to use overlays for persistent storage. We
 provide ready to go overlays at `/apps/containers/overlay_<size>.img`. However,
 note that you will probably not be able to use overlays while they are stored on
-Mimer due to [limitations](https://docs.sylabs.io/guides/3.8/admin-guide/installation.html?highlight=localstatedir#filesystem-support-limitations)
-regarding the filesystem. 
+Mimer due to
+[limitations](https://docs.sylabs.io/guides/3.8/admin-guide/installation.html?highlight=localstatedir#filesystem-support-limitations)
+regarding the filesystem.
 
 One usage for these is to complement an existing container with a few extra
 packages. As an example we will look at how to add the python package Seaborn
