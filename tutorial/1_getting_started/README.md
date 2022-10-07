@@ -294,9 +294,8 @@ containers that work on phase 1 should work just as well on the phase 2 nodes.
 That is, as long as the software work with the hardware. For example, old
 versions of PyTorch does not recognize the A40 GPUs.
 
-In `/apps/containers/` we provide containers for your use, but if you want to
-build your own see the
-[build instructions](https://www.c3se.chalmers.se/documentation/applications/containers-building/building/).
+In `/apps/containers/` we provide some base containers for your use, but will
+later go through how you could build your own container on Alvis.
 
 See `jobscript_container.sh` for how to use a singularity container in a
 script and to submit use
@@ -304,40 +303,69 @@ script and to submit use
 [USER@alvis2 1_getting_started]$ sbatch jobscript_container.sh
 ```
 
-If you'd like to do persistent changes to the environment that is available in a
-container then there is a possibility to use overlays for persistent storage. We
-provide ready to go overlays at `/apps/containers/overlay_<size>.img`. However,
-note that you will probably not be able to use overlays while they are stored on
-Mimer due to
-[limitations](https://docs.sylabs.io/guides/3.8/admin-guide/installation.html?highlight=localstatedir#filesystem-support-limitations)
-regarding the filesystem.
+To create your own container we've provided the Singularity fork Apptainer on
+the log-in nodes that enables you to build your own containers directly on the
+cluster. You will later be able to use these containers in most other HPC
+environments without issue.
 
-One usage for these is to complement an existing container with a few extra
-packages. As an example we will look at how to add the python package Seaborn
-over a PyTorch container. The steps will be as follow:
+To create a container we will have to create a recipe file. Luckily we can take
+inspiration from our repo with recipes <https://github.com/c3se/containers> or
+directly inspect containers in /apps/containers.
+
+As an example we will look at how to build a container with both PyTorch and
+Seaborn. The steps will be as follow:
 ```bash
-[USER@alvis2 1_getting_started]$ cp /apps/containers/overlay_1G.img seaborn.img
-[USER@alvis2 1_getting_started]$ singularity shell --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif
-Singularity> conda install -y seaborn
+[USER@alvis2 1_getting_started]$ apptainer inspect -d /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
+bootstrap: docker
+from: nvcr.io/nvidia/pytorch:22.09-py3
+
+%post
+    # Make sure to use the correct jupyter config
+    if [ -d /opt/conda/etc/jupyter ]; then
+        rm -f /opt/conda/etc/jupyter/jupyter_notebook_config.py
+        rm -f /opt/conda/etc/jupyter/jupyter_notebook_config.json
+    fi
+```
+Now we know how a recipe could look like. There are more thorough instructions
+at <https://apptainer.org/docs/user/main/build_a_container.html>, but for now
+it is sufficient if we know that we can bootstrap from local-image to build on
+top of what we find in /apps/containers and that in the post section we can
+write our additions.
+
+Before we write our file we can use the options `--writable-tmpfs --fakeroot`
+to see what we want to put in our %post section.
+```
+[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
+Apptainer> conda install -y seaborn
 ...
-Singularity> exit
+Apptainer> exit
 ```
-then whenever you want to use your container with the new changes you can do
-something like
-```bash
-[USER@alvis2 1_getting_started]$ singularity exec --overlay seaborn.img /apps/containers/PyTorch/PyTorch-1.10-NGC-21.08.sif python my_script.py
-```
+this seem to have gone fine so we can write our recipy called
+"my\_seatorch.def".
+```Singularity
+bootstrap: localimage
+from: /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
 
-These steps can be seen as:
-1. Copy an empty overlay to your own storage
-2. Open a container session with this overlay
-3. Make the changes you want to do
-4. You can now use this overlay together with the container that was used in
-step 2
+%post
+    conda install -y seaborn
+```
+and build it with
+```
+[USER@alvis2 1_getting_started]$ apptainer build --fakeroot my_seatorch.sif my_seatorch.def
+```
+note, that as a rule when we are building something we generally want to use
+the `--fakeroot` flag.
+
+Then you can use your own container with
+```bash
+[USER@alvis2 1_getting_started]$ apptainer exec my_seatorch.sif python my_script.py
+```
+However, note that on the compute nodes we might not have rolled out the update
+to Apptainer yet. In that case use the `singularity` command to launch the
+container. Usage is almost identical.
 
 **Exercises:**
 1. Update and submit `jobsubmit_container.sh`
 2. Redo 1 but for TensorFlow instead of PyTorch
-3. Copy an overlay image from `/apps/containers/` and use it to install a
-package of your choice
+3. Create your own container with a package of your choice
 4. Create a new jobscript in which you use your newly installed package
