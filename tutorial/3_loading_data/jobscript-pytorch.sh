@@ -2,20 +2,18 @@
 
 #SBATCH -A SNIC2021-7-120  # find your project with the "projinfo" command
 #SBATCH -p alvis
-#SBATCH -t 00:10:00
+#SBATCH -t 00:20:00
 #SBATCH --gpus-per-node=A40:1
 #SBATCH -J "Data PyTorch"
 
 # Set-up environment
 ml purge
-ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
+ml torchdata/0.3.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
+ml torchvision/0.12.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
+ml matplotlib/3.4.2-foss-2021a
+ml JupyterLab/3.0.16-GCCcore-10.3.0
 
-# Unpack data to TMPDIR
-cd $TMPDIR
-tar -xzf "$SLURM_SUBMIT_DIR/data.tar.gz"
-cp "$SLURM_SUBMIT_DIR/data-pytorch.ipynb" .
-
-# Interactive
+# Interactive (but prefer Alvis OnDemand for interactive jupyter sessions)
 #jupyter lab
 
 # or you can instead use

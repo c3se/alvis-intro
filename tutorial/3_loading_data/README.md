@@ -3,7 +3,7 @@ In this part we will investigate different ways to get and use data. However,
 it is worth noting that there are numerous different ways of doing all of these
 and what you will learn here are simply three different examples when using:
  1. Your own data on the cluster
- 2. Data available at `/cephyr/NOBACKUP/Datasets/`
+ 2. Data available at `/mimer/NOBACKUP/Datasets/`
  3. Data through some API
 
 Log-in node alvis2 is also the dedicated data-transfer node and is the node to
@@ -13,14 +13,17 @@ testing. If you are planning on downloading datasets to Alvis in the near future
 don't hesitate to reach out through support and we can help you and make sure
 that we will cover similar use cases in the future.
 
-Note, that with the new Mimer storage resource, data access should be
-quite fast and the need to store data locally is significantly reduced. 
+Note, that with the new Mimer storage resource, data access should be quite
+fast and the need to store data locally is significantly reduced. 
 
 ## PyTorch
 For the following excercises you will need to load the following modules:
 ```bash
-flat_modules
-ml PyTorch/1.8.1-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+ml purge
+ml torchdata/0.3.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
+ml torchvision/0.12.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
+ml matplotlib/3.4.2-foss-2021a
+ml JupyterLab/3.0.16-GCCcore-10.3.0
 ```
 
 Now you should open up `data-pytorch.ipynb` and follow the instructions there.
@@ -28,8 +31,9 @@ Now you should open up `data-pytorch.ipynb` and follow the instructions there.
 ## TensorFlow
 For the following excercises you will need to load the following modules:
 ```bash
-flat_modules
+ml purge
 ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
 ```
 
 Now you should open up `data-tensorflow.ipynb` and follow the instructions there.
+
