@@ -277,10 +277,10 @@ module spider pytorch
 and finally following the instructions loading the wanted modules with `module
 load`.
 
-In `jobsubmit_module.sh` you can find how to use the module tree to load PyTorch.
+In `jobscript_module.sh` you can find how to use the module tree to load PyTorch.
 
 **Exercises:**
-1. Update and submit `jobsubmit_module.sh` with `sbatch`.
+1. Update and submit `jobscript_module.sh` with `sbatch`.
 2. Redo 1 but for TensorFlow instead of PyTorch
 
 #### Using containers
@@ -365,7 +365,7 @@ to Apptainer yet. In that case use the `singularity` command to launch the
 container. Usage is almost identical.
 
 **Exercises:**
-1. Update and submit `jobsubmit_container.sh`
+1. Update and submit `jobscript_container.sh`
 2. Redo 1 but for TensorFlow instead of PyTorch
 3. Create your own container with a package of your choice
 4. Create a new jobscript in which you use your newly installed package
