@@ -30,10 +30,10 @@ get an update about all the changes since the implementation of part 2 see this
 [page](https://www.c3se.chalmers.se/news/alvis-phase-2/).
 
 A note on the two log-in nodes is that alvis1 has 4 T4 GPUs that can be used for
-light testing while alvis2 is the dedicated data transfer for when you want to
-transfer datasets or similar to the system.
+light testing while alvis2 is the dedicated data transfer node for when you want
+to transfer datasets or similar to and from the system.
 
-If there are any command that you are unsure of what it does you can use the
+If there are any commands that you are unsure of what they do you can use the
 command `man`, e.g to find out about `ls` do
 ```bash
 man ls
@@ -41,11 +41,12 @@ man ls
 or
 ```bash
 ls --help
+ls -h
 ```
 
 If you want to abort a command pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> is usually
 the way to go (to copy use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>).
-Though to quit from `man` or `less` you use <kbd>q</kbd>.
+Though, to quit from `man` or `less` you use <kbd>Q</kbd>.
 
 Note: If you want a more thorough introduction to the command line and computer
 clusters we can recommend the self-paced course
@@ -80,7 +81,7 @@ To read this file you can use your favourite command line text editor (`nano`,
 to exit `less` press <kbd>q</kbd>.
 
 #### Exercises
-1. On Alvis clone or download the alvis-intro code
+1. On Alvis, clone or download the alvis-intro repository
 2. Change directory to the one containing this text
 
 ### Submitting a job
@@ -94,11 +95,16 @@ bash hello.sh
 ```
 
 Usually you wouldn't run everything that you are going to submit on the log-in
-node, what you could usually do is reduce the number of epochs and/or the size
-of the dataset etc. to see that it appears to run as you'd like before submitting
-the entire job.
+node, what you could usually do is reduce it as much as possible such as:
 
-Now there are three things to determine before we submit our script:
+ - number of epochs,
+ - size of the dataset,
+ - number of GPUs and CPU cores used, etc.
+
+That way you have an idea of if it will run as expected before submitting the
+entire job to the queue.
+
+Now there are three remaining things to determine before we submit our script:
 - The name of your project
 - What GPUs to allocate
 - How long the script is expected to run
@@ -113,26 +119,34 @@ To determine the name of your project use `projinfo`, e.g.
 SNIC2021-X-YY             12.18                 3500      alvis
     USER                   6.25
 ```
-in this case the project is `SNIC2021-X-YY`. If you're part of the Introduction
-to Alvis workshop project then the project is `SNIC2021-7-120`.
+in this case the project is `SNICYYYY-RR-XXXX`. If you're part of the
+Introduction to Alvis workshop project then the project is `SNIC2022-22-1064`.
 
 #### Deciding GPU type
 When deciding what GPUs to allocate the main consideration is what demands the
 application has, the secondary is what GPUs are available right now and the
-price for GPUs should usually only be considered last if at all. A note is that
-the T4 GPUs are technically meant for inference only and doesn't perform as well
-in training, but given their low cost it can still be cost-effective to do so.
-Depending on the precision you use, different GPUs can be more or less suited for
-the task, see [GPU Hardware Details](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/#gpu-hardware-details).
+price for GPUs should usually only be considered last if at all.
 
-The hard limit from a particular application that can influence what GPUs
-you should choose is primarilly based on memory requirements. If your machine
-learning model can fit on the GPU at the same time as a batch from your dataset,
-then this GPU will probably work for your application.
+When it comes to performence these are a few considerations:
+
+- GPU memory is hard limit when it comes to the largest models and would
+either need GPUs with a lot of VRAM or use model parallelism,
+- When using large datasets A100 nodes are recommended as they have fast
+connections to Mimer,
+- When using multiple nodes A40 nodes should be avoided as they are not
+connected with Infiniband,
+- T4s are technically built for inference and doesn't perform as well for
+training, but given their low cost it may still be cost-effective to use them
+for light tasks,
+- Depending on which floating point precision used different GPUs can have
+very different performance, see
+[GPU Hardware Details](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/#gpu-hardware-details),
+- When there are multiple possible choices go for the currently most abundant
+GPU (`jobinfo -s`).
 
 The script `hello.sh` doesn't have any constraints on what GPU to use (in fact
 it doesn't use a GPU and doesn't technically belong on Alvis, but you can still
-learn the principles from it). Therefore, we should try to see what GPU type is
+learn the principles SLURM from it). Therefore, we should try to see what GPU type is
 most available right now to reduce how long we have to wait. This we can do with
 the command `jobinfo` e.g.
 ```
@@ -214,7 +228,7 @@ sign that we probably didn't need a supercomputer to run it.
 
 To see the current status of your job and find out your job ID you can also run
 ```bash
-[USER@alvis2 1_getting_started]$ squeue -u $USER
+[USER@alvis2 1_getting_started]$ squeue --me
 ```
 if nothing shows up, the most likely reason is that your job has already
 finished. To also see accounting information from finished submissions use
@@ -252,6 +266,9 @@ in the previous section.
 previous submission
 6. Update `jobscript.sh` with the details you found out in 1--3
 7. Submit `jobscript.sh` and look at the statistics of this job
+8. If the graphs from 5 and 7 were empty. Pick a job from the queue (`squeue`)
+that has been running for a while and try to tell whether this job is using the
+resources okay or not.
 
 ### Setting up the environment
 There are primarily two ways to set-up your environment on Alvis:
@@ -260,8 +277,8 @@ There are primarily two ways to set-up your environment on Alvis:
 
 #### Loading modules
 In this section we will go through the essentials for using modules to set up
-your preferred software for more details see the [C3SE
-documentation](https://www.c3se.chalmers.se/documentation/modules/).
+your preferred software for more details, see the
+[C3SE documentation](https://www.c3se.chalmers.se/documentation/modules/).
 
 The first command we will consider is
 ```bash
@@ -280,7 +297,7 @@ load`.
 In `jobscript_module.sh` you can find how to use the module tree to load PyTorch.
 
 **Exercises:**
-1. Update and submit `jobscript_module.sh` with `sbatch`.
+1. Update `jobscript_module.sh` and submit it with `sbatch`.
 2. Redo 1 but for TensorFlow instead of PyTorch
 
 #### Using containers
@@ -290,9 +307,10 @@ containers see the
 [C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
 It might be worth noting that containers are self contained and are not
 influenced by what operating system you have outside the container. As such
-containers that work on phase 1 should work just as well on the phase 2 nodes.
-That is, as long as the software work with the hardware. For example, old
-versions of PyTorch does not recognize the A40 GPUs.
+containers that work one system many times work just as well on other systems
+with minimal changes. That is, as long as the software is built compatible to
+the hardware. For example, old versions of PyTorch does not recognize the A40
+GPUs.
 
 In `/apps/containers/` we provide some base containers for your use, but will
 later go through how you could build your own container on Alvis.
@@ -333,7 +351,8 @@ top of what we find in /apps/containers and that in the post section we can
 write our additions.
 
 Before we write our file we can use the options `--writable-tmpfs --fakeroot`
-to see what we want to put in our %post section.
+to experiment with adding stuff to the container interactively, the commands
+correspond roughly to what you would put the %post section of the recipe.
 ```
 [USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
 Apptainer> conda install -y seaborn
@@ -354,12 +373,14 @@ and build it with
 [USER@alvis2 1_getting_started]$ apptainer build --fakeroot my_seatorch.sif my_seatorch.def
 ```
 note, that as a rule when we are building something we generally want to use
-the `--fakeroot` flag.
+the `--fakeroot` flag, though even fakeroot will be used in the %post section
+regardless whether the flag is used or not.
 
 Then you can use your own container with
 ```bash
 [USER@alvis2 1_getting_started]$ apptainer exec my_seatorch.sif python my_script.py
 ```
+
 However, note that on the compute nodes we might not have rolled out the update
 to Apptainer yet. In that case use the `singularity` command to launch the
 container. Usage is almost identical.
