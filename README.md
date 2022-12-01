@@ -11,9 +11,6 @@ Accompanying introduction slides are available at:
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
  * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
 
-The accompanying demo slides for the introduction can be found at: 
- * <https://github.com/c3se/alvis-intro/blob/main/tutorial/demo.ipynb>
-
 ## Tutorial overview
 Doing the excercises are voluntary, but make sure to read the associated READMEs
 for each part to make sure that you're not missing something. The tutorial is
@@ -40,3 +37,6 @@ or with older versions of jupyter
 ```bash
 jupyter nbconvert --to python my_notebook.ipynb
 ```
+
+The automatic conversion can be used as a start to refactor the code from the
+notebook into more suitable format.
