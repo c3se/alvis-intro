@@ -8,7 +8,9 @@
 
 # Load modules
 ml purge
-ml PyTorch/1.8.1-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+ml torchvision/0.12.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
+ml matplotlib/3.4.2-foss-2021a
+ml JupyterLab/3.0.16-GCCcore-10.3.0
 
 # Interactive
 #jupyter lab
