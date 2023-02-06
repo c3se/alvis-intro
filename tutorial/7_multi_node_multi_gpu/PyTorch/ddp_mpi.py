@@ -34,13 +34,13 @@ def cleanup():
     dist.destroy_process_group()
 
 
-def run_process():
+def run_process(verbose=False):
     '''Run process
 
     This is what is actually run on each process.
     '''
     # Setup this process
-    local_rank, rank, world_size = setup(verbose=False)
+    local_rank, rank, world_size = setup(verbose=verbose)
     
     # Initialize data_loader
     input_size = 5
@@ -95,8 +95,9 @@ def run_process():
 
 def main():
     # Spawn processes
-    run_process()
+    run_process(verbose=True)
 
 
 if __name__=="__main__":
     main()
+
