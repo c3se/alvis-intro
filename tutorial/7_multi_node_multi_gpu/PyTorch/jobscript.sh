@@ -14,16 +14,16 @@ module purge
 ml PyTorch/1.9.0-fosscuda-2020b
 
 # Run DistributedDataParallel with srun (MPI backend)
-srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_mpi.py
+srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_mpi.py
 
 ## Run DistributedDataParallel with srun (NCCL backend)
-#srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_nccl.py
+#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_nccl.py
 #
 ## Run DistributedDataParallel with torch.distributed.launch
-#srun -N $SLURM_NNODES --ntasks-per-node=1 bash -c "
+#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 bash -c "
 #python -m torch.distributed.run \
 #    --node_rank="'$SLURM_NODEID'" \
-#    --nnodes=$SLURM_NNODES \
+#    --nnodes=$SLURM_JOB_NUM_NODES \
 #    --nproc_per_node=$SLURM_GPUS_ON_NODE \
 #    --rdzv_id=$SLURM_JOB_ID \
 #    --rdzv_backend=c10d \

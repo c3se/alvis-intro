@@ -13,8 +13,8 @@ module purge
 ml TensorFlow/2.6.0-foss-2021a-CUDA-11.3.1
 
 # Run with MultiWorkerMirroredStrategy
-srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=NCCL
-#srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=RING
+srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=NCCL
+#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=RING
 
 
 #=============================================================================
@@ -24,4 +24,4 @@ srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --com
 #ml Horovod/0.21.1-fosscuda-2020b-TensorFlow-2.4.1
 #
 ## Run with Horovod
-#srun -N $SLURM_NNODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python hvd.py
+#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python hvd.py
