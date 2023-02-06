@@ -15,7 +15,7 @@ ml PyTorch/1.9.0-fosscuda-2020b TensorFlow/2.5.0-fosscuda-2020b
 #python dp.py
 
 # Set up for the different multiprocessing alternatives
-ngpus=$(nvidia-smi -L | wc -l)
+ngpus=$SLURM_GPUS_ON_NODE
 export WORLD_SIZE=$ngpus
 
 # Run DistributedDataParallel with run
