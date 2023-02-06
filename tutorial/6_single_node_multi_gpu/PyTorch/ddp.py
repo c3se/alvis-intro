@@ -41,7 +41,7 @@ def run_process():
     '''
     # Get distributed parameters
     rank = dist.get_rank()
-    local_rank = int(os.environ["LOCAL_RANK"])
+    local_rank = int(os.environ["SLURM_LOCALID"])
     world_size = dist.get_world_size()
     
     # Initialize data_loader
