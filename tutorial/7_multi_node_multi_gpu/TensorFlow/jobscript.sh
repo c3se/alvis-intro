@@ -1,5 +1,5 @@
 #!/bin/env bash
-#SBATCH -A SNIC2022-22-1064  # find your project with the "projinfo" command
+#SBATCH -A SNIC2022-22-1064
 #SBATCH -p alvis
 #SBATCH -t 00:10:00
 #SBATCH --gpus-per-node=A100:4
@@ -10,7 +10,7 @@
 #                              TensorFlow
 #=============================================================================
 module purge
-ml TensorFlow/2.6.0-foss-2021a-CUDA-11.3.1
+module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 
 # Run with MultiWorkerMirroredStrategy
 srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=NCCL

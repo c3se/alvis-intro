@@ -23,8 +23,10 @@ command `job_stats.py`.
 ### Environment setup
 To run these examples load pytorch:
 ```bash
-flat_modules
-ml load PyTorch/1.9.0-fosscuda-2020b
+ml purge
+ml PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
 
 ### Data Parallelism with DP
@@ -73,8 +75,10 @@ which is a good reference to know of. Here we will cover some of that material.
 ### Environment setup
 To run these examples load pytorch:
 ```bash
-flat_modules
-ml load TensorFlow/2.5.0-fosscuda-2020b
+module purge
+ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
 
 ### Data Parallelism with MirroredStrategy
@@ -89,11 +93,6 @@ with strategy.scope():
 
 # ... use model as usual
 ```
-
-**Note:** There is a known
-[bug](https://github.com/tensorflow/tensorflow/issues/50487) when using
-MirroredStrategy from within a function in TensorFlow 2.5.0 and Python 3.8 and
-3.9.
 
 ### Excercises
 1. Checkout the different scripts and try to get an idea of what they are doing and what their differences are.

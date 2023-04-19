@@ -8,7 +8,9 @@
 
 # Set-up environment
 ml purge
-ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
+module load PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+module load matplotlib/3.5.2-foss-2022a
+module load JupyterLab/3.5.0-GCCcore-11.3.0
 
 # Interactive
 jupyter lab

@@ -7,10 +7,11 @@
 #SBATCH -o regression-pytorch.out  # name of the output file
 
 # Load modules
-ml purge
-ml torchvision/0.12.0-foss-2021a-PyTorch-1.11.0-CUDA-11.3.1
-ml matplotlib/3.4.2-foss-2021a
-ml JupyterLab/3.0.16-GCCcore-10.3.0
+module purge
+module load PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+module load matplotlib/3.5.2-foss-2022a
+module load JupyterLab/3.5.0-GCCcore-11.3.0
 
 # Interactive
 #jupyter lab

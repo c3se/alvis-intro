@@ -30,14 +30,19 @@ portal is always using compute nodes.
 ## PyTorch
 For the following excercises you will need to load the following modules:
 ```bash
-flat_modules
-ml PyTorch/1.8.1-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+module purge
+ml PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
-if you are using the portal copy jupyter3.sh to your home directory
+if you are using the portal, copy alvis-intro-23.04.sh to a
+specific path in your homedirectory for it to be available in the portal
+drop-down menu
+```bash
+mkdir -p ~/portal/jupyter
+cp -i alvis-intro-23.04.sh ~/portal/jupyter/
 ```
-cp -i jupyter3.sh ~
-```
-and select it in the portal.
+Then select it in the portal.
 
 
 Now you should open up `regression-pytorch.ipynb` and follow the instructions there.
@@ -45,23 +50,29 @@ Now you should open up `regression-pytorch.ipynb` and follow the instructions th
 ## TensorFlow
 For the following excercises you will need to load the following modules:
 ```bash
-flat_modules
-ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+module purge
+ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
-if you are using the portal copy jupyter3.sh to your home directory
+if you are using the portal, copy alvis-intro-23.04.sh to a
+specific path in your homedirectory for it to be available in the portal
+drop-down menu
+```bash
+mkdir -p ~/portal/jupyter
+cp -i alvis-intro-23.04.sh ~/portal/jupyter/
 ```
-cp -i jupyter3.sh ~
-```
-and select it in the portal.
+Then select it in the portal.
 
 Now you should open up `regression-tensorflow.ipynb` and follow the instructions there.
 
 ## MATLAB
-If you want to use the graphical version of MATLAB you should to connect through
-the Alvis OnDemand portal or Thinlinc. Otherwise you can probably get the key
-takeaways from following along with your favourite command line text editor.
+If you want to use the graphical version of MATLAB you can use the Alvis
+OnDemand portal and the MATLAB proxy app. Otherwise you can probably get the
+key takeaways from following along with your favourite command line text
+editor.
 
-Generally you should use Thinlinc on the log-in nodes while you write your code
+Generally you can use Thinlinc on the log-in nodes while you write your code
 and if you want to do some light testing of your code.
 
 To open the MATLAB GUI open your desktop environment (portal or Thinlinc) and

@@ -9,6 +9,7 @@ import torch.multiprocessing as mp
 from torch.utils.data import DataLoader, DistributedSampler
 from torch.nn.parallel import DistributedDataParallel
 from torch.distributed.optim import ZeroRedundancyOptimizer
+from torch.distributed.elastic.multiprocessing.errors import record
 
 from model import GPT
 from dataset import RandomCorpus
@@ -16,24 +17,23 @@ from logger import BenchmarkWriter
 
 
 def setup(backend, verbose=False):
-    rank = os.environ["RANK"] if "RANK" in os.environ else os.environ["SLURM_PROCID"]
+    dist.init_process_group(backend)
     if verbose:
         print(f'''
 =============================================
-  Rank:          {rank}
-  World size:    {os.environ["WORLD_SIZE"]}
+  Rank:          {dist.get_rank()}
+  World size:    {dist.get_world_size()}
   Master addres: {os.environ["MASTER_ADDR"]}
   Master port:   {os.environ["MASTER_PORT"]}
 =============================================
         ''')
-
-    dist.init_process_group(backend)
 
 
 def cleanup():
     dist.destroy_process_group()
 
 
+@record  # to get traceback for "Root Cause"
 def run_process():
     '''Run process
 
@@ -41,7 +41,7 @@ def run_process():
     '''
     # Get distributed parameters
     rank = dist.get_rank()
-    local_rank = int(os.environ["SLURM_LOCALID"])
+    local_rank = int(os.getenv("LOCAL_RANK", os.getenv("OMPI_COMM_WORLD_LOCAL_RANK", os.environ["SLURM_LOCALID"])))
     world_size = dist.get_world_size()
     
     # Initialize data_loader
@@ -59,7 +59,7 @@ def run_process():
     )
 
     # Initialize model
-    model = GPT(vocab_size, context_size, verbose=True)
+    model = GPT(vocab_size, context_size, verbose=False)
 
     device = torch.device(f"cuda:{local_rank}")
     model.to(device)
@@ -111,7 +111,8 @@ def run_process():
             print("Epoch:", epoch)
 
     if rank==0:
-        writer.benchmark_results(burn_in_steps=2*corpus_length, step_unit="seq")
+        pass
+        #writer.benchmark_results(burn_in_steps=2*corpus_length, step_unit="seq")
     writer.close()
 
     return model

@@ -1,5 +1,5 @@
 #!/bin/env bash
-#SBATCH -A SNIC2022-22-1064  # find your project with the "projinfo" command
+#SBATCH -A SNIC2022-22-1064
 #SBATCH -p alvis
 #SBATCH -t 01:00:00
 #SBATCH --gpus-per-node=A100:4
@@ -11,7 +11,7 @@ echo $SLURM_JOB_NODELIST
 
 # Set-up environment
 module purge
-ml PyTorch/1.9.0-fosscuda-2020b
+module load PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
 
 # Run DistributedDataParallel with srun (MPI backend)
 srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_mpi.py
@@ -21,12 +21,12 @@ srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_mp
 #
 ## Run DistributedDataParallel with torch.distributed.launch
 #srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 bash -c "
-#python -m torch.distributed.run \
+#torchrun \
 #    --node_rank="'$SLURM_NODEID'" \
 #    --nnodes=$SLURM_JOB_NUM_NODES \
 #    --nproc_per_node=$SLURM_GPUS_ON_NODE \
 #    --rdzv_id=$SLURM_JOB_ID \
 #    --rdzv_backend=c10d \
-#    --rdzv_endpoint="$MASTER_ADDR:$MASTER_PORT" \
+#    --rdzv_endpoint=$MASTER_ADDR:$MASTER_PORT \
 #    ddp_launch.py
 #"

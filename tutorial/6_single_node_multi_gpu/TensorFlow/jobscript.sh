@@ -1,5 +1,5 @@
 #!/bin/env bash
-#SBATCH -A SNIC2021-7-120  # find your project with the "projinfo" command
+#SBATCH -A SNIC2022-22-1064
 #SBATCH -p alvis
 #SBATCH -t 00:10:00
 #SBATCH --gpus-per-node=T4:2
@@ -7,7 +7,7 @@
 
 # Set-up environment
 module purge
-ml TensorFlow/2.5.0-fosscuda-2020b
+ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 
 # Run DataParallel
 python mirrored_strategy.py

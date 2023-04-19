@@ -16,8 +16,8 @@ Horovod which we skipped in the previous part.
 ### Environment setup
 Load PyTorch:
 ```bash
-flat_modules
-ml PyTorch/1.9.0-fosscuda-2020b
+module purge
+ml PyTorch/2.12.1-foss-2022a-CUDA-11.7.0
 ```
 
 ### Data Parallelism with DDP
@@ -45,7 +45,7 @@ community. You can read more about Horovod
 ### Environment set-up
 Load the relevant modules
 ```
-flat_modules
+module purge
 ml Horovod/0.21.3-fosscuda-2020b-PyTorch-1.7.1
 ```
 
@@ -57,8 +57,8 @@ which is a good reference to know of. Here we will cover some of that material.
 ### Environment setup
 To run these examples load pytorch:
 ```bash
-flat_modules
-ml TensorFlow/2.6.0-foss-2021a-CUDA-11.3.1
+module purge
+ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 ```
 
 ### Data Parallelism with MultiWorkerMirroredStrategy
@@ -79,7 +79,7 @@ with strategy.scope():
 ```
 
 **Note:** MultiWorkerMirroredStrategy has to be created at the beginning of the
-*program. Else you might encounter
+program. Else you might encounter
 ```
 RuntimeError: Collective ops must be configured at program startup
 ```
@@ -117,7 +117,7 @@ https://github.com/c3se/alvis-intro/blob/main/examples/ex7/ex7-tensorflow.py
 ### Environment set-up
 Load the relevant modules
 ```
-flat_modules
+module purge
 ml Horovod/0.21.1-fosscuda-2020b-TensorFlow-2.4.1
 ```
 

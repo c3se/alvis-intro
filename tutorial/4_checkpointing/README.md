@@ -71,7 +71,9 @@ original code, then for some use cases an alternative is to export it to
 To set up you'll need to load
 ```
 ml purge
-ml PyTorch/1.8.1-fosscuda-2020b torchvision/0.9.1-fosscuda-2020b-PyTorch-1.8.1 JupyterLab/2.2.8-GCCcore-10.2.0 matplotlib/3.3.3-fosscuda-2020b
+ml PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
 and you'll probably want to run it on a compute node as well, because you'll want to access the TMPDIR for faster file I/O.
 
@@ -166,7 +168,9 @@ ideal.
 You need to complete a few steps before you can run this example.
 ```
 ml purge
-ml TensorFlow/2.5.0-fosscuda-2020b matplotlib/3.3.3-fosscuda-2020b JupyterLab/2.2.8-GCCcore-10.2.0
+ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+ml matplotlib/3.5.2-foss-2022a
+ml JupyterLab/3.5.0-GCCcore-11.3.0
 ```
 
 ### Running the code

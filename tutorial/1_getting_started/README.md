@@ -354,7 +354,7 @@ Before we write our file we can use the options `--writable-tmpfs --fakeroot`
 to experiment with adding stuff to the container interactively, the commands
 correspond roughly to what you would put the %post section of the recipe.
 ```
-[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
+[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif
 Apptainer> conda install -y seaborn
 ...
 Apptainer> exit
@@ -363,7 +363,7 @@ this seem to have gone fine so we can write our recipy called
 "my\_seatorch.def".
 ```Singularity
 bootstrap: localimage
-from: /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
+from: /apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif
 
 %post
     conda install -y seaborn
