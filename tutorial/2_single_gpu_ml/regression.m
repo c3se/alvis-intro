@@ -75,7 +75,7 @@ function y = f_true(x)
 end
 function [x, y] = get_data(n_points)
 % GET_DATA function to produce an example dataset for regression
-    x = 2 * rand(n_points, 1) - 1;
-    y = 0.5 * x + 0.3 + 0.1 * randn(n_points, 1);
+    x = gpuArray(2 * rand(n_points, 1) - 1);
+    y = gpuArray(0.5 * x + 0.3 + 0.1 * randn(n_points, 1));
 end
 
