@@ -31,7 +31,7 @@ if __name__=="__main__":
 
     # Compile and train
     model.compile(
-        optimizer=tf.keras.optimizers.SGD(learning_rate=0.01),
+        optimizer=tf.keras.optimizers.SGD(learning_rate=0.001),
         loss='mse',
     )
 
