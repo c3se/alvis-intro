@@ -88,8 +88,7 @@ will build on that to see what we can do.
 2.  Read through the script and see how it is structured.
 3.  If it looks ok you can run it.
 4.  Note that `trainingOptions(...)` contains most of the details with regards
-    to training. Change so that you are training on a GPU (n.b. no GPU available
-    on alvis2).
+    to training.
 5.  Take a short while and explore the possibilities that exist in
     trainingOptions.
 6.  Increase things like the size of the training dataset and number of epochs
