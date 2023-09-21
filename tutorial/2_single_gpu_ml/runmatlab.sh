@@ -13,10 +13,10 @@ ml MATLAB
 # This is just an example, usually you would write tmp.m directly in a sperate
 # file, i.e. not as part of the jobscipt.
 cat <<- EOF > tmp.m
-	settings;
-	a = 1;
-	b = 2;
-	a + b
+    settings;
+    a = 1;
+    b = 2;
+    a + b
 EOF
 
 # Run above matlab script headless

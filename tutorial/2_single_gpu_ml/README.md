@@ -83,6 +83,23 @@ that machine.
 In `regression.m` there is an example script that currently runs on CPUs, we
 will build on that to see what we can do.
 
+### Training on GPU
+To make the trainNetwork function to use the GPU there are two things that are
+needed as is:
+1. An available GPU
+2. Input data that is located on the GPU in question
+
+Matlab makes use of `gpuArray` objects to run on the GPU and then many things
+will just work with GPU accelaration. Documentation about `gpuArray`s are
+available at <https://se.mathworks.com/help/parallel-computing/gpuarray.html>.
+
+Examples:
+```matlab
+a = [1, 2]
+a_gpu = gpuArray(a)
+b_gpu = zeros(2, 4, 'gpuArray')
+```
+
 ### MATLAB excercises
 1.  Open MATLAB and navigate to this folder and open `regression.m`.
 2.  Read through the script and see how it is structured.
@@ -91,11 +108,14 @@ will build on that to see what we can do.
     to training.
 5.  Take a short while and explore the possibilities that exist in
     trainingOptions.
-6.  Increase things like the size of the training dataset and number of epochs
-    and submit with `sbatch jobscript-matlab.sh` after investigating the details
-    of the jobscript. Change the training parameters until it takes a few minutes to run.
+6.  Try running with a few different options and hyperparameters to see how it
+    does.
+7.  Increase dataset size to 1 million data points and make the training use
+    the GPU. Then submit a job with `sbatch jobscript-matlab.sh` after
+    investigating the details of the jobscript.
 7.  Use `sacct` to find the job-id of your latest job.
-8.  Issue `job_stats.py JOBID` where JOBID is the job-id that you found with `sacct`.
+8.  Issue `job_stats.py JOBID` where JOBID is the job-id that you found with
+    `sacct`.
 9.  Does your script use the GPU well?
 10. If you want more frequent information on how your job is doing than what
     you get through the Grafana page:
