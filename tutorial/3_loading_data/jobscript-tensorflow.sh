@@ -11,7 +11,6 @@ ml purge
 ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 ml matplotlib/3.5.2-foss-2022a
 ml JupyterLab/3.5.0-GCCcore-11.3.0
-ml tqdm/4.64.0-GCCcore-11.3.0
 
 # # Unpack data to TMPDIR
 # # uncomment if you want to try to read data from directory instead of archive
