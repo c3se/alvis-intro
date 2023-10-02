@@ -7,7 +7,7 @@
 
 # Set-up environment
 module purge
-ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+ml TensorFlow/2.7.1-foss-2021b-CUDA-11.4.1
 
 # Run DataParallel
 python mirrored_strategy.py
