@@ -333,16 +333,9 @@ directly inspect containers in /apps/containers.
 As an example we will look at how to build a container with both PyTorch and
 Seaborn. The steps will be as follow:
 ```bash
-[USER@alvis2 1_getting_started]$ apptainer inspect -d /apps/containers/PyTorch/PyTorch-1.13-NGC-22.09.sif
+[USER@alvis2 1_getting_started]$ apptainer inspect -d /apps/containers/PyTorch/PyTorch-2.0.0.sif
 bootstrap: docker
-from: nvcr.io/nvidia/pytorch:22.09-py3
-
-%post
-    # Make sure to use the correct jupyter config
-    if [ -d /opt/conda/etc/jupyter ]; then
-        rm -f /opt/conda/etc/jupyter/jupyter_notebook_config.py
-        rm -f /opt/conda/etc/jupyter/jupyter_notebook_config.json
-    fi
+from: pytorch/pytorch:2.0.0-cuda11.7-cudnn8-devel
 ```
 Now we know how a recipe could look like. There are more thorough instructions
 at <https://apptainer.org/docs/user/main/build_a_container.html>, but for now
@@ -354,7 +347,7 @@ Before we write our file we can use the options `--writable-tmpfs --fakeroot`
 to experiment with adding stuff to the container interactively, the commands
 correspond roughly to what you would put the %post section of the recipe.
 ```
-[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif
+[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-2.0.0.sif
 Apptainer> conda install -y seaborn
 ...
 Apptainer> exit
@@ -363,7 +356,7 @@ this seem to have gone fine so we can write our recipy called
 "my\_seatorch.def".
 ```Singularity
 bootstrap: localimage
-from: /apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif
+from: /apps/containers/PyTorch/PyTorch-2.0.0.sif
 
 %post
     conda install -y seaborn
