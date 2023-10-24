@@ -7,7 +7,7 @@ from model import Model
 from dataset import get_random_dataset
 
 
-if __name__=="__main__":
+def main():
     # Initialize dataset
     input_shape = 500
     output_shape = 1
@@ -20,7 +20,10 @@ if __name__=="__main__":
 
     with strategy.scope():
         model = Model(input_shape, output_shape, verbose=False)
-
+        model.compile(
+            optimizer=tf.keras.optimizers.SGD(learning_rate=0.001),
+            loss='mse',
+        )
 
     # TensorBoard profiling
     profiling_callback = tf.keras.callbacks.TensorBoard(
@@ -29,13 +32,16 @@ if __name__=="__main__":
         profile_batch="15,25",
     )
 
-    # Compile and train
-    model.compile(
-        optimizer=tf.keras.optimizers.SGD(learning_rate=0.001),
-        loss='mse',
-    )
-
+    # Train
     batch_size = 30
     global_batch_size = strategy.num_replicas_in_sync
 
-    model.fit(dataset.batch(global_batch_size), epochs=10, callbacks=[profiling_callback])
+    model.fit(
+        dataset.batch(global_batch_size),
+        epochs=10,
+        callbacks=[profiling_callback],
+    )
+
+
+if __name__=="__main__":
+    main()

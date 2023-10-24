@@ -90,6 +90,8 @@ strategy = tf.distributed.MirroredStrategy()
 
 with strategy.scope():
     my_model = MyModel()
+    my_model.compile(# usual stuff here
+    )
 
 # ... use model as usual
 ```
