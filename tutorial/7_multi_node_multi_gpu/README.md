@@ -54,6 +54,10 @@ ml Horovod/0.21.3-fosscuda-2020b-PyTorch-1.7.1
 TensorFlow has their own [guide to distributed training](https://www.tensorflow.org/guide/distributed_training)
 which is a good reference to know of. Here we will cover some of that material.
 
+*N.B.* the TensorFlow example currently only works with Horovod. If you are
+planning to run multi-node TensorFlow jobs, contact support at
+<https://supr.naiss.se/support/> and we'll help you directly.
+
 ### Environment setup
 To run these examples load pytorch:
 ```bash
