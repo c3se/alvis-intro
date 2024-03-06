@@ -21,13 +21,12 @@ at [c3se.chalmers.se](https://www.c3se.chalmers.se):
 1. Access Alvis (and open up a terminal)
 
 ## Using Alvis
-In this part we will explore how to get started with using Alvis as a first time
-user. As a first step you should connect to Alvis (see previous section) and now
-you should have access to Alvis through a terminal or if you are using Thinlinc
-or VS Code you can open a terminal. Note that you could use either alvis1 log-in
-node or the new alvis2 log-in node. If you've previously used Alvis but want to
-get an update about all the changes since the implementation of part 2 see this
-[page](https://www.c3se.chalmers.se/news/alvis-phase-2/).
+In this part we will explore how to get started with using Alvis as a first
+time user. As a first step you should connect to Alvis (see previous section)
+and now you should have access to Alvis through a terminal. If you're using the
+portal you can get a terminal on the log-in node through "File" > "Alvis Shell
+Access". Note that you could use either alvis1 log-in node or alvis2 log-in
+node.
 
 A note on the two log-in nodes is that alvis1 has 4 T4 GPUs that can be used for
 light testing while alvis2 is the dedicated data transfer node for when you want
@@ -89,7 +88,7 @@ You want to make sure that there are no obvious errors before you submit it, to
 do this it is absolutely OK to run small tests directly on the log-in nodes.
 
 Take a look at the contents of `hello.sh` and if you think that it looks ok you
-can try running it on the log-in node.
+can try running it directly on the log-in node.
 ```bash
 bash hello.sh
 ```
@@ -116,11 +115,11 @@ To determine the name of your project use `projinfo`, e.g.
  Project                Used[h]         Allocated[h]      Queue
     User
 ---------------------------------------------------------------
-SNIC2021-X-YY             12.18                 3500      alvis
+NAISS2024-X-YY             12.18                 3500      alvis
     USER                   6.25
 ```
-in this case the project is `SNICYYYY-RR-XXXX`. If you're part of the
-Introduction to Alvis workshop project then the project is `SNIC2022-22-1064`.
+in this case the project is `NAISSYYYY-RR-XXXX`. If you're part of the
+Introduction to Alvis workshop project then the project is `NAISS2024-22-219`.
 
 #### Deciding GPU type
 When deciding what GPUs to allocate the main consideration is what demands the
@@ -141,7 +140,7 @@ for light tasks,
 - Depending on which floating point precision used different GPUs can have
 very different performance, see
 [GPU Hardware Details](https://www.c3se.chalmers.se/documentation/intro-alvis/slides/#gpu-hardware-details),
-- When there are multiple possible choices go for the currently most abundant
+- When there are multiple feasible options, go for the currently most abundant
 GPU (`jobinfo -s`).
 
 The script `hello.sh` doesn't have any constraints on what GPU to use (in fact
@@ -202,7 +201,7 @@ should be enough. The maximum time you can allocate is seven days.
 #### Interactive session
 Now to submit our job interactively we will use `srun`.
 ```bash
-[USER@alvis2 1_getting_started]$ srun -A SNIC2021-X-YY --gpus-per-node=A40:1 -t 00:01:00 --pty bash
+[USER@alvis2 1_getting_started]$ srun -A NAISS2024-X-YY --gpus-per-node=A40:1 -t 00:01:00 --pty bash
 srun: job 102893 queued and waiting for resources
 srun: job 102893 has been allocated resources
 [USER@alvisX-Y 1_getting_started]$ bash hello.sh
@@ -299,6 +298,9 @@ In `jobscript_module.sh` you can find how to use the module tree to load PyTorch
 **Exercises:**
 1. Update `jobscript_module.sh` and submit it with `sbatch`.
 2. Redo 1 but for TensorFlow instead of PyTorch
+3. Install an additional small Python package beyond what is available through
+   modules by following our
+   [Python instructions](https://www.c3se.chalmers.se/documentation/applications/python/#virtual-environments)
 
 #### Using containers
 Containers are a way for you to work with with a portable and reproducible
