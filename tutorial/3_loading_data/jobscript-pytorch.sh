@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-#SBATCH -A SNIC2022-22-1064  # find your project with the "projinfo" command
+#SBATCH -A NAISS2024-22-219  # find your project with the "projinfo" command
 #SBATCH -p alvis
 #SBATCH -t 00:20:00
 #SBATCH --gpus-per-node=A40:1

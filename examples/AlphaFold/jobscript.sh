@@ -6,6 +6,7 @@
 # This job usually only takes around 1 hour, however if a job runs out of
 # memory or if there is a huge load on the filesystem it might take much
 # longer. Remember to check your jobs with `job_stats.py <JOBID>`.
+# Also depends very much on which fasta is used.
 #SBATCH -t 0-06:00:00
 
 # The A100 nodes have the fastest connection to Mimer and from testing are
