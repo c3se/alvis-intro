@@ -1,9 +1,10 @@
 import argparse
 from glob import glob
 
-
 import torch
 import torchvision
+from torchvision import models
+from torchvision.transforms import v2
 from datasets import concatenate_datasets, Dataset
 
 
@@ -17,7 +18,7 @@ parser.add_argument("--num-epochs", type=int, default=10)
 
 # Performance options
 parser.add_argument("--use-tf32", action="store_true")
-parser.add_argument("--num-workers", type=int, default=0)
+parser.add_argument("--num-workers", type=int, default=4)
 parser.add_argument("--pin-memory", action="store_true")
 parser.add_argument("--device", type=torch.device, default=torch.device("cuda"))
 
@@ -43,6 +44,15 @@ def main():
             )
         ]
     ).with_format("torch", device=args.device)
+    transforms = v2.Compose([
+        v2.ToImage(),
+        v2.ToDtype(torch.uint8, scale=True),
+        v2.RandomResizedCrop(size=(224, 224), antialias=True),
+        v2.RandomHorizontalFlip(p=0.5),
+        v2.ToDtype(torch.float32, scale=True),
+        v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    trainset.set_transform(transforms)
     trainloader = torch.utils.data.DataLoader(
         trainset,
         batch_size=args.batch_size,
@@ -51,7 +61,7 @@ def main():
     )
 
     # Initialize model stuff
-    model = torchvision.models.resnet50(weights=None).to(device)
+    model = models.resnet50(weights=None).to(args.device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
     loss_fn = torch.nn.CrossEntropyLoss()
 
