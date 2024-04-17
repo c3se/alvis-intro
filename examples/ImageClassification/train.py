@@ -1,12 +1,11 @@
 import argparse
-import os
 from glob import glob
 
 import torch
 import torchvision
 from torchvision import models
 from torchvision.transforms import v2
-from datasets import load_dataset
+from datasets import concatenate_datasets, Dataset
 
 
 parser = argparse.ArgumentParser(description="Trains a ResNet-50 on ImageNet-1k")
@@ -23,6 +22,16 @@ parser.add_argument("--num-workers", type=int, default=4)
 parser.add_argument("--pin-memory", action="store_true")
 parser.add_argument("--device", type=torch.device, default=torch.device("cuda"))
 
+# Misc. options
+parser.add_argument(
+    "--dataroot",
+    default=(
+        "/mimer/NOBACKUP/Datasets/"
+        "ImageNet/hf-cache/imagenet-1k/default/1.0.0/"
+        "09dbb3153f1ac686bac1f40d24f307c383b383bc171f2df5d9e91c1ad57455b9/"
+    ),
+)
+
 
 class PerSampleRandomResizedCrop(v2.RandomResizedCrop):
     '''Wrapper for RandomResizedCrop to deal with inputs of different sizes.'''
@@ -38,11 +47,13 @@ def main():
     args = parser.parse_args()
 
     # Load raw data
-    os.environ["HF_USE_SOFTFILELOCK"] = "true"
-    trainset = load_dataset(
-        'imagenet-1k',
-        split="train",
-    ).with_format("torch", device=args.device)
+    trainset = concatenate_datasets(
+        [
+            Dataset.from_file(fn) for fn in glob(
+                    f"{args.dataroot}/imagenet-1k-train-00???-of-00257.arrow",
+            )
+        ]
+    ).with_format("torch")
 
     # Initialize dataloading
     transforms = v2.Compose([
