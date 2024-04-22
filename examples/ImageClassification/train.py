@@ -112,7 +112,7 @@ def get_dataloader(args: argparse.Namespace, train: bool):
         dataset,
         shuffle=train,
         batch_size=(args.batch_size if train else 2 * args.batch_size),
-        num_workers=args.num_workers,
+        num_workers=(args.num_workers if train else min(args.num_workers, 1)),
         pin_memory=args.pin_memory,
     )
     return dataloader
