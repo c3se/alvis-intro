@@ -1,3 +1,4 @@
+import os
 import argparse
 from functools import wraps
 from glob import glob
@@ -18,7 +19,11 @@ parser.add_argument("--num-epochs", type=int, default=10)
 parser.add_argument("--max-steps-per-epoch", type=int, default=0)
 
 # Performance options
-parser.add_argument("--use-tf32", action="store_true")
+parser.add_argument(
+    "--fp32-matmul-precision",
+    default="high",
+    choices=["highest", "high", "medium"],
+)
 parser.add_argument("--num-workers", type=int, default=4)
 parser.add_argument("--pin-memory", action="store_true")
 parser.add_argument("--device", type=torch.device, default=torch.device("cuda"))
@@ -126,6 +131,9 @@ def main():
             'No read access to dataroot, see'
             ' https://www.c3se.chalmers.se/documentation/applications/datasets/#imagenet'
         )
+    torch.set_float32_matmul_precision(args.fp32_matmul_precision)
+
+
 
     trainloader = get_dataloader(args, train=True)
     valloader = get_dataloader(args, train=False)
