@@ -121,6 +121,12 @@ def get_dataloader(args: argparse.Namespace, train: bool):
 def main():
     args = parser.parse_args()
 
+    if not os.access(args.dataroot, os.R_OK):
+        raise RuntimeError(
+            'No read access to dataroot, see'
+            ' https://www.c3se.chalmers.se/documentation/applications/datasets/#imagenet'
+        )
+
     trainloader = get_dataloader(args, train=True)
     valloader = get_dataloader(args, train=False)
 
