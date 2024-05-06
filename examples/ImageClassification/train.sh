@@ -6,4 +6,4 @@
 module purge
 module load PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1 HF-Datasets/2.18.0-gfbf-2023a
 
-python train.py --num-workers=14 --batch-size=64 --num-epochs=3 "$@"
+python train.py --batch-size=64 --num-epochs=3 --max-steps-per-epoch=1000 "$@"

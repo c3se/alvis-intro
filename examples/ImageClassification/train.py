@@ -19,14 +19,32 @@ parser.add_argument("--num-epochs", type=int, default=10)
 parser.add_argument("--max-steps-per-epoch", type=int, default=0)
 
 # Performance options
+def get_dtype(arg: str):
+    try:
+        dtype = getattr(torch, arg)
+    except AttributeError:
+        raise ValueError(f'"{arg}" is not a known torch.dtype')
+
+    if not isinstance(dtype, torch.dtype):
+        raise TypeError(f'Expected a torch.dtype object got "{type(dtype)}"')
+
+    return dtype
+
 parser.add_argument(
     "--fp32-matmul-precision",
     default="high",
     choices=["highest", "high", "medium"],
 )
-parser.add_argument("--num-workers", type=int, default=4)
-parser.add_argument("--pin-memory", action="store_true")
-parser.add_argument("--device", type=torch.device, default=torch.device("cuda"))
+parser.add_argument("--use-amp", action="store_true")
+parser.add_argument("--amp-dtype", default=torch.float16, type=get_dtype)
+parser.add_argument(
+    "--num-workers",
+    type=int,
+    default=(int(os.getenv("SLURM_CPUS_ON_NODE", "2")) - 2),
+)
+parser.add_argument("--pin-memory", default=True, action="store_true")
+parser.add_argument("--no-pin-memory", dest="pin_memory", action="store_false")
+parser.add_argument("--device", type=torch.device, default="cuda")
 
 # Misc. options
 parser.add_argument(
@@ -37,6 +55,7 @@ parser.add_argument(
         "09dbb3153f1ac686bac1f40d24f307c383b383bc171f2df5d9e91c1ad57455b9/"
     ),
 )
+parser.add_argument('--validation', default=True, action=argparse.BooleanOptionalAction)
 
 
 def per_sample(cls: torch.nn.Module):
@@ -136,12 +155,13 @@ def main():
 
 
     trainloader = get_dataloader(args, train=True)
-    valloader = get_dataloader(args, train=False)
+    valloader = get_dataloader(args, train=False) if args.validation else []
 
     # Initialize model stuff
     model = models.resnet50(weights=None).to(args.device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
     loss_fn = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    scaler = torch.cuda.amp.GradScaler(enabled=args.use_amp)
 
     # Training
     for epoch in range(args.num_epochs):
@@ -152,12 +172,18 @@ def main():
             optimizer.zero_grad()
 
             # Calculate loss
-            logits = model(images)
-            loss = loss_fn(logits, labels)
+            with torch.autocast(
+                device_type=args.device.type,
+                dtype=args.amp_dtype,
+                enabled=args.use_amp,
+            ):
+                logits = model(images)
+                loss = loss_fn(logits, labels)
 
             # Update weights
-            loss.backward()
-            optimizer.step()
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
 
             if args.max_steps_per_epoch and step >= args.max_steps_per_epoch:
                 break
