@@ -216,11 +216,12 @@ def main():
                 if args.max_steps_per_epoch and step >= args.max_steps_per_epoch:
                     break
 
-        print(
-            f"Val. loss: {loss}",
-            f"Val. top-1 acc.: {n_top1 / n_samples}",
-            f"Val. top-5 acc.: {n_top5 / n_samples}",
-        )
+        if args.validation:
+            print(
+                f"Val. loss: {loss}",
+                f"Val. top-1 acc.: {n_top1 / n_samples}",
+                f"Val. top-5 acc.: {n_top5 / n_samples}",
+            )
 
 
 if __name__ == '__main__':
