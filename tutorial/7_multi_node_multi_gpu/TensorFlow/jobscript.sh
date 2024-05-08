@@ -23,7 +23,7 @@
 #                       TensorFlow with Horovod
 #=============================================================================
 module purge
-ml Horovod/0.23.0-fosscuda-2020b-TensorFlow-2.5.0
+ml Horovod/0.28.1-foss-2022a-CUDA-11.7.0-TensorFlow-2.11.0
 
 # Run with Horovod
 srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python hvd.py
