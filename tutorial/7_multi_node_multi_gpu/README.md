@@ -89,15 +89,7 @@ RuntimeError: Collective ops must be configured at program startup
 ```
 
 Another option that we have now is what collectives to use for cross-host
-communication. As a start this can simply be left unspecified but to get the
-best performance when using several workers this can play a role. From a
-[TensorFlow tutorial](https://www.tensorflow.org/tutorials/distribute/multi_worker_with_keras#choose_the_right_strategy):
-> MultiWorkerMirroredStrategy provides multiple implementations via the
-> CommunicationOptions parameter: 1) RING implements ring-based collectives using
-> gRPC as the cross-host communication layer; 2) NCCL uses the NVIDIA Collective
-> Communication Library to implement collectives; and 3) AUTO defers the choice to
-> the runtime. The best choice of collective implementation depends upon the
-> number and kind of GPUs, and the network interconnect in the cluster.
+communication. On Alvis you should typically specify `NCCL`.
 
 ## TensorFlow with Horovod
 In this tutorial we will run a distributed deep learning training job across

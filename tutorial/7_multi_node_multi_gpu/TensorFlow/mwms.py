@@ -13,16 +13,27 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     '--communicator',
-    default="AUTO",
-    choices=["AUTO", "NCCL", "RING"],
+    default="NCCL",
+    choices=["NCCL"],  # NCCL is the only one that makes use of IB
     help='the communication implementation to use',
 )
 args = parser.parse_args()
 
 
+class AlvisResolver(tf.distribute.cluster_resolver.SlurmClusterResolver):
+    '''https://github.com/tensorflow/tensorflow/commit/66e587c780c59f6bad2ddae5c45460440002dc68'''
+
+    def _resolve_hostlist(self):
+        hosts = super()._resolve_hostlist()
+        def rename(host):
+            group, num = host.split('-')
+            return f'{group}-{int(num):02d}'
+        return [rename(host) for host in hosts]
+
+
 if __name__=="__main__":
     # Create parallalized model
-    cluster_resolver = tf.distribute.cluster_resolver.SlurmClusterResolver()
+    cluster_resolver = AlvisResolver(port_base=12345)
     communication_options = tf.distribute.experimental.CommunicationOptions(
         implementation=CommunicationImplementation[args.communicator],
     )

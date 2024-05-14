@@ -8,15 +8,13 @@
 
 
 #=============================================================================
-#                              TensorFlow (Currently hangs)
+#                              TensorFlow
 #=============================================================================
-#module purge
-#module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
-#
-## Run with MultiWorkerMirroredStrategy
-#export NCCL_DEBUG=INFO
-#srun -u -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 python mwms.py --communicator=NCCL
-#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=RING
+module purge
+module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
+
+# Run with MultiWorkerMirroredStrategy
+srun -u -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=NCCL
 
 
 #=============================================================================
