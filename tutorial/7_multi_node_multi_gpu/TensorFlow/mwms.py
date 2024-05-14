@@ -1,7 +1,6 @@
 import argparse
 
 import tensorflow as tf
-from tensorflow.distribute.experimental import CommunicationImplementation
 
 from model import Model
 from dataset import get_random_dataset
@@ -35,7 +34,9 @@ if __name__=="__main__":
     # Create parallalized model
     cluster_resolver = AlvisResolver(port_base=12345)
     communication_options = tf.distribute.experimental.CommunicationOptions(
-        implementation=CommunicationImplementation[args.communicator],
+        implementation=tf.distribute.experimental.CommunicationImplementation[
+            args.communicator
+        ],
     )
     strategy = tf.distribute.MultiWorkerMirroredStrategy(
         cluster_resolver=cluster_resolver,
