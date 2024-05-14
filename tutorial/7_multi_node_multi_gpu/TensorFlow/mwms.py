@@ -20,7 +20,8 @@ args = parser.parse_args()
 
 
 class AlvisResolver(tf.distribute.cluster_resolver.SlurmClusterResolver):
-    '''https://github.com/tensorflow/tensorflow/commit/66e587c780c59f6bad2ddae5c45460440002dc68'''
+    '''Workaround for TensorFlow bug prior to version 2.12, see:
+    https://github.com/tensorflow/tensorflow/commit/66e587c780c59f6bad2ddae5c45460440002dc68'''
 
     def _resolve_hostlist(self):
         hosts = super()._resolve_hostlist()
