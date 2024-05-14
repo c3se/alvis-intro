@@ -8,22 +8,20 @@
 
 
 #=============================================================================
-#                              TensorFlow (Currently hangs)
-#=============================================================================
-#module purge
-#module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
-#
-## Run with MultiWorkerMirroredStrategy
-#export NCCL_DEBUG=INFO
-#srun -u -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 python mwms.py --communicator=NCCL
-#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python mwms.py --communicator=RING
-
-
-#=============================================================================
-#                       TensorFlow with Horovod
+#                              TensorFlow
 #=============================================================================
 module purge
-ml Horovod/0.28.1-foss-2022a-CUDA-11.7.0-TensorFlow-2.11.0
+module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
 
-# Run with Horovod
-srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python hvd.py
+# Run with MultiWorkerMirroredStrategy
+srun python mwms.py
+
+
+##=============================================================================
+##                       TensorFlow with Horovod
+##=============================================================================
+#module purge
+#ml Horovod/0.28.1-foss-2022a-CUDA-11.7.0-TensorFlow-2.11.0
+#
+## Run with Horovod
+#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python hvd.py
