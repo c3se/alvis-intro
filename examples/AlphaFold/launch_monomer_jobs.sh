@@ -71,15 +71,16 @@ else
     echo "No models to run, skipping prediction jobs"
 fi
 
-# 6. Launch relaxation on a GPU node
+# 6. Launch relaxation on CPU node
+# can also run on GPUs by specifying --use_gpu_relax to alphafold
 relax_jobid=$(
     sbatch \
         --parsable \
         ${prediction_arrayid:+--dependency=afterok:${prediction_arrayid}} \
         -t 60 \
-        --gpus-per-node=T4:1 \
+        -C NOGPU \
         -J "relax-$identifier" \
-        --wrap "OPENMM_RELAX='CUDA' alphafold ${alphafold_args[*]} --models_to_relax=BEST" \
+        --wrap "alphafold ${alphafold_args[*]} --models_to_relax=BEST" \
 )
 
 echo Succesfully launched jobs $msa_jobid $prediction_arrayid $relax_jobid
