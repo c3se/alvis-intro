@@ -11,22 +11,16 @@ echo $SLURM_JOB_NODELIST
 
 # Set-up environment
 module purge
-module load PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+module load PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
 
-# Run DistributedDataParallel with srun (MPI backend)
-srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_mpi.py
-
-## Run DistributedDataParallel with srun (NCCL backend)
-#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=$SLURM_GPUS_ON_NODE python ddp_nccl.py
-#
-## Run DistributedDataParallel with torch.distributed.launch
-#srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 bash -c "
-#torchrun \
-#    --node_rank="'$SLURM_NODEID'" \
-#    --nnodes=$SLURM_JOB_NUM_NODES \
-#    --nproc_per_node=$SLURM_GPUS_ON_NODE \
-#    --rdzv_id=$SLURM_JOB_ID \
-#    --rdzv_backend=c10d \
-#    --rdzv_endpoint=$MASTER_ADDR:$MASTER_PORT \
-#    ddp_launch.py
-#"
+# Run DistributedDataParallel with torch.distributed.launch
+srun -N $SLURM_JOB_NUM_NODES --ntasks-per-node=1 bash -c "
+torchrun \
+    --node_rank="'$SLURM_NODEID'" \
+    --nnodes=$SLURM_JOB_NUM_NODES \
+    --nproc_per_node=$SLURM_GPUS_ON_NODE \
+    --rdzv_id=$SLURM_JOB_ID \
+    --rdzv_backend=c10d \
+    --rdzv_endpoint=$MASTER_ADDR:$MASTER_PORT \
+    ddp_launch.py
+"

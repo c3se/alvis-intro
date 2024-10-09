@@ -41,7 +41,7 @@ def run_process(verbose=False):
     This is what is actually run on each process.
     '''
     # Setup this process
-    local_rank, rank, world_size= setup(verbose=False)
+    local_rank, rank, world_size= setup(verbose=verbose)
     
     # Initialize data_loader
     input_size = 5
@@ -56,7 +56,7 @@ def run_process(verbose=False):
     )
 
     # Initialize model and attach to optimizer
-    model = Model(input_size, output_size, verbose=False)
+    model = Model(input_size, output_size, verbose=verbose)
 
     device = torch.device(f"cuda:{local_rank}")
     model.to(device)
