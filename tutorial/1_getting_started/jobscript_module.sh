@@ -8,7 +8,7 @@
 
 # Load PyTorch using the module tree
 module purge
-PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
+module load PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
 
 # Print the PyTorch version then exit
 python -c "import torch; print(torch.__version__)"
