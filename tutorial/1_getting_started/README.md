@@ -118,7 +118,7 @@ To determine the name of your project use `projinfo`, e.g.
 NAISS2024-X-YY             12.18                 3500      alvis
     USER                   6.25
 ```
-in this case the project is `NAISSYYYY-RR-XXXX`. If you're part of the
+in this case the project is `NAISSYYYY-RR-XXXX`. If you are part of the
 Introduction to Alvis workshop project then the project is `NAISS2024-22-219`.
 
 #### Deciding GPU type
@@ -134,7 +134,7 @@ either need GPUs with a lot of VRAM or use model parallelism,
 connections to Mimer,
 - When using multiple nodes A40 nodes should be avoided as they are not
 connected with Infiniband,
-- T4s are technically built for inference and doesn't perform as well for
+- T4s are technically built for inference and does not perform as well for
 training, but given their low cost it may still be cost-effective to use them
 for light tasks,
 - Depending on which floating point precision used different GPUs can have
@@ -143,8 +143,8 @@ very different performance, see
 - When there are multiple feasible options, go for the currently most abundant
 GPU (`jobinfo -s`).
 
-The script `hello.sh` doesn't have any constraints on what GPU to use (in fact
-it doesn't use a GPU and doesn't technically belong on Alvis, but you can still
+The script `hello.sh` does not have any constraints on what GPU to use (in fact
+it does not use a GPU and does not technically belong on Alvis, but you can still
 learn the principles SLURM from it). Therefore, we should try to see what GPU type is
 most available right now to reduce how long we have to wait. This we can do with
 the command `jobinfo` e.g.
@@ -213,27 +213,34 @@ note that `exit` or <kbd>Ctrl</kbd>+<kbd>D</kbd> is used to end the session.
 
 
 #### Monitoring session
-You should also make a habit of taking a look at the run statistics to see how
-the job has run, this can give hints for if something has gone wrong or is
-running inefficiently. To see these statistics run (but with your job ID)
-```bash
-[USER@alvis2 1_getting_started]$ job_stats.py 102893
-https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
-```
-in this case the program was too fast to get any data points, but what you would
-have would be that there was little to no load on GPU, CPU and memory. Which for
-most applications is a sign that something is wrong. Though, in our case it is a
-sign that we probably didn't need a supercomputer to run it.
-
-To see the current status of your job and find out your job ID you can also run
+It is important to take alook at the job run statistics. Before checking the status of a job, 
+you first need to find your job ID. To do this, run:
 ```bash
 [USER@alvis2 1_getting_started]$ squeue --me
 ```
+This command shows your current jobs and their job IDs. 
 if nothing shows up, the most likely reason is that your job has already
 finished. To also see accounting information from finished submissions use
 ```bash
 [USER@alvis2 1_getting_started]$ sacct
 ```
+Once you have the job ID, you can check the run statistics to see how the job has performed. 
+This can provide hints if something has gone wrong or is running inefficiently. 
+To see these statistics, run (replacing with your job ID):
+```bash
+[USER@alvis2 1_getting_started]$ job_stats.py 102893
+```
+Then, visit the link that appears after running the above command:
+```bash
+https://scruffy.c3se.chalmers.se/d/alvis-job/alvis-job?var-jobid=102893&from=1632492049000&to=1632492074000
+```
+In this example the program was too fast to get any data points, but what you would
+have would be that there was little to no load on GPU, CPU and memory. Which for
+most applications is a sign that something is wrong. Though, in our case it is a
+sign that we probably did not need a supercomputer to run it.
+
+
+
 
 #### Submitting a jobscript
 Submitting jobscripts is done with `sbatch` and an example jobscript can be
