@@ -69,7 +69,7 @@ Now lets move to this file (README.md)
 [USER@alvis2 ~]$ cd alvis-intro/tutorial/1_getting_started
 [USER@alvis2 1_getting_started]$ ls
 README.md  jobscript.sh		jobscript_container.sh
-hello.sh   jobscript_module.sh	runmatlab.sh
+hello.sh   jobscript_module.sh
 ```
 
 To read this file you can use your favourite command line text editor (`nano`,
