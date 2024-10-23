@@ -239,9 +239,6 @@ have would be that there was little to no load on GPU, CPU and memory. Which for
 most applications is a sign that something is wrong. Though, in our case it is a
 sign that we probably did not need a supercomputer to run it.
 
-
-
-
 #### Submitting a jobscript
 Submitting jobscripts is done with `sbatch` and an example jobscript can be
 found in `jobscript.sh`
