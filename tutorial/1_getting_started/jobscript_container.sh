@@ -10,7 +10,7 @@
 module purge
 
 # Specify the path to the container
-CONTAINER=/apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif
+CONTAINER=/apps/containers/PyTorch/PyTorch-NGC-latest.sif
 
 # Print the PyTorch version then exit
 singularity exec $CONTAINER python -c "import torch; print(torch.__version__)"

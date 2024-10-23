@@ -327,62 +327,54 @@ script and to submit use
 [USER@alvis2 1_getting_started]$ sbatch jobscript_container.sh
 ```
 
-To create your own container we've provided the Singularity fork Apptainer on
-the log-in nodes that enables you to build your own containers directly on the
-cluster. You will later be able to use these containers in most other HPC
-environments without issue.
+The container variant that is used on Alvis is called Apptainer. It is set-up
+so that you can build your containers directly on the cluster.
 
-To create a container we will have to create a recipe file. Luckily we can take
-inspiration from our repo with recipes <https://github.com/c3se/containers> or
-directly inspect containers in /apps/containers.
-
-As an example we will look at how to build a container with both PyTorch and
-Seaborn. The steps will be as follow:
+Building containers is done with the command:
 ```bash
-[USER@alvis2 1_getting_started]$ apptainer inspect -d /apps/containers/PyTorch/PyTorch-2.0.0.sif
-bootstrap: docker
-from: pytorch/pytorch:2.0.0-cuda11.7-cudnn8-devel
+[USER@alvis2 1_getting_started]$ apptainer build <IMAGE PATH> <BUILD SPEC>
 ```
-Now we know how a recipe could look like. There are more thorough instructions
-at <https://apptainer.org/docs/user/main/build_a_container.html>, but for now
-it is sufficient if we know that we can bootstrap from local-image to build on
-top of what we find in /apps/containers and that in the post section we can
-write our additions.
 
-Before we write our file we can use the options `--writable-tmpfs --fakeroot`
-to experiment with adding stuff to the container interactively, the commands
-correspond roughly to what you would put the %post section of the recipe.
-```
-[USER@alvis2 1_getting_started]$ apptainer shell --writable-tmpfs --fakeroot /apps/containers/PyTorch/PyTorch-2.0.0.sif
-Apptainer> conda install -y seaborn
-...
-Apptainer> exit
-```
-this seem to have gone fine so we can write our recipy called
-"my\_seatorch.def".
+ - `<IMAGE PATH>` is path to the container to be created
+ - `<BUILD SPEC>` is in this case the recipe for how the container is to be
+   built
+
+For inspiration we have a repository of all the containers that we provide
+<https://github.com/c3se/containers>. But, it is also possible to get this
+information from built containers.
+
+As an example we will look at how to build a container with the PyTorch and
+[Transformers](https://huggingface.co/docs/transformers/index) packages. From
+our
+[instructions](<https://www.c3se.chalmers.se/documentation/applications/containers/>),
+we make the following guess for a recipe in a file called `my\_recipe.def`.
+
 ```Singularity
-bootstrap: localimage
-from: /apps/containers/PyTorch/PyTorch-2.0.0.sif
+Bootstrap: localimage
+From: /apps/containers/PyTorch/PyTorch-NGC-latest.sif
 
 %post
-    conda install -y seaborn
-```
-and build it with
-```
-[USER@alvis2 1_getting_started]$ apptainer build my_seatorch.sif my_seatorch.def
-```
-note, that as a rule when we are building something we generally want to use
-the `--fakeroot` flag, though even fakeroot will be used in the %post section
-regardless whether the flag is used or not.
+    pip install transformers
 
-Then you can use your own container with
+%test
+    python -c "import torch, transformers"
+```
+
+You can find more extensive instructions at
+<https://apptainer.org/docs/user/main/build_a_container.html>. For now, note
+that it is possible to bootstrap from localimage to make use of the containers
+that we provide at /apps/containers/. The test step is a sanity check that the
+build has succeeded.
+
+We are now ready to build a container from our definition file:
+```
+[USER@alvis2 1_getting_started]$ apptainer build my_container.sif my_recipe.def
+```
+
+Then you can use your newly created container with
 ```bash
-[USER@alvis2 1_getting_started]$ apptainer exec my_seatorch.sif python my_script.py
+[USER@alvis2 1_getting_started]$ apptainer exec my_container.sif python my_script.py
 ```
-
-However, note that on the compute nodes we might not have rolled out the update
-to Apptainer yet. In that case use the `singularity` command to launch the
-container. Usage is almost identical.
 
 **Exercises:**
 1. Update and submit `jobscript_container.sh`
