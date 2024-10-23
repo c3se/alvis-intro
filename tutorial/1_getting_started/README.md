@@ -372,7 +372,7 @@ from: /apps/containers/PyTorch/PyTorch-2.0.0.sif
 ```
 and build it with
 ```
-[USER@alvis2 1_getting_started]$ apptainer build --fakeroot my_seatorch.sif my_seatorch.def
+[USER@alvis2 1_getting_started]$ apptainer build my_seatorch.sif my_seatorch.def
 ```
 note, that as a rule when we are building something we generally want to use
 the `--fakeroot` flag, though even fakeroot will be used in the %post section
