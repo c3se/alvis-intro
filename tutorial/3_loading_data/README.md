@@ -20,9 +20,9 @@ fast and the need to store data locally is significantly reduced.
 For the following excercises you will need to load the following modules:
 ```bash
 ml purge
-ml PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
-ml matplotlib/3.5.2-foss-2022a
-ml JupyterLab/3.5.0-GCCcore-11.3.0
+ml PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
+ml matplotlib/3.7.2-gfbf-2023a
+ml JupyterLab/4.0.5-GCCcore-12.3.0
 ```
 
 Now you should open up `data-pytorch.ipynb` and follow the instructions there.
@@ -31,9 +31,9 @@ Now you should open up `data-pytorch.ipynb` and follow the instructions there.
 For the following excercises you will need to load the following modules:
 ```bash
 ml purge
-ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
-ml matplotlib/3.5.2-foss-2022a
-ml JupyterLab/3.5.0-GCCcore-11.3.0
+ml TensorFlow/2.15.1-foss-2023a-CUDA-12.1.1
+ml matplotlib/3.7.2-gfbf-2023a
+ml JupyterLab/4.0.5-GCCcore-12.3.0
 ```
 
 Now you should open up `data-tensorflow.ipynb` and follow the instructions there.
