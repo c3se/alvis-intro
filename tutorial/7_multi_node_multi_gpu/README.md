@@ -22,17 +22,13 @@ ml PyTorch/2.12.1-foss-2022a-CUDA-11.7.0
 
 ### Data Parallelism with DDP
 In this part we will take a look at Distributed Data Parallel (DDP). The
-simplest option is to let MPI handle launching the different processes, to do
-this you specify how many tasks you want in your submit script and then launch
-the program with `srun`. This could look something like
+recommended option is to launch one `torchrun` process per node. This would
+look something like
 ```bash
-...
-#SBATCH --ntasks-per-node=8
-...
-srun python my_distributed_ml.py
+srun torchrun ... my_distributed_ml.py
 ```
 
-For details how this is done check out the scripts `PyTorch/ddp_*.py` and `PyTorch/jobscript.sh`.
+For details how this is done check out the scripts `PyTorch/ddp.py` and `PyTorch/jobscript.sh`.
 
 ## PyTorch with Horovod
 In this tutorial we will run a distributed deep learning training job across

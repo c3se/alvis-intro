@@ -22,6 +22,3 @@ torchrun \
     --nnodes=1 \
     --nproc_per_node=$ngpus \
     ddp.py
-
-# Run DistributedDataParallel with srun (MPI)
-#srun --ntasks=$ngpus python ddp.py --backend=mpi

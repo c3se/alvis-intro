@@ -11,9 +11,10 @@ from dataset import RandomDataset
 
 
 def setup(verbose=False):
-    local_rank = int(os.environ["SLURM_LOCALID"])
-    rank = int(os.environ["SLURM_PROCID"])
-    world_size = int(os.environ["SLURM_NTASKS"])
+
+    local_rank = int(os.environ["LOCAL_RANK"])
+    rank = int(os.environ["RANK"])
+    world_size = int(os.environ["WORLD_SIZE"])
 
     if verbose:
         print(f'''
@@ -26,7 +27,7 @@ Master port: {os.environ["MASTER_PORT"]}
 =============================================
         ''')
 
-    dist.init_process_group("mpi")
+    dist.init_process_group("nccl", rank=rank, world_size=world_size)
     
     return local_rank, rank, world_size
 
@@ -40,7 +41,7 @@ def run_process(verbose=False):
     This is what is actually run on each process.
     '''
     # Setup this process
-    local_rank, rank, world_size = setup(verbose=verbose)
+    local_rank, rank, world_size= setup(verbose=verbose)
     
     # Initialize data_loader
     input_size = 5
@@ -63,11 +64,7 @@ def run_process(verbose=False):
     opt = optim.SGD(model.parameters(), lr=0.01)
 
     # Parallelize
-    model = DistributedDataParallel(
-        model,
-        device_ids=[local_rank],
-        output_device=local_rank,
-    )
+    model = DistributedDataParallel(model, device_ids=[device], output_device=device)
 
     # Actual training
     n_epochs = 10
@@ -94,10 +91,8 @@ def run_process(verbose=False):
 
 
 def main():
-    # Spawn processes
     run_process(verbose=True)
 
 
 if __name__=="__main__":
     main()
-
