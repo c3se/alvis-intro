@@ -11,7 +11,7 @@ application at regular time intervals to provide:
   be able to resume your job at the last checkpoint instead of starting over from
   the beginning.
 * easier debugging of your model. If your model introduces strange behavior at
-  some point in trainng it can be very useful to checkpoint at regular
+  some point in training it can be very useful to checkpoint at regular
   intervals and inspect the progress.
 * models or weights for e.g. transfer learning.
 * sharing and/or collaboration.
