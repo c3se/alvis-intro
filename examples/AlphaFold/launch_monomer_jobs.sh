@@ -21,7 +21,7 @@ fi
 # 2. Set-up environment
 module purge
 
-module load AlphaFold/2.3.1-foss-2022a-CUDA-11.7.0
+module load "AlphaFold/2.3.2-foss-2023a-CUDA-12.1.1"
 export ALPHAFOLD_DATA_DIR=/mimer/NOBACKUP/Datasets/AlphafoldDatasets/2022_12
 
 # 3. Set common arguments
@@ -38,8 +38,8 @@ if [ ! -f $identifier/features.pkl ]; then
     msa_jobid=$(
        sbatch \
             --parsable \
-            -t 240 \
-            -C NOGPU \
+            -t 360 \
+            -C "NOGPU" \
             -c 4 \
             -J "MSA-$identifier" \
             --wrap 'ALPHAFOLD_HHBLITS_N_CPU=$SLURM_CPUS_ON_NODE alphafold '"${alphafold_args[*]}" \
@@ -72,7 +72,8 @@ else
 fi
 
 # 6. Launch relaxation on CPU node
-# can also run on GPUs by specifying --use_gpu_relax to alphafold
+# can also run on GPUs by instead specifying --use_gpu_relax to alphafold
+# but this one only takes a couple minutes, so no need for that
 relax_jobid=$(
     sbatch \
         --parsable \
@@ -80,7 +81,7 @@ relax_jobid=$(
         -t 60 \
         -C NOGPU \
         -J "relax-$identifier" \
-        --wrap "alphafold ${alphafold_args[*]} --models_to_relax=BEST" \
+        --wrap "alphafold ${alphafold_args[*]} --models_to_relax=BEST --nouse_gpu_relax" \
 )
 
 echo Succesfully launched jobs $msa_jobid $prediction_arrayid $relax_jobid
