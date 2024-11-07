@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Author: Viktor Rehnberg (Chalmers University of Technology - C3SE)
+# Questions answered through https://supr.naiss.se/support/?centre_resource=c6
+
 set -e
 
 # 1. Get the fasta file from which we will predict a shape
