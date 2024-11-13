@@ -5,10 +5,6 @@ import numpy as np
 import torch
 from PIL import Image
 
-# Custom Type Hints
-LoadedFromZip = Tuple[str, object]  
-DataPoint = Tuple[torch.FloatTensor, int]
-
 class TinyImageNetDataset(torch.utils.data.Dataset):
     def __init__(self, path_to_dataset: str, split: str):
         if split not in ["train", "val"]:
