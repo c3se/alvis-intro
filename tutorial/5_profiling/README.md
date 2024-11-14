@@ -12,9 +12,9 @@ you'll also need the TensorBoard plug-in
 To run the code you can either use the module tree
 ```
 module purge
-ml PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
-ml matplotlib/3.5.2-foss-2022a
-ml JupyterLab/3.5.0-GCCcore-11.3.0
+ml PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
+ml matplotlib/3.7.2-gfbf-2023a
+ml JupyterLab/4.0.5-GCCcore-12.3.0
 
 jupyter lab
 ```
@@ -73,9 +73,9 @@ needs to load the TensorFlow module as TensorBoard comes bundled with TensorFlow
 ```
 flat_modules
 ml purge
-ml TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
-ml matplotlib/3.5.2-foss-2022a
-ml JupyterLab/3.5.0-GCCcore-11.3.0
+ml TensorFlow/2.15.1-foss-2023a-CUDA-12.1.1
+ml matplotlib/3.7.2-gfbf-2023a
+ml JupyterLab/4.0.5-GCCcore-12.3.0
 ```
 
 ### Running the code
