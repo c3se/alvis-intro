@@ -8,9 +8,9 @@
 
 # Set-up environment
 module purge
-module load TensorFlow/2.11.0-foss-2022a-CUDA-11.7.0
-module load matplotlib/3.5.2-foss-2022a
-module load JupyterLab/3.5.0-GCCcore-11.3.0
+module load TensorFlow/2.15.1-foss-2023a-CUDA-12.1.1
+module load matplotlib/3.7.2-gfbf-2023a
+module load JupyterLab/4.0.5-GCCcore-12.3.0
 
 # Interactive
 jupyter lab
