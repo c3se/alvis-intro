@@ -7,7 +7,7 @@
 
 # Set-up environment
 module purge
-module load PyTorch-bundle/1.12.1-foss-2022a-CUDA-11.7.0
+module load PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
 
 # Run DataParallel
 #python dp.py
