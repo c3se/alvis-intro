@@ -40,23 +40,6 @@ with torch.profiler.profile(
     #...
 ```
 
-### Connecting to TensorBoard
-Then you launch a TensorBoard server by using the following command in a terminal
-```bash
-[cid@alvis1 5_profiling]$ tensorboard --logdir="path_to_logdir"
-Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
-TensorBoard 2.7.0 at http://localhost:6006/ (Press CTRL+C to quit)
-```
-
-In the above example we need to visit `http://localhost:6008/` on the login
-node - your port may be different.
-
-You will need to either use ThinLinc (see 
-[Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/remote_graphics/))
-and connect to the Alvis login node, or (recommended) setup a
-[SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
-to access the UI from your computer.
-
 ## Tensorflow 2
 In this tutorial we will show how to profile a TensorFlow model using the
 built-in TensorBoard profiler.  We make use of the `tensorboard` command-line
@@ -88,6 +71,35 @@ Open up the jupyter server and follow the instructions in `profiling-tensorflow.
 ### Generate the profiling data
 The profiling data will be created inside a directory `logs` in you current
 working directory.
+
+
+### Connecting to TensorBoard in both PyTorch and Tensorflow code
+Then you launch a TensorBoard server by using the following command in a terminal
+```bash
+[cid@alvis1 5_profiling]$ module load tensorboard
+[cid@alvis1 5_profiling]$ tensorboard --logdir='path_to_logdir'
+
+Example of this tutorial in case using PyTorch modul:
+[cid@alvis1 5_profiling]$ tensorboard --logdir='/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs/base-tf'
+or in case using Tensorflow modul:
+[cid@alvis1 5_profiling]$ tensorboard --logdir='/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs/base.ptb'
+
+Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
+TensorBoard 2.15.1 at http://localhost:6009/ (Press CTRL+C to quit)
+```
+
+In the above example we need to visit `http://localhost:6009/` on the login
+node - your port may be different.
+
+You will need to either use ThinLinc (see 
+[Connecting with ThinLinc](https://alvis1.c3se.chalmers.se:300/))
+and connect to Web Browser from Applications in the top left corner to access the UI from your computer.
+
+Another way by launching the TensorBoard through login to Alvis NAISS [OnDeman portal](https://portal.c3se.chalmers.se).
+Select TensorBord from there then select Tensorboard logdir e.g.(/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs) and provide loading the right modules in Runtime e.g. (~/portal/tensorboard/TensorBoard.sh).
+
+
+
 
 ### Start TensorBoard
 Once the profiling data has been genereated we can start TensorBoard.
