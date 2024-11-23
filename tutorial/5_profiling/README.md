@@ -76,7 +76,7 @@ working directory.
 
 
 ### Connecting to TensorBoard for PyTorch and Tensorflow
-Once the profiling data has been genereated we can launch TensorBoard.
+Once the profiling data has been genereated we can launch [TensorBoard](https://www.c3se.chalmers.se/documentation/applications/tensorboard/).
 The`tensorboard` command-line utility starts a web server listening on
 localhost, as seen below. 
 ```bash
@@ -97,7 +97,7 @@ node - your port may be different.
 
 You will need to either use ThinLinc (see 
 [Connecting with ThinLinc](https://alvis1.c3se.chalmers.se:300/))
-and connect to Web Browser from Applications in the top left corner to access the UI from your computer.
+and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services) to access the UI from your computer.
 
 Another way by launching the TensorBoard through login to Alvis NAISS [OnDeman portal](https://portal.c3se.chalmers.se).
 Select TensorBord from there then select Tensorboard logdir e.g.(/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs) and provide loading the right modules in Runtime e.g. (~/portal/tensorboard/TensorBoard.sh).
