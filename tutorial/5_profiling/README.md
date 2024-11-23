@@ -84,9 +84,9 @@ localhost, as seen below.
 [cid@alvis1 5_profiling]$ tensorboard --logdir='path_to_logdir'
 
 Example of this tutorial in case using PyTorch module:
-[cid@alvis1 5_profiling]$ tensorboard --logdir='/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs/base-tf'
+[cid@alvis1 5_profiling]$ tensorboard --logdir="$PWD/logs/base-tf"
 or in case using Tensorflow module:
-[cid@alvis1 5_profiling]$ tensorboard --logdir='/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs/base.ptb'
+[cid@alvis1 5_profiling]$ tensorboard --logdir="$PWD/logs/base.ptb"
 
 Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
 TensorBoard 2.15.1 at http://localhost:6009/ (Press CTRL+C to quit)
