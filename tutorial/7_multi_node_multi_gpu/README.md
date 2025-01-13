@@ -70,7 +70,7 @@ can simply use `tf.distribute.cluster_resolver.SlurmClusterResolver`.
 
 ```python
 cluster_resolver = tf.distribute.cluster_resolver.SlurmClusterResolver()
-strategy = tf.distributed.MirroredStrategy(cluster_resolver=cluster_resolver)
+strategy = tf.distributed.MultiWorkerMirroredStrategy(cluster_resolver=cluster_resolver)
 
 with strategy.scope():
     my_model = MyModel()
