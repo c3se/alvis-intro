@@ -103,9 +103,6 @@ For this part take a look at `TensorFlow/hvd.py` and note that there are atleast
 2. Wrapping the optimizer in `hvd.DistributedOptimizer`
 3. Using the `hvd.keras.callbacks.BroadcastGlobalVariablesCallback` callback
 
-An alternative example with some other details can be found at
-https://github.com/c3se/alvis-intro/blob/main/examples/ex7/ex7-tensorflow.py
-
 ### Environment set-up
 Load the relevant modules
 ```

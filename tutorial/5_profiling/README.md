@@ -52,9 +52,9 @@ In the above example we need to visit `http://localhost:6008/` on the login
 node - your port may be different.
 
 You will need to either use ThinLinc (see 
-[Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/remote_graphics/))
+[Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/for_users/remote_graphics/))
 and connect to the Alvis login node, or (recommended) setup a
-[SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
+[SSH tunnel](https://www.c3se.chalmers.se/documentation/for_users/connecting/#use-ssh-tunnel-to-access-services)
 to access the UI from your computer.
 
 ## Tensorflow 2
@@ -102,8 +102,8 @@ TensorBoard 2.3.0 at http://localhost:6007/ (Press CTRL+C to quit)
 In the above example we need to visit `http://localhost:6007/` on the login
 node - your port may be different.
 
-You will need to either use ThinLinc (see [Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/remote_graphics/))
-and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
+You will need to either use ThinLinc (see [Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/for_users/remote_graphics/))
+and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/for_users/connecting/#use-ssh-tunnel-to-access-services)
 to access the UI from your computer.
 
 On the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.

@@ -8,8 +8,7 @@ frameworks can be added if interest exists. You can express interest by creating
 issue for this repository or by contacting support.
 
 Accompanying introduction slides are available at:
- * <https://www.c3se.chalmers.se/documentation/intro-alvis/presentation.html>
- * <https://www.c3se.chalmers.se/documentation/intro-alvis/slides>
+ * <https://www.c3se.chalmers.se/documentation/for_users/intro-alvis/slides>
 
 ## Tutorial overview
 Doing the excercises are voluntary, but make sure to read the associated READMEs
