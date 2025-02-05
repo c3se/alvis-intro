@@ -1,8 +1,10 @@
 # Introduction
 In this tutorial we'll show you how to profile a model and view the results on
-TensorBoard.
+TensorBoard. Profiling helps identify performance bottlenecks and optimize resource usage during model training and inference.
 
 ## PyTorch
+Profiling in PyTorch refers to measuring the execution time and resource consumption of 
+your code to help pinpoint inefficiencies and improve overall performance.
 For profiling with PyTorch you'll need PyTorch 1.8.1 or higher to access the
 `torch.profiler` module. To see the results of the profiling with TensorBoard
 you'll also need the TensorBoard plug-in
@@ -40,23 +42,6 @@ with torch.profiler.profile(
     #...
 ```
 
-### Connecting to TensorBoard
-Then you launch a TensorBoard server by using the following command in a terminal
-```bash
-[cid@alvis1 5_profiling]$ tensorboard --logdir="path_to_logdir"
-Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
-TensorBoard 2.7.0 at http://localhost:6006/ (Press CTRL+C to quit)
-```
-
-In the above example we need to visit `http://localhost:6008/` on the login
-node - your port may be different.
-
-You will need to either use ThinLinc (see 
-[Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/remote_graphics/))
-and connect to the Alvis login node, or (recommended) setup a
-[SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
-to access the UI from your computer.
-
 ## Tensorflow 2
 In this tutorial we will show how to profile a TensorFlow model using the
 built-in TensorBoard profiler.  We make use of the `tensorboard` command-line
@@ -89,22 +74,34 @@ Open up the jupyter server and follow the instructions in `profiling-tensorflow.
 The profiling data will be created inside a directory `logs` in you current
 working directory.
 
-### Start TensorBoard
-Once the profiling data has been genereated we can start TensorBoard.
+
+### Connecting to TensorBoard for PyTorch and Tensorflow
+Once the profiling data has been genereated we can launch [TensorBoard](https://www.c3se.chalmers.se/documentation/applications/tensorboard/).
 The`tensorboard` command-line utility starts a web server listening on
 localhost, as seen below. 
-```
-tensorboard --logdir logs
-2021-02-09 11:54:44.785607: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
+```bash
+[cid@alvis1 5_profiling]$ module load tensorboard
+[cid@alvis1 5_profiling]$ tensorboard --logdir='path_to_logdir'
+
+Example of this tutorial in case using PyTorch module:
+[cid@alvis1 5_profiling]$ tensorboard --logdir="$PWD/logs/base-tf"
+or in case using Tensorflow module:
+[cid@alvis1 5_profiling]$ tensorboard --logdir="$PWD/logs/base.ptb"
+
 Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
-TensorBoard 2.3.0 at http://localhost:6007/ (Press CTRL+C to quit)
+TensorBoard 2.15.1 at http://localhost:6009/ (Press CTRL+C to quit)
 ```
-In the above example we need to visit `http://localhost:6007/` on the login
+
+In the above example we need to visit `http://localhost:6009/` on the login
 node - your port may be different.
 
-You will need to either use ThinLinc (see [Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/remote_graphics/))
-and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services)
-to access the UI from your computer.
+You will need to either use ThinLinc (see 
+[Connecting with ThinLinc](https://alvis1.c3se.chalmers.se:300/))
+and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/connecting/#use-ssh-tunnel-to-access-services) to access the UI from your computer.
+
+Another way by launching the TensorBoard through login to Alvis NAISS [OnDeman portal](https://portal.c3se.chalmers.se).
+Select TensorBord from there then select Tensorboard logdir e.g.(/cephyr/users/cid/Alvis/alvis-intro/tutorial/5_profiling/logs) and provide loading the right modules in Runtime e.g. (~/portal/tensorboard/TensorBoard.sh).
+
 
 On the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.
 ![TensorBoard Profile](tb_profile.png)
