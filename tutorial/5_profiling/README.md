@@ -13,7 +13,7 @@ To run the code you can either use the module tree
 module purge
 ml PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
 ml matplotlib/3.7.2-gfbf-2023a
-ml load HolisticTraceAnalysis/0.2.0-gfbf-2023a
+ml HolisticTraceAnalysis/0.2.0-gfbf-2023a
 ml JupyterLab/4.0.5-GCCcore-12.3.0
 
 jupyter lab
