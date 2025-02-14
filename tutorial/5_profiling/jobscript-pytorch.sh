@@ -13,9 +13,8 @@ module load matplotlib/3.7.2-gfbf-2023a
 module load HolisticTraceAnalysis/0.2.0-gfbf-2023a
 module load JupyterLab/4.0.5-GCCcore-12.3.0
 
-# interactive
-# launch jupyter notebook, specify the config file and increases the data transfer rate for Jupyter's IOPub channel as below:
-jupyter lab --config="${CONFIG_FILE}" --ServerApp.iopub_data_rate_limit 1e10
+# Interactive
+jupyter lab
 
 # Non-interactive
 #ipython -c "%run profiling-pytorch.ipynb"
