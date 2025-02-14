@@ -51,16 +51,7 @@ According to the
 [PyTorch documentation](https://pytorch.org/docs/master/generated/torch.nn.parallel.DistributedDataParallel.html)
 DDP is currently the go to method for data parallelism even on a single node.
 
-DDP works differently from DP by running on several different processes. Therefore, we have some options to choose between:
-1. Launching processes with `torch.distributed.launch`
-2. Launching processes with `srun` or `mpirun`
-3. Launching processes with `torch.multiprocessing` (not shown)
-
-For each of these options there are two variables we usually would need to define:
-`MASTER_ADDR` and `MASTER_PORT`. `MASTER_ADDR` is the hostname or IP address of
-the node that the will host the 0th task. Master port simply needs to be free
-port on the node. However, when using sbatch on Alvis these variables are
-pre-set and usually don't need to be changed.
+DDP works differently from DP by running on several different processes. There are a few different options, but we recommend to launch with `torchrun`.
 
 ### Excercises
 1. Checkout the different scripts and try to get an idea of what they are doing and what their differences are.

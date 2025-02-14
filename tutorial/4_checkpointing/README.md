@@ -128,8 +128,8 @@ documentation
 >models and custom layers without requiring the original code.
 
 Automatic checkpointing can be added to your model (`model.fit` as a callback,
-similar to how we added a callback for profiling in [example
-4](https://github.com/c3se/alvis-intro/tree/main/tutorial/ex5).
+similar to how we added a callback for profiling in the [profiling
+tutorial](https://github.com/c3se/alvis-intro/tree/main/tutorial/5_profiling).
 
 ```
 my_ckpts = "training/cp-{epoch:04d}.ckpt"
