@@ -1,12 +1,11 @@
 # Introduction
-In this tutorial we'll show you how to profile a model and view the results on
-TensorBoard.
+In this tutorial, we'll show you how to profile a model and view the results using TensorBoard 
+with TensorFlow and HolisticTraceAnalysis (HTA) with PyTorch.
 
 ## PyTorch
 For profiling with PyTorch you'll need PyTorch 1.8.1 or higher to access the
-`torch.profiler` module. To see the results of the profiling with TensorBoard
-you'll also need the TensorBoard plug-in
-[torch-tb-profiler](https://github.com/pytorch/kineto/tree/main/tb_plugin).
+`torch.profiler` module. To see the results of the profiling with HTA tool
+you'll also need to load HolisticTraceAnalysis module.
 
 ### Environment setup
 To run the code you can either use the module tree
@@ -14,6 +13,7 @@ To run the code you can either use the module tree
 module purge
 ml PyTorch-bundle/2.1.2-foss-2023a-CUDA-12.1.1
 ml matplotlib/3.7.2-gfbf-2023a
+ml HolisticTraceAnalysis/0.2.0-gfbf-2023a
 ml JupyterLab/4.0.5-GCCcore-12.3.0
 
 jupyter lab
@@ -26,38 +26,26 @@ singularity exec /apps/containers/PyTorch/PyTorch-1.14-NGC-23.02.sif jupyter not
 You'll probably want to run the code on a compute node to get access to the
 TMPDIR for faster file I/O. To do this you can use
 `sbatch jobscript-pytorch.sh`.
+Open up the jupyter server and follow the instructions in `profiling-pytorch.ipynb`
 
 ### Profiling
-When you have set up the environment, profiling your PyTorch code is easy.
-Simply wrap the code you want to profile with a profile context manager:
+Once the environment is set up, profiling your PyTorch code with HTA is straightforward. Simply wrap
+the code you want to profile with a profile context manager and export the trace data for HTA analysis:
 ```python
 import torch.profiler
+from hta.trace_analysis import TraceAnalysis
 
 with torch.profiler.profile(
-    on_trace_ready=torch.profiler.tensorboard_trace_handler('path_to_logdir'),
+    on_trace_ready=torch.profiler.schedule(),
 ) as prof:
     # Code to profile
     #...
+analyzer = TraceAnalysis(trace_dir=trace_dir)
+# Code to HTA
+#...
 ```
 
-### Connecting to TensorBoard
-Then you launch a TensorBoard server by using the following command in a terminal
-```bash
-[cid@alvis1 5_profiling]$ tensorboard --logdir="path_to_logdir"
-Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
-TensorBoard 2.7.0 at http://localhost:6006/ (Press CTRL+C to quit)
-```
-
-In the above example we need to visit `http://localhost:6008/` on the login
-node - your port may be different.
-
-You will need to either use ThinLinc (see 
-[Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/for_users/remote_graphics/))
-and connect to the Alvis login node, or (recommended) setup a
-[SSH tunnel](https://www.c3se.chalmers.se/documentation/for_users/connecting/#use-ssh-tunnel-to-access-services)
-to access the UI from your computer.
-
-## Tensorflow 2
+## Tensorflow
 In this tutorial we will show how to profile a TensorFlow model using the
 built-in TensorBoard profiler.  We make use of the `tensorboard` command-line
 utility for visualization and the `tensorflow.keras.callbacks.TensorBoard`
@@ -81,7 +69,7 @@ ml JupyterLab/4.0.5-GCCcore-12.3.0
 ### Running the code
 You'll probably want to run the code on a compute node to get access to the
 TMPDIR for faster file I/O. To do this you can use
-`sbatch jobscript-pytorch.sh`.
+`sbatch jobscript-tensorflow.sh`.
 
 Open up the jupyter server and follow the instructions in `profiling-tensorflow.ipynb`
 
@@ -108,3 +96,4 @@ to access the UI from your computer.
 
 On the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.
 ![TensorBoard Profile](tb_profile.png)
+
