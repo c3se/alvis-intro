@@ -42,7 +42,7 @@ community. You can read more about Horovod
 Load the relevant modules
 ```
 module purge
-ml Horovod/0.21.3-fosscuda-2020b-PyTorch-1.7.1
+ml Horovod/0.28.1-foss-2022a-CUDA-11.7.0-PyTorch-1.13.1
 ```
 
 
@@ -107,7 +107,7 @@ For this part take a look at `TensorFlow/hvd.py` and note that there are atleast
 Load the relevant modules
 ```
 module purge
-ml Horovod/0.21.1-fosscuda-2020b-TensorFlow-2.4.1
+ml Horovod-0.28.1-foss-2022a-CUDA-11.7.0-TensorFlow-2.11.0.eb
 ```
 
 Also see `jobscript.sh` for how to submit this to a job.
