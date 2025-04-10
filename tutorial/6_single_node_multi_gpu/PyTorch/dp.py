@@ -9,6 +9,9 @@ from model import GPT
 from dataset import RandomCorpus
 from logger import BenchmarkWriter
 
+
+torch.set_float32_matmul_precision("high")
+
 def run_process():
     '''Run process
 

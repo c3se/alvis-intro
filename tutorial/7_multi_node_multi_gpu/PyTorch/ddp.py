@@ -10,6 +10,8 @@ from model import Model
 from dataset import RandomDataset
 
 
+torch.set_float32_matmul_precision("high")
+
 def setup(verbose=False):
 
     local_rank = int(os.environ["LOCAL_RANK"])

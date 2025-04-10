@@ -16,6 +16,8 @@ from dataset import RandomCorpus
 from logger import BenchmarkWriter
 
 
+torch.set_float32_matmul_precision("high")
+
 def setup(backend, verbose=False):
     dist.init_process_group(backend)
     if verbose:

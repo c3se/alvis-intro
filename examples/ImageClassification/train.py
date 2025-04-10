@@ -18,6 +18,8 @@ parser.add_argument("--learning-rate", type=float, default=1e-3)
 parser.add_argument("--num-epochs", type=int, default=10)
 parser.add_argument("--max-steps-per-epoch", type=int, default=0)
 
+torch.set_float32_matmul_precision("high")
+
 # Performance options
 def get_dtype(arg: str):
     try:
