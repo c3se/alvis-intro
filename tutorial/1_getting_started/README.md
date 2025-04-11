@@ -4,18 +4,18 @@ system, if you have used other HPC systems much of it will be familiar.
 
 ## Accessing Alvis
 Now that you've [gotten
-access](https://www.c3se.chalmers.se/documentation/for_users/getting_access/), are
-[getting started](https://www.c3se.chalmers.se/documentation/for_users/getting_started/)
+access](https://www.c3se.chalmers.se/documentation/first_time_users/), are
+getting started
 and have attended the [introduction presentation for
-Alvis](https://www.c3se.chalmers.se/documentation/for_users/intro-alvis/slides/) you are
+Alvis](https://www.c3se.chalmers.se/documentation/first_time_users/intro-alvis/slides/) you are
 certainly itching to access Alvis and start doing stuff.
 
 To access Alvis there are a few different alternatives and they can all be found
 at [c3se.chalmers.se](https://www.c3se.chalmers.se):
- - [Connecting through terminal](https://www.c3se.chalmers.se/documentation/for_users/connecting/)
- - [Alvis OnDemand](https://www.c3se.chalmers.se/documentation/for_users/ondemand/)
- - [Remote graphics](https://www.c3se.chalmers.se/documentation/for_users/remote_graphics/)
- - [Remote development with Visual Studio Code](https://www.c3se.chalmers.se/documentation/for_users/development/vscode/)
+ - [Connecting through terminal](https://www.c3se.chalmers.se/documentation/connecting/)
+ - [Alvis OnDemand](https://www.c3se.chalmers.se/documentation/connecting/ondemand/)
+ - [Remote graphics](https://www.c3se.chalmers.se/documentation/connecting/thinlinc/)
+ - [Remote development with Visual Studio Code](https://www.c3se.chalmers.se/documentation/software/development/vscode/)
 
 ### Exercises
 1. Access Alvis (and open up a terminal)
@@ -139,7 +139,7 @@ training, but given their low cost it may still be cost-effective to use them
 for light tasks,
 - Depending on which floating point precision used different GPUs can have
 very different performance, see
-[GPU Hardware Details](https://www.c3se.chalmers.se/documentation/for_users/intro-alvis/slides/#gpu-hardware-details),
+[GPU Hardware Details](https://www.c3se.chalmers.se/about/Alvis/#gpu-hardware-details),
 - When there are multiple feasible options, go for the currently most abundant
 GPU (`jobinfo -s`).
 
@@ -281,7 +281,7 @@ There are primarily two ways to set-up your environment on Alvis:
 #### Loading modules
 In this section we will go through the essentials for using modules to set up
 your preferred software for more details, see the
-[C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/modules/).
+[C3SE documentation](https://www.c3se.chalmers.se/documentation/module_system/modules/).
 
 The first command we will consider is
 ```bash
@@ -304,13 +304,13 @@ In `jobscript_module.sh` you can find how to use the module tree to load PyTorch
 2. Redo 1 but for TensorFlow instead of PyTorch
 3. Install an additional small Python package beyond what is available through
    modules by following our
-   [Python instructions](https://www.c3se.chalmers.se/documentation/applications/python/#virtual-environments)
+   [Python instructions](https://www.c3se.chalmers.se/documentation/module_system/python/)
 
 #### Using containers
 Containers are a way for you to work with with a portable and reproducible
 environment for any HPC system that supports it. For more details about using
 containers see the
-[C3SE documentation](https://www.c3se.chalmers.se/documentation/applications/containers/).
+[C3SE documentation](https://www.c3se.chalmers.se/documentation/miscellaneous/containers/).
 It might be worth noting that containers are self contained and are not
 influenced by what operating system you have outside the container. As such
 containers that work one system many times work just as well on other systems
@@ -346,7 +346,7 @@ information from built containers.
 As an example we will look at how to build a container with the PyTorch and
 [Transformers](https://huggingface.co/docs/transformers/index) packages. From
 our
-[instructions](<https://www.c3se.chalmers.se/documentation/applications/containers/>),
+[instructions](https://www.c3se.chalmers.se/documentation/miscellaneous/containers/),
 we make the following guess for a recipe in a file called `my\_recipe.def`.
 
 ```Singularity
