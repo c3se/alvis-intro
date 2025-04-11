@@ -78,22 +78,14 @@ The profiling data will be created inside a directory `logs` in you current
 working directory.
 
 ### Start TensorBoard
-Once the profiling data has been genereated we can start TensorBoard.
-The`tensorboard` command-line utility starts a web server listening on
-localhost, as seen below. 
-```
-tensorboard --logdir logs
-2021-02-09 11:54:44.785607: I tensorflow/stream_executor/platform/default/dso_loader.cc:48] Successfully opened dynamic library libcudart.so.10.1
-Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
-TensorBoard 2.3.0 at http://localhost:6007/ (Press CTRL+C to quit)
-```
-In the above example we need to visit `http://localhost:6007/` on the login
-node - your port may be different.
+You've got three alternatives for how to access TensorBoard on the cluster:
 
-You will need to either use ThinLinc (see [Connecting with ThinLinc](https://www.c3se.chalmers.se/documentation/for_users/remote_graphics/))
-and connect to the Alvis logi node, or (recommended) setup a [SSH tunnel](https://www.c3se.chalmers.se/documentation/for_users/connecting/#use-ssh-tunnel-to-access-services)
-to access the UI from your computer.
+- the Alvis OnDemand portal (TensorBoard app)
+- using port forwarding with SSH
+- and opening it in a browser in desktop session
 
-On the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.
+these instructions are currently being updated, see our [TensorBoard guide](https://www.c3se.chalmers.se/documentation/software/machine_learning/tensorboard/).
+
+In the TensorBoard UI you select "Profile" in the drop-down menu next to the UPLOAD button.
 ![TensorBoard Profile](tb_profile.png)
 
