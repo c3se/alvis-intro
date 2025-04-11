@@ -15,7 +15,7 @@ In this part you will have the possibility to use a Jupyter Notebook to follow
 along some of the examples and excersices.
 
 You can find some details on how to do this in the [C3SE
-documentation](https://www.c3se.chalmers.se/documentation/applications/jupyter/).
+documentation](https://www.c3se.chalmers.se/documentation/software/frequently_used/jupyter/).
 
 If you are using the Alvis OnDemand portal running jupyter notebooks is as easy as
 1. Go to https://portal.c3se.chalmers.se and authenticate through supr
