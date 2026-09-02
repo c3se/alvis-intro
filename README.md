@@ -1,3 +1,6 @@
+> [!CAUTION]
+> The Alvis cluster ran until 2026-08-31 and is no longer available.
+
 # Alvis introduction
 This repository contains examples and excercises for how to run ML applications on the
 SNIC Alvis AI/ML HPC system. The aim is to let users get their feet wet
